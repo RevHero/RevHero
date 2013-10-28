@@ -43,7 +43,7 @@ function closeBox()
 	</div>
 </div>
 <?php if(@$passemail=="10"){ ?>
-<div class="container" style="width:442px;border:1px solid #CCCCCC;" id="ForgotPass">
+<div class="container well" style="width:442px;border:1px solid #CCCCCC;" id="ForgotPass">
 	<div class="row">
 		<form action="" method="post">
 			<input type="hidden" name="data[User][newpass]" id="fornewpass" value="">
@@ -60,7 +60,7 @@ function closeBox()
 	</div>
 </div>
 <?php } if(@$passemail=="12"){ ?>
-	<div class="container" style="width:442px;border:1px solid #CCCCCC;<?php if(@$chkemail=="11"){?>display:none;<?php } ?>" id="ResetPass">
+	<div class="container well" style="width:442px;border:1px solid #CCCCCC;<?php if(@$chkemail=="11"){?>display:none;<?php } ?>" id="ResetPass">
 		<div class="row">
 			<form action="" method="post">
 			<input type="hidden" id="user_id" name="user_id" value="<?php if(isset($user_id)) { echo $user_id; } ?>" readonly="true">
@@ -77,7 +77,7 @@ function closeBox()
 <?php } ?>	
 
 <?php if(@$chkemail=="11"){?>
-	<div class="container" style="width:442px;border:1px solid #CCCCCC;" id="ThankForget">
+	<div class="container well" style="width:442px;border:1px solid #CCCCCC;" id="ThankForget">
 		<div class="row">
 			<div><h2 style="color:#379B37;font-size:18px;text-align:right;">Your Password is successfully changed.</h2></div>
 			<div><h2 style="color:#000000;font-size:17px;text-align:center;margin-left:65px;"><a href="<?php echo HTTP_ROOT; ?>" style="color:blue;text-decoration:underline;">Login</a> with your new pasword</h2></div>
