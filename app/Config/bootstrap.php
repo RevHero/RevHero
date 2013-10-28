@@ -1,13 +1,21 @@
 <?php
-
 $ht = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']=='on')?"https://":"http://";
 define('HTTP_SERVER',$ht.$_SERVER['SERVER_NAME']."/");
-define('SUB_FOLDER', '');
+define('SUB_FOLDER', 'RevHero'."/");
 
 define('HTTP_ROOT', HTTP_SERVER.SUB_FOLDER);
+define('SITE_NAME','RevHero');
 
+define('CSS_PATH', HTTP_ROOT.'css/');
+define('JS_PATH', HTTP_ROOT.'js/');
 
+//Image Display path
+define('HTTP_IMAGES', HTTP_ROOT.'img/');
+define('HTTP_FILES', HTTP_ROOT.'files/');
 
+//Image Upload Path
+define('DIR_IMAGES', WWW_ROOT.'img/');
+define('DIR_FILES', WWW_ROOT.'files/');
 
 Cache::config('default', array('engine' => 'File'));
 
