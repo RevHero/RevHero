@@ -5,6 +5,9 @@ class AdsController extends AppController {
 	function advertise()
 	{
 		$this->layout = 'default';
+		if(!$this->Session->read('Auth.User.id')){
+			$this->redirect(HTTP_ROOT);
+		}
 	}
 	
 	function add()

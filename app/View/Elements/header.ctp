@@ -15,7 +15,7 @@
 		<li><a href="#">Publish</a></li>
 		<li class="divider-vertical"></li>
 	</ul>	
-	<?php if(@$loginstatus && @$loginstatus == 1){ ?>
+	<?php if($this->Session->read('Auth.User.id')){ ?>
 		<div class="nav-collapse">
 		  <ul class="nav pull-right">
 			<li style="font-family: 'Telex',sans-serif;padding: 16px 10px 14px;text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);color:#FFFFFF;">Welcome Sandeep</li>

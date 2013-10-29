@@ -17,24 +17,33 @@ $('#testTextarea2').mouseover(function()
 	$("#removeCnt").remove();
 });
 
-	var countchar = {
-			'maxCharacterSize': 104,
-			'originalStyle': 'originalTextareaInfo',
-			'warningStyle' : 'warningTextareaInfo',
-			'warningNumber': 40,
-			//'displayFormat' : '#input Characters | #left Characters Left | #words Words'  
-			'displayFormat' : '#left Characters Left'  
-	};
-	$('#testTextarea2').textareaCount(countchar);
+var countchar = {
+		'maxCharacterSize': 104,
+		'originalStyle': 'originalTextareaInfo',
+		'warningStyle' : 'warningTextareaInfo',
+		'warningNumber': 40,
+		//'displayFormat' : '#input Characters | #left Characters Left | #words Words'  
+		'displayFormat' : '#left Characters Left'  
+};
+$('#testTextarea2').textareaCount(countchar);
 	
-/*	var options2 = {
-			'maxCharacterSize': 200,
-			'originalStyle': 'originalTextareaInfo',
-			'warningStyle' : 'warningTextareaInfo',
-			'warningNumber': 40,
-			'displayFormat' : '#input/#max | #words words'
-	};
-	$('#testTextarea2').textareaCount(options2);*/
+$("#add_headline").keyup(function()
+{
+	var headlineval = $("#add_headline").val().trim();
+	if(headlineval.length >= 35){
+		var textval = headlineval.substr(0,35);
+		$("#add_headline").val(textval)
+	}
+});
+
+$("#dest_url").keyup(function()
+{
+	var desturlval = $("#dest_url").val().trim();
+	if(desturlval.length >= 5){
+		var textval = desturlval.substr(0,5);
+		$("#dest_url").val(textval)
+	}
+});
 	
 });
 </script>
@@ -65,18 +74,18 @@ $('#testTextarea2').mouseover(function()
 							<div id="removeCnt" style="width: 270px;margin-top:-19px;">104 Characters Left</div>
 						</div>
 					</div>
-					<!--<div class="control-group">
+					<div class="control-group">
 						<label class="control-label">CPC</label>
 						<div class="controls">
-							$ <input type="text" name="data[Ad][cpc]" id="cpc" placeholder=""  class="input-xlarge" required="true" style="width:45px;">
+							$ <input type="text" name="data[Ad][cpc]" id="cpc" placeholder="1.85" class="input-xlarge" required="true" style="width:45px;">
 						</div>
 					</div>	
 					<div class="control-group">
 						<label class="control-label">CPA</label>
 						<div class="controls">
-							$ <input type="text" name="data[Ad][cpa]" id="cpa" placeholder=""  class="input-xlarge" required="true" style="width:45px;">
+							$ <input type="text" name="data[Ad][cpa]" id="cpa" placeholder="1.25"  class="input-xlarge" required="true" style="width:45px;">
 						</div>
-					</div>	-->
+					</div>	
 					<div class="control-group">
 						<label class="control-label">Tags</label>
 						<div class="controls">

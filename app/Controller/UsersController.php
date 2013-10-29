@@ -5,7 +5,7 @@ class UsersController extends AppController {
 	function home($error = NULL)
 	{
 		$this->layout = 'default';		
-		if(isset($loginstatus) && $loginstatus == 1){
+		if($this->Session->read('Auth.User.id')){
 			$this->redirect(HTTP_ROOT."users/dashboard");
 		}
 		
@@ -71,8 +71,13 @@ class UsersController extends AppController {
 		exit;
 	}
 	
-	//Require to implement the login functionality
 	public function login($emailConf= NULL,$passConf= NULL)
+	{
+		$this->redirect(HTTP_ROOT);
+	}
+	
+	//Require to implement the login functionality
+	public function logincheck($emailConf= NULL,$passConf= NULL)
 	{
 		if($emailConf && $passConf && $emailConf != '' && $passConf != ''){
 			$email = $emailConf;
@@ -113,7 +118,7 @@ class UsersController extends AppController {
 			//Below Condition 1 || UserId || Auth UserId
 			if(($this->Auth->login() || isset($usrLogin['User']['id'])) && $this->Auth->user('id'))
 			{
-				$this->Session->write("LOGINSTATUS","1");
+				//$this->Session->write("LOGINSTATUS","1");
 				$this->redirect(HTTP_ROOT."users/dashboard");
 			}
 			else

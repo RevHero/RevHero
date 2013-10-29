@@ -21,16 +21,10 @@ class AppController extends Controller {
 				$this->redirect(HTTP_ROOT."users/dashboard");
 			}
 			
-			//$this->set('loginresult',$this->Session->read("LOGINDISPLAY")); //Required to hold the value for displaying the error msg for invalid login
-			//$this->Session->write("LOGINDISPLAY","");
-			
 			$this->set('successaddsave',$this->Session->read("SAVEADDSUCCESS"));
 			$this->Session->write("SAVEADDSUCCESS","");
-			
-			
-			
-			
-			$this->set('loginstatus',$this->Session->read("LOGINSTATUS")); //Requires to hold the session for the loggedin users.
+
+			//$this->set('loginstatus',$this->Session->read("LOGINSTATUS")); //Requires to hold the session for the loggedin users.
 		}else{ //if the user is coming to the site without login
 			$this->set('success',$this->Session->read("SUCCESS"));
 			$this->set('confirmReg',$this->Session->read("CONFIRMREG"));
@@ -44,7 +38,7 @@ class AppController extends Controller {
 			
 			$this->Auth->autoRedirect = false;
 			Security::setHash('md5'); //Setting for conveting the password to hash format
-			$this->Auth->allow('home','confirmation','login','forgotpassword'); //here we have to specify the actions which we want to load without the user authentication.
+			$this->Auth->allow('home','confirmation','logincheck','forgotpassword'); //here we have to specify the actions which we want to load without the user authentication.
 			
 			$this->Session->write("SUCCESS","");
 			$this->Session->write("CONFIRMREG","");
