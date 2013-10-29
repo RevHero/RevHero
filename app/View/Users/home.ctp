@@ -179,8 +179,8 @@ function closeBox()
                             <!-- Username -->
                             <label class="control-label"  for="username">Email</label>
                             <div class="controls">
-                              <input type="email" name="email" placeholder="" class="input-xlarge" required="true">
-							  <span style="color:#BD4247;display:;" class="help-inline" id="err_log_email"><?php echo @$ErrorMsgEmail; ?></span>
+                              <input type="text" name="email" placeholder="" class="input-xlarge" required="true">
+							  <span style="color:#BD4247;display:;" class="help-inline" id="err_log_email"></span>
                             </div>
                           </div>
      
@@ -195,7 +195,7 @@ function closeBox()
                           <div class="control-group">
                             <!-- Button -->
                             <div class="controls">
-                              <button class="btn btn-success" onclick="return validateLogin();">Login</button>
+                              <button class="btn btn-success">Login</button>
 							  <span style="margin-left:110px;color:#317EAC;"><a href="<?php echo HTTP_ROOT; ?>users/forgotpassword">Forgot Password?</a></span>
                             </div>
                           </div>

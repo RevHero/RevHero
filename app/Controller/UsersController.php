@@ -5,7 +5,6 @@ class UsersController extends AppController {
 	function home($error = NULL)
 	{
 		$this->layout = 'default';		
-		//echo "sdds".@$loginstatus;
 		if(isset($loginstatus) && $loginstatus == 1){
 			$this->redirect(HTTP_ROOT."users/dashboard");
 		}
@@ -17,14 +16,6 @@ class UsersController extends AppController {
 				$fname = $this->request->data['User']['fname'];
 				$lname = $this->request->data['User']['lname'];
 				$email = $this->request->data['User']['email'];
-				/*if($email == '')
-				{
-					$this->set("ErrorMsgEmail", "Please enter email address.");
-				}
-				if(!preg_match("/[-0-9a-zA-Z.+_]+@[-0-9a-zA-Z.+_]+\.[a-zA-Z]{2,4}/", $email))
-				{
-					$this->set("ErrorMsgEmail", "Invalid email address");
-				}	*/
 				$this->request->data['User']['pass'] = $this->Auth->password($this->request->data['User']['pass']);
 				$this->request->data['User']['uniq_id'] = $this->Format->generateUniqNumber();
 				
@@ -90,6 +81,20 @@ class UsersController extends AppController {
 			$email = @$this->request->data['email'];
 			$pass = @$this->request->data['password'];
 		}
+		
+		/*if($email == '')
+		{
+			echo "BLANK".$email;exit;
+			$this->set("ErrorMsgEmail", "Please enter email address.");
+		}
+		else if(!preg_match("/[-0-9a-zA-Z.+_]+@[-0-9a-zA-Z.+_]+\.[a-zA-Z]{2,4}/", $email))
+		{
+			echo "ss".$email;exit;
+			$this->set("ErrorMsgEmail", "Invalid email address");
+		}
+		else{
+			echo "DATA".$email;exit;
+		}*/
 			
 		if(!empty($email)){
 			$usrLogin = array();

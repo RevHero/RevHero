@@ -24,7 +24,13 @@ class AppController extends Controller {
 			//$this->set('loginresult',$this->Session->read("LOGINDISPLAY")); //Required to hold the value for displaying the error msg for invalid login
 			//$this->Session->write("LOGINDISPLAY","");
 			
-			$this->set('loginstatus',$this->Session->read("LOGINSTATUS")); //Requires to jold the session for the loggedin users.
+			$this->set('successaddsave',$this->Session->read("SAVEADDSUCCESS"));
+			$this->Session->write("SAVEADDSUCCESS","");
+			
+			
+			
+			
+			$this->set('loginstatus',$this->Session->read("LOGINSTATUS")); //Requires to hold the session for the loggedin users.
 		}else{ //if the user is coming to the site without login
 			$this->set('success',$this->Session->read("SUCCESS"));
 			$this->set('confirmReg',$this->Session->read("CONFIRMREG"));
