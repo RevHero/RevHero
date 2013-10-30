@@ -2,6 +2,16 @@
 class Tag extends AppModel{
 	public $name = 'Tag';
 	
+	var $hasAndBelongsToMany = array(
+        'AdDetail' =>
+            array(
+                'className'              => 'AdDetail',
+                'joinTable'              => 'ad_tags',
+                'foreignKey'             => 'tag_id',
+                'associationForeignKey'  => 'ad_id'
+            )
+    );
+	
 	function getAllTags()
 	{
 		App::import('Model','Tag');

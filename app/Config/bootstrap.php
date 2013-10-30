@@ -16,6 +16,7 @@ define('HTTP_FILES', HTTP_ROOT.'files/');
 //Image Upload Path
 define('DIR_IMAGES', WWW_ROOT.'img/');
 define('DIR_FILES', WWW_ROOT.'files/');
+define('DIR_AD_PHOTOS', DIR_FILES.'ad_photos/');
 
 Cache::config('default', array('engine' => 'File'));
 

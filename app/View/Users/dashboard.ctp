@@ -4,21 +4,6 @@ function closeBox()
 	$("#displayMsg").hide();
 }
 </script>
-<div class="span6"></div>
-<div class="span4" id="displayMsg">
-<?php if(@$successaddsave && @$successaddsave == 1){ ?>
-  <div class="alert alert-success">
-	<a class="close" onclick="closeBox();">x</a>
-	<strong>Thank You.</strong> You have created advertise successfully.
-  </div>
-<?php }else if(@$successaddsave == 0 && @$successaddsave != ''){ ?>  
-  <div class="alert alert-error">
-	<a class="close" onclick="closeBox();">x</a>
-	<strong>Sorry!!</strong> Advertise did not save.
-  </div>
-<?php } ?>  
-</div>
-
 <div class="container">
 	<div class="row">
         <div class="span16">

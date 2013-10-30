@@ -13,7 +13,7 @@
 	<?php if($this->Session->read('Auth.User.id')){ ?>
 	<ul class="nav pull-left">
 		<li class="divider-vertical"></li>
-		<li><a href="<?php echo HTTP_ROOT ?>ads/add">Advertise</a></li>
+		<li><a href="<?php echo HTTP_ROOT ?>ads/lists">Advertise</a></li>
 		<li class="divider-vertical"></li>
 		<li><a href="#">Publish</a></li>
 		<li class="divider-vertical"></li>

@@ -16,7 +16,11 @@ class AppController extends Controller {
 			if (!defined('WWW_ROOT')) {
 				define('WWW_ROOT', dirname(__FILE__) . DS);
 			}
-		
+			
+			if(!defined('SES_ID')) { 
+				define('SES_ID', $this->Auth->User("id"));
+			}
+			
 			if(PAGE_NAME == "home"){ //If the user is logged in and then redirecting to home page, it automatically redirects to dashboard page
 				$this->redirect(HTTP_ROOT."users/dashboard");
 			}
