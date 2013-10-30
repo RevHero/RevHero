@@ -1,3 +1,5 @@
+<input type="hidden" name="pageurl" id="pageurl" value="<?php echo HTTP_ROOT; ?>" size="1" readonly="true"/>
+<input type="hidden" name="pagename" id="pagename" value="<?php echo PAGE_NAME; ?>" size="1" readonly="true"/>
 <!-- This is the design for the HEADER navigation bar -->
 <div class="navbar">
 <div class="navbar-inner">
@@ -8,14 +10,15 @@
 	  <span class="icon-bar"></span>
 	</a>
 	<a class="brand" href="<?php echo HTTP_ROOT; ?>">RevHero</a>
+	<?php if($this->Session->read('Auth.User.id')){ ?>
 	<ul class="nav pull-left">
 		<li class="divider-vertical"></li>
-		<li><a href="<?php echo HTTP_ROOT ?>ads/advertise">Advertise</a></li>
+		<li><a href="<?php echo HTTP_ROOT ?>ads/add">Advertise</a></li>
 		<li class="divider-vertical"></li>
 		<li><a href="#">Publish</a></li>
 		<li class="divider-vertical"></li>
-	</ul>	
-	<?php if($this->Session->read('Auth.User.id')){ ?>
+	</ul>
+
 		<div class="nav-collapse">
 		  <ul class="nav pull-right">
 			<li style="font-family: 'Telex',sans-serif;padding: 16px 10px 14px;text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);color:#FFFFFF;">Welcome Sandeep</li>
