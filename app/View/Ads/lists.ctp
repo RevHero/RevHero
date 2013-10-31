@@ -21,6 +21,12 @@ $(document).ready( function () {
 		    ]
 	});
 });
+
+function closeBox()
+{
+	$("#displayMsg").hide();
+}
+
 </script>
 <div class="span2"></div>
 <div class="span4" style="margin-left:30px;margin-bottom:12px;"><a href="<?php echo HTTP_ROOT; ?>ads/add"><button class="btn btn-primary" type="button">Create new Ad</button></a></div>
@@ -95,7 +101,7 @@ $(document).ready( function () {
 			<td align="center"><?php echo $ad['AdDetail']['created'];?></td>
 			<td align="center"><?php echo $status;?></td>
 			<td align="center"><?php echo $active;?></td>
-			<td align="center"><img src="<?php echo HTTP_IMAGES.'edit.png'; ?>" /> <img src="<?php echo HTTP_IMAGES.'trash.png'; ?>" /></td>
+			<td align="center"><i class="icon-pencil"></i> <i class="icon-trash"></i></td>
         </tr>
 		<?php } ?>
     </tbody>

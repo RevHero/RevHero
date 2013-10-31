@@ -221,7 +221,7 @@ function closeBox()
                         <input type="password" value="" class="input-xlarge" name="data[User][conpass]" required="true">
 						<span style="padding-bottom:10px;color:#BD4247;display:none;" class="help-inline" id="err_conpwd"></span>
                         <div>
-                          <button class="btn btn-primary" onclick="return validate();">Create Account</button>
+                          <button class="btn btn-primary">Create Account</button>
                         </div>
                       </form>
                     </div>

@@ -24,16 +24,6 @@ var countcharBodyText = {
 $('#testTextarea2').textareaCount(countcharBodyText);
 
 
-var text_max_dest_url = 512;
-$('#textbox_desturl').html(text_max_dest_url + ' Characters Left');
-
-$('#dest_url').keyup(function() {
-	var text_length = $('#dest_url').val().length;
-	var text_remaining = text_max_dest_url - text_length;
-
-	$('#textbox_desturl').html(text_remaining + ' Characters Left');
-});
-
 var text_max_headline = 35;
 $('#textbox_headline').html(text_max_headline + ' Characters Left');
 
@@ -71,25 +61,6 @@ $("#dest_url").change(function()
 	},'json');
 });
 
-	
-/*$("#add_headline").keyup(function()
-{
-	var headlineval = $("#add_headline").val().trim();
-	if(headlineval.length >= 35){
-		var textval = headlineval.substr(0,35);
-		$("#add_headline").val(textval)
-	}
-});
-
-$("#dest_url").keyup(function()
-{
-	var desturlval = $("#dest_url").val().trim();
-	if(desturlval.length >= 512){
-		var textval = desturlval.substr(0,512);
-		$("#dest_url").val(textval)
-	}
-});*/
-	
 });
 </script>
 <div class="container">
@@ -102,7 +73,6 @@ $("#dest_url").keyup(function()
 						<label class="control-label">Destination URL <b>:</b> </label>
 						<div class="controls">
 							<input type="url" name="data[Ad][dest_url]" id="dest_url" placeholder=""  class="input-xlarge" required="true" maxlength="512" size="512">
-							<div id="textbox_desturl"></div>
 							<!--<p class="help-block">Max. 512 Characters</p>-->
 						</div>
 					</div>
@@ -141,7 +111,7 @@ $("#dest_url").keyup(function()
 						</div>
 					</div>
 					<div class="control-group">
-						<label class="control-label">Ad Image <b>:</b></label>
+						<label class="control-label">Image <b>:</b></label>
 						<div class="controls">
 							<input type="file" name="data[Ad][uploadimage]" class="input-xlarge"/>
 						</div>

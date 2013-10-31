@@ -86,20 +86,6 @@ class UsersController extends AppController {
 			$email = @$this->request->data['email'];
 			$pass = @$this->request->data['password'];
 		}
-		
-		/*if($email == '')
-		{
-			echo "BLANK".$email;exit;
-			$this->set("ErrorMsgEmail", "Please enter email address.");
-		}
-		else if(!preg_match("/[-0-9a-zA-Z.+_]+@[-0-9a-zA-Z.+_]+\.[a-zA-Z]{2,4}/", $email))
-		{
-			echo "ss".$email;exit;
-			$this->set("ErrorMsgEmail", "Invalid email address");
-		}
-		else{
-			echo "DATA".$email;exit;
-		}*/
 			
 		if(!empty($email)){
 			$usrLogin = array();
