@@ -31,12 +31,16 @@ class AdDetail extends AppModel {
 		return $adDetailID;
 	}
 	
-	function getAllAds($userId)
+	function getAllAds($userId=NULL)
 	{
 		App::import('Model','AdDetail');
 		$getAds = new AdDetail();
 		
-		$allAds = $getAds->find('all',array('conditions'=>array('is_active'=>1,'advertiser_id'=>$userId)));
+		if(isset($userId) && $userId != ''){
+			$allAds = $getAds->find('all',array('conditions'=>array('is_active'=>1,'advertiser_id'=>$userId)));
+		}else{
+			//$allAds = $getAds->find('all',array('conditions'=>array('is_active'=>1)));
+		}	
 		return $allAds;
 	}
 }

@@ -17,11 +17,15 @@
 		<li class="divider-vertical"></li>
 		<li><a href="#">Publish</a></li>
 		<li class="divider-vertical"></li>
+		<li><a href="<?php echo HTTP_ROOT ?>ads/store">Ad Store</a></li>
+		<li class="divider-vertical"></li>
 	</ul>
 
 		<div class="nav-collapse">
 		  <ul class="nav pull-right">
-			<li style="font-family: 'Telex',sans-serif;padding: 16px 10px 14px;text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);color:#FFFFFF;">Welcome Sandeep</li>
+			<li style="font-family: 'Telex',sans-serif;padding: 16px 10px 14px;text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);color:#FFFFFF;">
+				Welcome <?php //echo $this->Session->read('Auth.User.first_name'); ?>James
+			</li>
 			<li>
 				<img src="<?php echo HTTP_ROOT; ?>img/no_user.png" class="img-circle img-polaroid" style="width:25px;height:25px;margin-top:8px;" >
 				<li class="dropdown">

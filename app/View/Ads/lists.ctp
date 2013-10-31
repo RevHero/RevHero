@@ -79,13 +79,13 @@ function closeBox()
         <tr>
             <td>
 				<span title="<?php echo $ad['AdDetail']['headline'];?>">
-					<?php
-						if(strlen($ad['AdDetail']['headline']) > 35){
-							echo substr($ad['AdDetail']['headline'],0,35)."...";
-						}else{
-							echo $ad['AdDetail']['headline'];
-						}
-					?>
+						<?php
+							if(strlen($ad['AdDetail']['headline']) > 35){
+								echo substr($ad['AdDetail']['headline'],0,35)."...";
+							}else{
+								echo $ad['AdDetail']['headline'];
+							}
+						?>
 				</span>
 			</td>
 			<td>

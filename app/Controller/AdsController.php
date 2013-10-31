@@ -85,4 +85,17 @@ class AdsController extends AppController {
 		echo json_encode($json_arr);exit;
 	}
 	
+	function store()
+	{
+		$this->layout = 'default';
+		$this->loadModel('AdDetail');
+		
+		$conditions = array('is_active'=>1);
+		$this->paginate = array(
+			'conditions' => $conditions,
+			'limit' => 6
+		);
+		$allAdStore = $this->paginate('AdDetail');
+		$this->set('allAdStore', $allAdStore);
+	}
 }
