@@ -15,8 +15,8 @@
 		<li class="divider-vertical"></li>
 		<li><a href="<?php echo HTTP_ROOT ?>ads/lists">Advertise</a></li>
 		<li class="divider-vertical"></li>
-		<li><a href="#">Publish</a></li>
-		<li class="divider-vertical"></li>
+		<!--<li><a href="#">Publish</a></li>
+		<li class="divider-vertical"></li>-->
 		<li><a href="<?php echo HTTP_ROOT ?>ads/store">Ad Store</a></li>
 		<li class="divider-vertical"></li>
 	</ul>

@@ -2,6 +2,35 @@
 class User extends AppModel{
 	public $name = 'User';
 	
+	var $hasMany = array(
+		'AdDetail' => array(
+			'className' => 'AdDetail',
+			'foreignKey' => 'advertiser_id',
+			'dependent' => false, //When dependent is set to true, recursive model deletion is possible. In this example, AdDetail records will be deleted when their associated User record has been deleted.
+			'conditions' => '',
+			'fields' => '',
+			'order' => array('AdDetail.created' => 'DESC'),
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		),
+		'Placement' => array(
+			'className' => 'Placement',
+			'foreignKey' => 'publisher_id',
+			'dependent' => false, //When dependent is set to true, recursive model deletion is possible. In this example, Publisher records will be deleted when their associated User record has been deleted.
+			'conditions' => '',
+			'fields' => '',
+			'order' => array('Placement.created' => 'DESC'),
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		)
+	);
+	
 	function CheckDuplicate($email) // Function require to check duplicate email in database
 	{
 		App::import('Model','User');

@@ -12,6 +12,16 @@ class AdDetail extends AppModel {
             )
     );
 	
+	var $belongsTo = array(
+		'User' => array(
+			'className' => 'User',
+			'foreignKey' => 'advertiser_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		)
+	);
+	
 	function saveDetails($userId, $requires)
 	{
 		App::import('Model','AdDetail');
@@ -37,11 +47,20 @@ class AdDetail extends AppModel {
 		$getAds = new AdDetail();
 		
 		if(isset($userId) && $userId != ''){
-			$allAds = $getAds->find('all',array('conditions'=>array('is_active'=>1,'advertiser_id'=>$userId)));
+			$allAds = $getAds->find('all',array('conditions'=>array('AdDetail.advertiser_id'=>$userId, 'AdDetail.is_active'=>1)));
 		}else{
 			//$allAds = $getAds->find('all',array('conditions'=>array('is_active'=>1)));
 		}	
 		return $allAds;
+	}
+	
+	function getAdDetails($adid=NULL)
+	{
+		App::import('Model','AdDetail');
+		$getAdDetails = new AdDetail();
+		
+		$AdDetails = $getAdDetails->find('first',array('conditions'=>array('AdDetail.id'=>$adid, 'AdDetail.is_active'=>1)));
+		return $AdDetails;
 	}
 }
 ?>

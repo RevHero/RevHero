@@ -9,7 +9,12 @@
 	background-color:#F8F8F8;
 }
 </style>
-
+<script language="javascript" type="text/javascript">
+function getTheDetails(ad_id)
+{
+	document.location.href = '<?php echo HTTP_ROOT; ?>ads/details/'+ad_id;
+}
+</script>
 <div class="container">
     <div class="row-fluid">
       <ul class="thumbnails">
@@ -23,7 +28,7 @@
 				$first_child = '';
 			}
 		?>
-			<li class="span2" style="cursor:pointer;width: 140px;<?php echo $first_child; ?>" id="mainAd">
+			<li class="span2" style="cursor:pointer;width: 140px;<?php echo $first_child; ?>" id="mainAd" onclick="getTheDetails('<?php echo $addisplay['AdDetail']['id'] ?>');">
 			  <div class="thumbnail" style="padding: 0">
 				<div style="padding:4px;height:130px;text-align:center;vertical-align:middle;">
 				<?php

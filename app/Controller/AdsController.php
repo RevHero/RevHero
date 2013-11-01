@@ -10,6 +10,7 @@ class AdsController extends AppController {
 		}
 		$this->loadModel('AdDetail');
 		$AllAdDetails = $this->AdDetail->getAllAds(SES_ID);
+		//echo "<pre>";print_r($AllAdDetails);exit;
 		$this->set('AllAdDetails', $AllAdDetails);
 	}
 	
@@ -90,12 +91,51 @@ class AdsController extends AppController {
 		$this->layout = 'default';
 		$this->loadModel('AdDetail');
 		
-		$conditions = array('is_active'=>1);
+		$conditions = array('AdDetail.is_active'=>1, 'AdDetail.status'=>1);
 		$this->paginate = array(
 			'conditions' => $conditions,
+			'order' => array('AdDetail.created'=>'DESC'),
 			'limit' => 6
 		);
 		$allAdStore = $this->paginate('AdDetail');
 		$this->set('allAdStore', $allAdStore);
+	}
+	
+	function details($adid=NULL,$sessionId=NULL)
+	{
+		$this->layout = 'default';
+		$this->loadModel('AdDetail');
+		$this->loadModel('User');
+		$getDetails = $this->AdDetail->getAdDetails($adid,$sessionId);
+		$this->set('getDetails', $getDetails);
+	}
+	
+	function getUniqueKeyword()
+	{
+		$this->layout = 'ajax';
+		$customKeyword = $this->data['customKeyword'];
+		$this->loadModel('Placement');
+		$getUnqKeyword = $this->Placement->getKeywordUnique($customKeyword);
+
+		if($getUnqKeyword == 0){
+			$json_arr['status'] = 0;
+		}else if($getUnqKeyword == 1){
+			$json_arr['status'] = 1;
+		}
+		echo json_encode($json_arr);exit;
+	}
+	
+	function savePlacements()
+	{
+		$this->layout = 'ajax';
+		$this->loadModel('Placement');
+		$savePlacementDetails = $this->Placement->savePlacementDetails($this->data);
+		
+		if($savePlacementDetails){
+			$json_arr['status'] = 1;
+		}else{
+			$json_arr['status'] = 0;
+		}
+		echo json_encode($json_arr);exit;
 	}
 }

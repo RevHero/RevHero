@@ -62,11 +62,11 @@ function closeBox()
 			$count=0;
 			foreach($AllAdDetails as $ad){
 			$count++;
-			if($ad['AdDetail']['staus'] == '' || $ad['AdDetail']['staus'] == 0){
+			if($ad['AdDetail']['status'] == '' || $ad['AdDetail']['status'] == 0){
 				$status = 'Pending';
-			}else if($ad['AdDetail']['staus'] == 1){
+			}else if($ad['AdDetail']['status'] == 1){
 				$status = 'Approved';
-			}else if($ad['AdDetail']['staus'] == 2){
+			}else if($ad['AdDetail']['status'] == 2){
 				$status = 'Rejected';
 			}
 			
@@ -79,6 +79,7 @@ function closeBox()
         <tr>
             <td>
 				<span title="<?php echo $ad['AdDetail']['headline'];?>">
+					<a href="<?php echo HTTP_ROOT; ?>ads/details/<?php echo $ad['AdDetail']['id'];?>">
 						<?php
 							if(strlen($ad['AdDetail']['headline']) > 35){
 								echo substr($ad['AdDetail']['headline'],0,35)."...";
@@ -86,6 +87,7 @@ function closeBox()
 								echo $ad['AdDetail']['headline'];
 							}
 						?>
+					</a>
 				</span>
 			</td>
 			<td>
