@@ -67,7 +67,7 @@ $(document).ready(function()
 						$("#placementShow").html(DisplayContent);
 						$('html, body').animate({scrollTop: $(window).scrollTop() + $(window).height()}, 800);
 					}else if(adType == 'html' && adFormat == '1'){
-						DisplayContent = '<a href="'+hid_destination_url+'" target="_blank">'+hid_headline+'</a> - '+hid_body;
+						DisplayContent = '&lt;a href="'+hid_destination_url+'" target="_blank">'+hid_headline+'&lt;/a&gt; - '+hid_body;
 						$("#placementcontainer").show();
 						$("#placementShow").html(DisplayContent);
 						$('html, body').animate({scrollTop: $(window).scrollTop() + $(window).height()}, 800);
@@ -77,7 +77,7 @@ $(document).ready(function()
 						$("#placementShow").html(DisplayContent);
 						$('html, body').animate({scrollTop: $(window).scrollTop() + $(window).height()}, 800);
 					}else if(adType == 'html' && adFormat == '3'){
-						DisplayContent = '<a href="'+hid_destination_url+'" target="_blank">'+hid_headline+'</a><br><a href="'+hid_destination_url+'" target="_blank">'+hid_destination_url+'</a><br>'+hid_body;
+						DisplayContent = '&lt;a href="'+hid_destination_url+'" target="_blank"&gt;'+hid_headline+'&lt;/a&gt;&lt;br&gt;&lt;a href="'+hid_destination_url+'" target="_blank"&gt;'+hid_destination_url+'&lt;/a&gt;&lt;br&gt;'+hid_body;
 						$("#placementcontainer").show();
 						$("#placementShow").html(DisplayContent);
 						$('html, body').animate({scrollTop: $(window).scrollTop() + $(window).height()}, 800);
