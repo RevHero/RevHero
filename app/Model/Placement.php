@@ -9,6 +9,13 @@ class Placement extends AppModel {
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
+		),
+		'AdDetail' => array(
+			'className' => 'AdDetail',
+			'foreignKey' => 'ad_detail_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
 		)
 	);
 	
@@ -48,7 +55,7 @@ class Placement extends AppModel {
 		
 		$saveAdplacements = $placement->save($adp);
 		$placementDetailID = $placement->getLastInsertID();
-		return $placementDetailID;
+		return $adp['Placement']['keyword'];
 	}
 	
 	function getRandomNum()

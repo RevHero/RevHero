@@ -13,8 +13,6 @@ class UsersController extends AppController {
 		{
 			if(!empty($this->request->data['User']['registration']) && $this->request->data['User']['registration'] == 1)
 			{
-				$fname = $this->request->data['User']['fname'];
-				$lname = $this->request->data['User']['lname'];
 				$email = $this->request->data['User']['email'];
 				$this->request->data['User']['pass'] = $this->Auth->password($this->request->data['User']['pass']);
 				$this->request->data['User']['uniq_id'] = $this->Format->generateUniqNumber();
@@ -22,27 +20,11 @@ class UsersController extends AppController {
 				$getDuplicate = $this->User->CheckDuplicate($email); //This is require to check the DUPLICATE registration with the same Email.
 				
 				if(!$getDuplicate){ //If the Email id is not present in the database
-					$from = 'test@andolasoft.com';
-					$to = $email;
-					$subject = 'Welcome to RevHero!';
-					$message = '<table>
-									<tr><td><p>Hi '.$fname.' '.$lname.',</p></td></tr>
-									<tr><td>Thank you for registering with RevHero!</td></tr>
-									<tr><td>Please click on the link below to confirm your account registration</td></tr>
-									<tr><td>'.HTTP_ROOT.'users/confirmation/'.$this->request->data['User']['uniq_id'].'</td></tr>
-									<tr><td height="20"></td></tr>
-									<tr><td>Thanks,</td></tr>
-									<tr><td>RevHero Team</td></tr>
-								</table>';
-					$replyto = 'test@andolasoft.com';
-					
-					$return = $this->Format->sendConfirmEmail($from, $to, $subject, $message, $replyto); //This is require to send the confirmation message to email
-					if($return){
-						$successSave = $this->User->saveUserDetails($this->request->data['User']);
-						if($successSave){
-							$this->Session->write("SUCCESS","1");
-							$this->redirect(HTTP_ROOT);
-						}
+					$successSave = $this->User->saveUserDetails($this->request->data['User']);
+					if($successSave){
+						$this->logincheck($email,$this->request->data['User']['pass']);
+						//$this->Session->write("SUCCESS","1");
+						//$this->redirect(HTTP_ROOT);
 					}
 				}else{ //If the USER email is already present in the database
 					$this->Session->write("SUCCESS","0");
@@ -50,25 +32,6 @@ class UsersController extends AppController {
 				}
 			}
 		}
-	}
-	
-	//Require to confirm the user after registration when clicks the link in Email
-	function confirmation($uniq_id = NULL){
-		$chkActivation = $this->User->find('first',array('conditions'=>array('User.confirmation_token'=>$uniq_id)));
-		if($chkActivation['User']['id']) {
-			$usr['User']['id'] = $chkActivation['User']['id'];
-			$usr['User']['is_active'] = 1;
-			$usr['User']['confirmation_token'] = '';
-
-			if($this->User->save($usr)){
-				$this->Session->write("CONFIRMREG","1");
-				$this->redirect(HTTP_ROOT);
-			}
-		}else{
-			$this->Session->write("CONFIRMREG","0");
-			$this->redirect(HTTP_ROOT);
-		}
-		exit;
 	}
 	
 	public function login($emailConf= NULL,$passConf= NULL)
@@ -96,7 +59,10 @@ class UsersController extends AppController {
 				}else {
 					$this->request->data['User']['encrypted_password'] = md5($pass);
 				}
+				$this->User->recursive = -1;
 				$usrLogin = $this->User->find('first',array('conditions'=>array('User.email'=>$this->request->data['User']['email'],'User.encrypted_password'=>$this->request->data['User']['encrypted_password'],'User.is_active'=>1)));
+				
+				//echo "<pre>";print_r($usrLogin);exit;
 				
 				$this->Session->write('Auth.User',@$usrLogin['User']);
 			}
@@ -105,7 +71,14 @@ class UsersController extends AppController {
 			if(($this->Auth->login() || isset($usrLogin['User']['id'])) && $this->Auth->user('id'))
 			{
 				//$this->Session->write("LOGINSTATUS","1");
-				$this->redirect(HTTP_ROOT."users/dashboard");
+				if($usrLogin['User']['admin'] == 1)
+				{
+					$this->redirect(HTTP_ROOT."revadmins/admin_dashboard");
+				}
+				else
+				{
+					$this->redirect(HTTP_ROOT."users/dashboard");
+				}	
 			}
 			else
 			{

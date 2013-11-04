@@ -16,6 +16,7 @@ function getTheDetails(ad_id)
 }
 </script>
 <div class="container">
+	<?php if(count($allAdStore) > 0){ ?>
     <div class="row-fluid">
       <ul class="thumbnails">
 	  	<?php
@@ -96,4 +97,11 @@ function getTheDetails(ad_id)
 			?>
 		</ul>
 	</div>
+	<?php }else{ ?>
+	<div class="row-fluid">
+        <div class="span16" style="text-align:center;color:#FF0000;">
+          <p>No Ad Store available.</p>
+        </div>
+	</div>  
+	<?php } ?>
 </div>

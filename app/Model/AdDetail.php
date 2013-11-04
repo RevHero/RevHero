@@ -22,6 +22,22 @@ class AdDetail extends AppModel {
 		)
 	);
 	
+	var $hasMany = array(
+		'Placement' => array(
+			'className' => 'Placement',
+			'foreignKey' => 'ad_detail_id',
+			'dependent' => false, //When dependent is set to true, recursive model deletion is possible. In this example, AdDetail records will be deleted when their associated User record has been deleted.
+			'conditions' => '',
+			'fields' => '',
+			'order' => array('Placement.created' => 'DESC'),
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		)
+	);
+	
 	function saveDetails($userId, $requires)
 	{
 		App::import('Model','AdDetail');
@@ -49,7 +65,7 @@ class AdDetail extends AppModel {
 		if(isset($userId) && $userId != ''){
 			$allAds = $getAds->find('all',array('conditions'=>array('AdDetail.advertiser_id'=>$userId, 'AdDetail.is_active'=>1)));
 		}else{
-			//$allAds = $getAds->find('all',array('conditions'=>array('is_active'=>1)));
+			$allAds = $getAds->find('all',array('conditions'=>array('AdDetail.is_active'=>1)));
 		}	
 		return $allAds;
 	}
@@ -62,5 +78,26 @@ class AdDetail extends AppModel {
 		$AdDetails = $getAdDetails->find('first',array('conditions'=>array('AdDetail.id'=>$adid, 'AdDetail.is_active'=>1)));
 		return $AdDetails;
 	}
+	
+	function setAprRej($allData)
+	{
+		App::import('Model','AdDetail');
+		$setAdDetails = new AdDetail();
+		$adDetailID = '';
+		
+		if($allData['env'] == 'approve')
+		{
+			$setAdDetails->query("UPDATE `ad_details` set `status`=1, `approved_date`=NOW() where `id`='".$allData['advertiseId']."'");
+			$adDetailID = 1;
+		}
+		else if($allData['env'] == 'reject')
+		{
+			$setAdDetails->query("UPDATE `ad_details` set `status`=2 where `id`='".$allData['advertiseId']."'");
+			$adDetailID = 2;
+		}
+		
+		return $adDetailID;
+	}	
 }
+
 ?>

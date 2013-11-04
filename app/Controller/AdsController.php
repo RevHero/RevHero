@@ -133,6 +133,7 @@ class AdsController extends AppController {
 		
 		if($savePlacementDetails){
 			$json_arr['status'] = 1;
+			$json_arr['customKeyword'] = $savePlacementDetails;
 		}else{
 			$json_arr['status'] = 0;
 		}

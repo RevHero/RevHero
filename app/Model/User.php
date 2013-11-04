@@ -49,14 +49,14 @@ class User extends AppModel{
 		App::import('Model','User');
 		$userall = new User(); 
 		
-		$user['User']['first_name'] = $userDetails['fname'];
-		$user['User']['last_name'] = $userDetails['lname'];
+		$user['User']['first_name'] = '';
+		$user['User']['last_name'] = '';
 		$user['User']['email'] = $userDetails['email'];
 		$user['User']['encrypted_password'] = $userDetails['pass'];
 		$user['User']['admin'] = 0;
 		$user['User']['reset_token'] = '';
-		$user['User']['confirmation_token'] = $userDetails['uniq_id'];
-		$user['User']['is_active'] = 0;
+		$user['User']['confirmation_token'] = '';
+		$user['User']['is_active'] = 1;
 		
 		$saveUser = $userall->save($user);
 		return $saveUser;

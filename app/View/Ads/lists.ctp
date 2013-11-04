@@ -9,7 +9,7 @@ $(document).ready( function () {
 	"aLengthMenu": [[10, 50, 100], [10,50, 100]],
 	"iDisplayLength": 10,
 	"iDisplayStart" : 0,
-	"aaSorting": [[ 0, "asc" ]],
+	"aaSorting": [[ 2, "desc" ]],
     "sPaginationType": "full_numbers",
 	"aoColumns": [ 
 			null,
@@ -101,7 +101,16 @@ function closeBox()
 				?>
 			</td>
 			<td align="center"><?php echo $ad['AdDetail']['created'];?></td>
-			<td align="center"><?php echo $status;?></td>
+			<td align="center">
+				<div><?php echo $status;?></div>
+				<div style="color:#000000;font-size:11px;font-weight:bold;">
+					<?php
+						if(($ad['AdDetail']['approved_date'] != '0000-00-00 00:00:00') && ($ad['AdDetail']['status'] == 1)){
+							echo "( ".date("F j, Y", strtotime($ad['AdDetail']['approved_date']))." )";
+						}	
+					?>
+				</div>
+			</td>
 			<td align="center"><?php echo $active;?></td>
 			<td align="center"><i class="icon-pencil"></i> <i class="icon-trash"></i></td>
         </tr>

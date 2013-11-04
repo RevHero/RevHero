@@ -1,10 +1,8 @@
 <script language="javascript" type="text/javascript">
-
 function closeBox()
 {
 	$("#displayMsg").hide();
 }
-
 </script>
 <div class="container">
 	<div class="row">
@@ -52,11 +50,10 @@ function closeBox()
                 <div class="well">
                   <ul class="nav nav-tabs">
                     <li class="active"><a href="#login" data-toggle="tab">Login</a></li>
-                    <li><a href="#create" data-toggle="tab">Create Account</a></li>
                   </ul>
                   <div id="myTabContent" class="tab-content">
                     <div class="tab-pane active in" id="login">
-                      <form class="form-horizontal" action='users/logincheck' method="POST">
+                      <form class="form-horizontal" action='revadmins/admin_login' method="POST">
                         <fieldset>
                           <div id="legend">
                             <legend class="">Login</legend>
@@ -66,6 +63,7 @@ function closeBox()
                             <label class="control-label"  for="username">Email</label>
                             <div class="controls">
                               <input type="text" name="email" placeholder="" class="input-xlarge" required="true">
+							  <span style="color:#BD4247;display:;" class="help-inline" id="err_log_email"></span>
                             </div>
                           </div>
      
@@ -74,6 +72,7 @@ function closeBox()
                             <label class="control-label" for="password">Password</label>
                             <div class="controls">
                               <input type="password" name="password" placeholder="" class="input-xlarge" required="true">
+							  <span style="color:#BD4247;display:;" class="help-inline" id="err_log_pass"></span>
                             </div>
                           </div>
                           <div class="control-group">
@@ -85,40 +84,6 @@ function closeBox()
                           </div>
                         </fieldset>
                       </form>                
-                    </div>
-                    <div class="tab-pane fade" id="create">
-                      <form class="form-horizontal" id="tab" action="" name="registration" method="post">
-					  
-					  	
-						
-						<fieldset>
-                          <div id="legend">
-                            <legend class="">Create Account</legend>
-                          </div>    
-                          <div class="control-group">
-                            <!-- Username -->
-                            <label class="control-label" for="username">Email</label>
-                            <div class="controls">
-                              <input type="email" value="" class="input-xlarge" name="data[User][email]" required="true">
-                            </div>
-                          </div>
-     
-                          <div class="control-group">
-                            <!-- Password-->
-                            <label class="control-label" for="password">Password</label>
-                            <div class="controls">
-                             <input type="password" value="" class="input-xlarge" name="data[User][pass]" required="true">
-                            </div>
-                          </div>
-                          <div class="control-group">
-                            <!-- Button -->
-                            <div class="controls">
-                              <button class="btn btn-primary">Create Account</button>
-                            </div>
-                          </div>
-                        </fieldset>
-
-                      </form>
                     </div>
                 </div>
               </div>

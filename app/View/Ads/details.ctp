@@ -10,28 +10,37 @@ $(document).ready(function()
 	$("#customKeyword").change(function()
 	{
 		var strURL = $('#pageurl').val();
+		var rexp = /^[0-9a-zA-Z]+$/;
 		var customKeyword = $("#customKeyword").val().trim();
 		if(customKeyword && customKeyword != '')
 		{
-			$("#loader").show();
-			$("#publishBtn").hide();
-			$.post(strURL+"ads/getUniqueKeyword",{customKeyword:customKeyword},function(data){
-				//alert(JSON.stringify(data, null, 4));
-				$("#loader").hide();
-				$("#publishBtn").show();
-				if(data.status == 1){
-					$("#notavail").show();
-					$("#avail").hide();
-					$("#notavail").html('Keyword does not exist. Please write another.');
-					$("#hid_is_keyword_exist").val(1);
-				}else{
-					$("#notavail").hide();
-					$("#avail").show();
-					$("#avail").html('Keyword Available.');
-					$("#hid_is_keyword_exist").val(0);
-				}
-				
-			},'json');
+			if(!rexp.test(customKeyword)){
+				$("#notavail").show();
+				$("#avail").hide();
+				$("#notavail").html('Please remove special characters from keyword..');
+				$("#hid_is_keyword_exist").val(1);
+			}else{
+				$("#loader").show();
+				$("#publishBtn").hide();
+				$.post(strURL+"ads/getUniqueKeyword",{customKeyword:customKeyword},function(data){
+					//alert(JSON.stringify(data, null, 4));
+					$("#loader").hide();
+					$("#publishBtn").show();
+					if(data.status == 1){
+						$("#notavail").show();
+						$("#avail").hide();
+						$("#notavail").html('Keyword does not exist. Please write another.');
+						$("#hid_is_keyword_exist").val(1);
+					}else{
+						$("#notavail").hide();
+						$("#avail").show();
+						$("#avail").html('Keyword Available.');
+						$("#hid_is_keyword_exist").val(0);
+					}
+					
+				},'json');
+			}
+			
 		}	
 	});
 	
@@ -62,25 +71,29 @@ $(document).ready(function()
 				$("#avail").hide();
 				if(data.status == 1){
 					if(adType == 'text' && adFormat == '1'){
-						DisplayContent = hid_headline+' - '+hid_body+' - '+hid_destination_url;
+						//DisplayContent = hid_headline+' - '+hid_body+' - '+hid_destination_url;
+						DisplayContent = hid_headline+' - '+hid_body+' - '+strURL+'s/'+data.customKeyword;
 						$("#placementcontainer").show();
 						$("#placementShow").html(DisplayContent);
-						$('html, body').animate({scrollTop: $(window).scrollTop() + $(window).height()}, 800);
+						$('html, body').animate({scrollTop: $(window).scrollTop() + $(window).height()}, 1000);
 					}else if(adType == 'html' && adFormat == '1'){
-						DisplayContent = '&lt;a href="'+hid_destination_url+'" target="_blank">'+hid_headline+'&lt;/a&gt; - '+hid_body;
+						//DisplayContent = '&lt;a href="'+hid_destination_url+'" target="_blank">'+hid_headline+'&lt;/a&gt; - '+hid_body;
+						DisplayContent = '&lt;a href="'+strURL+'s/'+data.customKeyword+'" target="_blank">'+hid_headline+'&lt;/a&gt; - '+hid_body;
 						$("#placementcontainer").show();
 						$("#placementShow").html(DisplayContent);
-						$('html, body').animate({scrollTop: $(window).scrollTop() + $(window).height()}, 800);
+						$('html, body').animate({scrollTop: $(window).scrollTop() + $(window).height()}, 1000);
 					}else if(adType == 'text' && adFormat == '3'){
-						DisplayContent = hid_headline+'<br>'+hid_destination_url+'<br>'+hid_body;
+						//DisplayContent = hid_headline+'<br>'+hid_destination_url+'<br>'+hid_body;
+						DisplayContent = hid_headline+'<br>'+strURL+'s/'+data.customKeyword+'<br>'+hid_body;
 						$("#placementcontainer").show();
 						$("#placementShow").html(DisplayContent);
-						$('html, body').animate({scrollTop: $(window).scrollTop() + $(window).height()}, 800);
+						$('html, body').animate({scrollTop: $(window).scrollTop() + $(window).height()}, 1000);
 					}else if(adType == 'html' && adFormat == '3'){
-						DisplayContent = '&lt;a href="'+hid_destination_url+'" target="_blank"&gt;'+hid_headline+'&lt;/a&gt;&lt;br&gt;&lt;a href="'+hid_destination_url+'" target="_blank"&gt;'+hid_destination_url+'&lt;/a&gt;&lt;br&gt;'+hid_body;
+						//DisplayContent = '&lt;a href="'+hid_destination_url+'" target="_blank"&gt;'+hid_headline+'&lt;/a&gt;&lt;br&gt;&lt;a href="'+hid_destination_url+'" target="_blank"&gt;'+hid_destination_url+'&lt;/a&gt;&lt;br&gt;'+hid_body;
+						DisplayContent = '&lt;a href="'+strURL+'s/'+data.customKeyword+'" target="_blank"&gt;'+hid_headline+'&lt;/a&gt;&lt;br&gt;&lt;a href="'+strURL+'s/'+data.customKeyword+'" target="_blank"&gt;'+strURL+'s/'+data.customKeyword+'&lt;/a&gt;&lt;br&gt;'+hid_body;
 						$("#placementcontainer").show();
 						$("#placementShow").html(DisplayContent);
-						$('html, body').animate({scrollTop: $(window).scrollTop() + $(window).height()}, 800);
+						$('html, body').animate({scrollTop: $(window).scrollTop() + $(window).height()}, 1000);
 					}
 				}else{
 					$("#placementcontainer").hide();
@@ -104,7 +117,7 @@ $(document).ready(function()
 	  <?php if($getDetails['AdDetail']['ad_image']){ ?>
 	      <img src="<?php echo HTTP_FILES."ad_photos/".$getDetails['AdDetail']['ad_image']; ?>"  alt="<?php echo substr($getDetails['AdDetail']['headline'],0,35); ?>" class="img-rounded" style="max-width:100px;max-height:110px;">
 	  <?php }else{ ?>
-    	  <img src="<?php echo HTTP_IMAGES."no_image.gif/"; ?>"  alt="<?php echo substr($getDetails['AdDetail']['headline'],0,35); ?>" class="img-rounded" style="max-width:100px;max-height:110px;">
+    	  <img src="<?php echo HTTP_IMAGES."no_image.gif"; ?>"  alt="<?php echo substr($getDetails['AdDetail']['headline'],0,35); ?>" class="img-rounded" style="max-width:100px;max-height:110px;">
 	  <?php } ?>
     </div>
     <div class="span4.5">
