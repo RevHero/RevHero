@@ -23,7 +23,7 @@ if(count($getallplacements) == 0)
 {
 
 ?>
-<div class="row-fluid">
+<?php /*?><div class="row-fluid">
 	<!--<div class="span4"></div>-->
 	<div class="span16" style="border:1px solid #CCCCCC;padding:5px;margin-bottom:10px;width:640px; text-align:center;color:#FF0000;">
 	<!--<div class="span8" style="border:1px solid #CCCCCC;padding:5px;margin-bottom:10px;width:640px; text-align:center;color:#FF0000;">-->
@@ -34,7 +34,12 @@ if(count($getallplacements) == 0)
 			</a>	
 		</p>
 	</div>
-</div>
+</div><?php */?>
+<div class="row-fluid">
+	<div class="span16" style="text-align:center;color:#FF0000;border:1px solid #999999;padding-top:10px;">
+	  <p>No Ad Store available.</p>
+	</div>
+</div>  
 <?php }else{ ?>
 <?php /*?><div class="row">
 	<div class="span4"></div>
