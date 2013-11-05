@@ -37,7 +37,12 @@ if(count($getallplacements) == 0)
 </div><?php */?>
 <div class="row-fluid">
 	<div class="span16" style="text-align:center;color:#FF0000;border:1px solid #999999;padding-top:10px;">
-	  <p>No Ad Store available.</p>
+	  <p>You don't have any placements.</p>
+	  <p style="margin-top:20px;">
+		  <a href="<?php echo HTTP_ROOT; ?>ads/store">
+			  <button class="btn btn-primary" type="button">Create a New Placement</button>
+		  </a>	
+	  </p>
 	</div>
 </div>  
 <?php }else{ ?>
