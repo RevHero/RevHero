@@ -4,18 +4,17 @@ class ShorturlsController extends AppController {
 	
 	function route_url()
 	{
-		$this->loadModel('AdDetail');
 		$this->loadModel('Placement');
 		
-		$DestUrl = $this->Placement->find('all',array('conditions'=>array('keyword'=>$this->params['slug'])));
-		//echo "<pre>";print_r($DestUrl);exit;
-		$destinationUrl = $DestUrl[0]['AdDetail']['dest_url'];
+		$saveAdClickandGetDestinationUrl = $this->Placement->getDestURL($this->params['slug']);
 		
-		$this->redirect($destinationUrl);
+		$explode = explode("####", $saveAdClickandGetDestinationUrl);
 		
-		/*if(isset($this->params['slug'])){
-			echo $this->params['slug'];exit;
-		}
-		echo "sandeep";exit;*/
+		$returnsuccess = $explode[0];
+		$destinationUrl = $explode[1];
+
+		if($returnsuccess){
+			$this->redirect($destinationUrl);
+		}	
 	}
 }

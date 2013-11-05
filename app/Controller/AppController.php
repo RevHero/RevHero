@@ -14,14 +14,15 @@ class AppController extends Controller {
 		if(!defined('PAGE_NAME')) { 
 			define('PAGE_NAME', $this->action); //This require to hold the action name
 		}
-		
 		if($this->Auth->User("id")){ //If the user logs in correctly
 
 			//This is require to restrict the user to enter the user section with loggedin as ADMIN
 			if(CONTROLLER == 'users' || CONTROLLER == 'ads'){
-				if($this->Auth->User("admin") == 1){
-					$this->redirect(HTTP_ROOT."revadmins");
-				}
+				if(PAGE_NAME != 'logout'){
+					if($this->Auth->User("admin") == 1){
+						$this->redirect(HTTP_ROOT."revadmins");
+					}
+				}	
 			}
 			
 			//This is require to restrict the user to enter the admin section without the admin credential. By loggedin with normal user credentials.

@@ -19,6 +19,22 @@ class Placement extends AppModel {
 		)
 	);
 	
+	var $hasMany = array(
+		'AdClick' => array(
+			'className' => 'AdClick',
+			'foreignKey' => 'placement_id',
+			'dependent' => false, //When dependent is set to true, recursive model deletion is possible. In this example, AdClick records will be deleted when their associated Placement record has been deleted.
+			'conditions' => '',
+			'fields' => '',
+			'order' => array('AdClick.created' => 'DESC'),
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		)
+	);
+	
 	function getKeywordUnique($keyword=NULL)
 	{
 		App::import('Model','Placement');
@@ -38,7 +54,7 @@ class Placement extends AppModel {
 	{
 		App::import('Model','Placement');
 		$placement = new Placement(); 
-		
+	
 		$adp['Placement']['publisher_id'] = $details['publisherId'];
 		$adp['Placement']['ad_detail_id'] = $details['adversiteId'];
 		if(isset($details['customKeyword']) && $details['customKeyword'] != ''){
@@ -51,6 +67,7 @@ class Placement extends AppModel {
 		$adp['Placement']['type'] = $details['adType'];
 		$adp['Placement']['format'] = $details['adFormat'];
 		$adp['Placement']['short_url'] = '';
+		$adp['Placement']['creator_ip_address'] = $this->getRealIpAddr();
 		$adp['Placement']['is_active'] = 1;
 		
 		$saveAdplacements = $placement->save($adp);
@@ -71,6 +88,44 @@ class Placement extends AppModel {
 			return $tempRandomKeyword;
 		}
 	}
+	
+	function getRealIpAddr()
+	{
+		if(!empty($_SERVER['HTTP_CLIENT_IP']))
+		{
+			$ip = $_SERVER['HTTP_CLIENT_IP'];
+		}
+		elseif(!empty($_SERVER['HTTP_X_FORWARDED_FOR']))   
+		{
+			$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+		}
+		else
+		{
+			$ip = $_SERVER['REMOTE_ADDR'];
+		}
+		return $ip;
+	}
+	
+	function getDestURL($slugparam)
+	{
+		App::import('Model','Placement');
+		$placement = new Placement();
+		
+		App::import('Model','AdClick');
+		$adclick = new AdClick();
+		
+		$DestUrl = $placement->find('all',array('conditions'=>array('keyword'=>$slugparam)));
+		
+		$adclickarr['AdClick']['ad_detail_id'] = $DestUrl[0]['AdDetail']['id'];
+		$adclickarr['AdClick']['placement_id'] = $DestUrl[0]['Placement']['id'];
+		$adclickarr['AdClick']['user_ip_address'] = $this->getRealIpAddr();
+		
+		$saveAdclicks = $adclick->save($adclickarr);
+		$adclickId = $adclick->getLastInsertID();
+		
+		return $adclickId."####".$DestUrl[0]['AdDetail']['dest_url'];
+	}
+	
 	
 }
 ?>
