@@ -1,7 +1,7 @@
 <?php
 $ht = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']=='on')?"https://":"http://";
 define('HTTP_SERVER',$ht.$_SERVER['SERVER_NAME']."/");
-define('SUB_FOLDER', 'RevHero'."/");
+define('SUB_FOLDER', '');
 
 define('HTTP_ROOT', HTTP_SERVER.SUB_FOLDER);
 define('SITE_NAME','RevHero');
