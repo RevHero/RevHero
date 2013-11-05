@@ -28,7 +28,7 @@ if(count($getallplacements) == 0)
 		You don't have any placements
 		<p style="margin-top:20px;">
 			<a href="<?php echo HTTP_ROOT; ?>ads/store" target="_blank">
-				<button class="btn btn-inverse" type="button">Create a Placement</button>
+				<button class="btn btn-primary" type="button">Create a New Placement 1234</button>
 			</a>	
 		</p>
 	</div>
