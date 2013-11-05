@@ -99,7 +99,7 @@ class UsersController extends AppController {
 		$conditions = array('Placement.is_active'=>1, 'Placement.publisher_id'=>$userId);
 		$this->paginate = array(
 			'conditions' => $conditions,
-			'limit' => 1,
+			'limit' => 2,
 			'order' => array('Placement.created'=>'DESC'),
 		);
 		
