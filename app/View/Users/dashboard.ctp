@@ -15,7 +15,6 @@ function closeBox()
 	background-color:#F8F8F8;
 }
 </style>
-<div class="container">
 <?php
 //echo "<pre>";print_r($getallplacements);exit;
 
@@ -35,6 +34,7 @@ if(count($getallplacements) == 0)
 		</p>
 	</div>
 </div><?php */?>
+<div class="container">
 <div class="row-fluid">
 	<div class="span16" style="text-align:center;color:#FF0000;border:1px solid #999999;padding-top:10px;">
 	  <p>You don't have any placements.</p>
@@ -44,6 +44,7 @@ if(count($getallplacements) == 0)
 		  </a>	
 	  </p>
 	</div>
+</div>
 </div>  
 <?php }else{ ?>
 <?php /*?><div class="row">
@@ -143,4 +144,3 @@ if(count($getallplacements) == 0)
 	</div>
 </div>
 <?php } ?>
-</div>
