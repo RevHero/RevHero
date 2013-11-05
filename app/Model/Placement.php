@@ -66,7 +66,7 @@ class Placement extends AppModel {
 		}	
 		$adp['Placement']['type'] = $details['adType'];
 		$adp['Placement']['format'] = $details['adFormat'];
-		$adp['Placement']['short_url'] = '';
+		$adp['Placement']['short_url'] = $details['strURL']."s/".$adp['Placement']['keyword'];
 		$adp['Placement']['creator_ip_address'] = $this->getRealIpAddr();
 		$adp['Placement']['is_active'] = 1;
 		
@@ -91,17 +91,18 @@ class Placement extends AppModel {
 	
 	function getRealIpAddr()
 	{
-		if(!empty($_SERVER['HTTP_CLIENT_IP']))
+		if(!empty($_SERVER['REMOTE_ADDR']))
 		{
-			$ip = $_SERVER['HTTP_CLIENT_IP'];
+			$ip = $_SERVER['REMOTE_ADDR'];
 		}
 		elseif(!empty($_SERVER['HTTP_X_FORWARDED_FOR']))   
 		{
-			$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+			$explodeIp = explode(", ",$_SERVER['HTTP_X_FORWARDED_FOR']);
+			$ip = $explodeIp[0];
 		}
 		else
 		{
-			$ip = $_SERVER['REMOTE_ADDR'];
+			$ip = $_SERVER['HTTP_CLIENT_IP'];
 		}
 		return $ip;
 	}
@@ -126,6 +127,13 @@ class Placement extends AppModel {
 		return $adclickId."####".$DestUrl[0]['AdDetail']['dest_url'];
 	}
 	
-	
+	function allplacementdetails($userId)
+	{
+		App::import('Model','Placement');
+		$allplacement = new Placement();
+
+		$placements = $allplacement->find('count', array('conditions'=>array('publisher_id'=>$userId), 'order'=>'Placement.created DESC'));
+		return $placements;
+	}
 }
 ?>

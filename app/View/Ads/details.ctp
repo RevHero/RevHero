@@ -62,7 +62,7 @@ $(document).ready(function()
 		if(iskeyword == '0' || iskeyword == ''){
 			$("#mainloader").show();
 			$("#publishBtn").hide();
-			$.post(strURL+"ads/savePlacements",{customKeyword:customKeyword,adType:adType,adFormat:adFormat,adversiteId:adversiteId,publisherId:publisherId},function(data){
+			$.post(strURL+"ads/savePlacements",{strURL:strURL,customKeyword:customKeyword,adType:adType,adFormat:adFormat,adversiteId:adversiteId,publisherId:publisherId},function(data){
 				//alert(JSON.stringify(data, null, 4));
 				$("#mainloader").hide();
 				$("#publishBtn").show();
@@ -155,8 +155,8 @@ $(document).ready(function()
 			<input type="hidden" name="hid_ad_id" id="hid_ad_id" value="<?php echo $getDetails['AdDetail']['id']; ?>" />
 			<input type="hidden" name="hid_publisher_id" id="hid_publisher_id" value="<?php echo $this->Session->read('Auth.User.id'); ?>" />
 			<input type="hidden" name="hid_is_keyword_exist" id="hid_is_keyword_exist" value="" />
-			<input type="hidden" name="hid_headline" id="hid_headline" value="<?php echo $getDetails['AdDetail']['headline']; ?>" />
-			<input type="hidden" name="hid_body" id="hid_body" value="<?php echo $getDetails['AdDetail']['body']; ?>" />
+			<input type="hidden" name="hid_headline" id="hid_headline" value="<?php echo substr($getDetails['AdDetail']['headline'],0,35); ?>" />
+			<input type="hidden" name="hid_body" id="hid_body" value="<?php echo substr($getDetails['AdDetail']['body'],0,104); ?>" />
 			<input type="hidden" name="hid_destination_url" id="hid_destination_url" value="<?php echo $getDetails['AdDetail']['dest_url']; ?>" />
 			<div class="control-group">
 				<label class="control-label" for="inputKeyword">Custom Keyword</label>
