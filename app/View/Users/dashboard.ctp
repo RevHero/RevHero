@@ -22,16 +22,18 @@ if(count($getallplacements) == 0)
 {
 
 ?>
-<div class="row-fluid">
-	<!--<div class="span4"></div>-->
-	<div class="span16" style="border:1px solid #CCCCCC;padding:5px;margin-bottom:10px;width:640px; text-align:center;color:#FF0000;">
-	<!--<div class="span8" style="border:1px solid #CCCCCC;padding:5px;margin-bottom:10px;width:640px; text-align:center;color:#FF0000;">-->
-		You don't have any placements
-		<p style="margin-top:20px;">
-			<a href="<?php echo HTTP_ROOT; ?>ads/store">
-				<button class="btn btn-primary" type="button">Create a New Placement</button>
-			</a>	
-		</p>
+<div class="container">
+	<div class="row-fluid">
+		<!--<div class="span4"></div>-->
+		<div class="span16" style="border:1px solid #CCCCCC;padding:5px;margin-bottom:10px;width:640px; text-align:center;color:#FF0000;">
+		<!--<div class="span8" style="border:1px solid #CCCCCC;padding:5px;margin-bottom:10px;width:640px; text-align:center;color:#FF0000;">-->
+			You don't have any placements
+			<p style="margin-top:20px;">
+				<a href="<?php echo HTTP_ROOT; ?>ads/store">
+					<button class="btn btn-primary" type="button">Create a New Placement</button>
+				</a>	
+			</p>
+		</div>
 	</div>
 </div>
 <?php }else{ ?>
