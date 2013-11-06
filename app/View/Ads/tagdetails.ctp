@@ -44,16 +44,16 @@ function getTheDetails(ad_id)
 			</div>
 		</div>
 		<div class="span9">
-		
+				<div><h4 style="margin-top:0px;">Displaying Ads tagged with "<?php echo $tagname; ?>"</h4></div>
 			<!--<div class="container">-->
-				<?php if(count($allAdStore) > 0){ ?>
+				<?php if(count($allrequiretagdetails) > 0){ ?>
 				<!--<div class="row-fluid">-->
 				  <ul class="thumbnails">
 					<?php
 						$counter = 1;
-						
-						foreach($allAdStore as $addisplay){
-						if($counter % 7 == 0){
+						//echo "<pre>";print_r($allrequiretagdetails);exit;
+						foreach($allrequiretagdetails as $addisplay){
+						if($counter % 6 == 0){
 							$first_child = 'margin-left:0px;padding-left:0px;';
 						}else{
 							$first_child = '';
@@ -130,7 +130,7 @@ function getTheDetails(ad_id)
 				<?php }else{ ?>
 				<div class="row-fluid">
 					<div class="span12" style="text-align:center;color:#FF0000;border:1px solid #999999;padding-top:10px;">
-					  <p>There are currently no ads available.</p>
+					  <p>No Ad Store available.</p>
 					</div>
 				</div>  
 				<?php } ?>

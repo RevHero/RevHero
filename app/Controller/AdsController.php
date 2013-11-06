@@ -90,6 +90,11 @@ class AdsController extends AppController {
 	{
 		$this->layout = 'default';
 		$this->loadModel('AdDetail');
+		$this->loadModel('Tag');
+		
+		$alltags = $this->Tag->find('all', array('limit' => 10));
+		$this->Session->write('alltags', $alltags); //This is require to show the tags in the tagdetails page.
+		$this->set('alltags', $alltags);
 		
 		$conditions = array('AdDetail.is_active'=>1, 'AdDetail.status'=>1);
 		$this->paginate = array(
@@ -139,5 +144,30 @@ class AdsController extends AppController {
 			$json_arr['status'] = 0;
 		}
 		echo json_encode($json_arr);exit;
+	}
+	
+	function tagdetails($tagname)
+	{
+		$this->layout = 'default';
+		$this->loadModel('AdTag');
+		$this->loadModel('Tag');
+		$this->loadModel('AdDetail');
+		
+		$conditions = array('Tag.is_active'=>1, 'Tag.tag_name'=>$tagname);
+		$this->paginate = array(
+			'conditions' => $conditions,
+			'limit' => 2
+		);
+		$allrequiretagdetails = $this->paginate('AdTag');
+		
+		$alltags = $this->Session->read('alltags');
+		
+		//echo "<pre>";print_r($allrequiretagdetails);exit;
+		
+		$this->set('alltags', $alltags);
+		$this->set('allrequiretagdetails', $allrequiretagdetails);
+		$this->set('tagname', $tagname);
+		
+		//echo $tagname;exit;
 	}
 }

@@ -4,11 +4,11 @@ class AdTag extends AppModel {
 	
 	public $belongsTo = array('Tag' =>
 							  array('className' => 'Tag',
-							   		 'foreignKey' => 'ad_id'
+							   		 'foreignKey' => 'tag_id'
 							   ),
 						  	  'AdDetail' =>
 							  array('className' => 'AdDetail',
-							        'foreignKey'  => 'tag_id'
+							        'foreignKey'  => 'ad_id',
 							   )
 							 );
 }

@@ -8,7 +8,7 @@ class UsersController extends AppController {
 		if($this->Session->read('Auth.User.id')){
 			$this->redirect(HTTP_ROOT."users/dashboard");
 		}
-		
+		//echo "<pre>";print_r($this->request->data);exit;
 		if(!empty($this->request->data))
 		{
 			$email = $this->request->data['User']['email'];
@@ -187,4 +187,17 @@ class UsersController extends AppController {
 			}
 		}
 	}
+	
+	function placementdetails($placementId)
+	{
+		$this->layout = 'default';
+		$this->loadModel('Placement');
+		
+		$getplacementdetails = $this->Placement->find('all', array('conditions'=>array('Placement.id'=>$placementId, 'Placement.publisher_id'=>$this->Auth->user('id'))));
+		
+		$this->set('getDetails',$getplacementdetails[0]);
+		
+		//echo "<pre>";print_r($getplacementdetails);exit;
+	}
+	
 }

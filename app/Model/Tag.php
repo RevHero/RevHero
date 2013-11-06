@@ -8,7 +8,8 @@ class Tag extends AppModel{
                 'className'              => 'AdDetail',
                 'joinTable'              => 'ad_tags',
                 'foreignKey'             => 'tag_id',
-                'associationForeignKey'  => 'ad_id'
+                'associationForeignKey'  => 'ad_id',
+				'order'                  => array('AdDetail.created DESC'),
             )
     );
 	

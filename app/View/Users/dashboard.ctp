@@ -77,7 +77,7 @@ if(count($getallplacements) == 0)
       </div>
       <div class="span6">      
         <p><h4><?php echo substr($placement['AdDetail']['headline'],0,35); ?></h4></p>
-		<p style="color:#232323;font-size:12px;"><?php echo date("M j, Y", strtotime($placement['AdDetail']['created'])); ?> | <a href="<?php echo $placement['AdDetail']['dest_url']; ?>" target="_blank"><?php echo $placement['AdDetail']['dest_url']; ?></a></p>
+		<p style="color:#232323;font-size:12px;"><?php echo date("M j, Y", strtotime($placement['Placement']['created'])); ?> | <a href="<?php echo $placement['AdDetail']['dest_url']; ?>" target="_blank"><?php echo $placement['AdDetail']['dest_url']; ?></a></p>
 		<div class="pull-left" style="color:#232323;font-size:11px;font-weight:bold;">
 			<?php
 				if(count($placement['AdClick']) > 0){
@@ -87,11 +87,11 @@ if(count($getallplacements) == 0)
 						echo count($placement['AdClick'])." Clicks";
 					}	
 				}else{
-					echo "&nbsp;";
+					echo "0 Click";
 				}
 			?> 
 			|
-			<a href="#">View stats</a>
+			<a href="<?php echo HTTP_ROOT; ?>users/placementdetails/<?php echo $placement['Placement']['id']; ?>">View stats</a>
 		</div>
 		<div class="input-append pull-right">
 			<input class="span4 shorturl" id="box-content" type="text" readonly="readonly" value="<?php echo $placement['Placement']['short_url']; ?>" style="height:16px;">
