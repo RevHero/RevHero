@@ -100,7 +100,7 @@ function getTheDetails(ad_id)
 	<?php }else{ ?>
 	<div class="row-fluid">
         <div class="span16" style="text-align:center;color:#FF0000;border:1px solid #999999;padding-top:10px;">
-          <p>Curently no Ad is available.</p>
+          <p>There are currently no ads available.</p>
         </div>
 	</div>  
 	<?php } ?>
