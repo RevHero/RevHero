@@ -8,7 +8,7 @@ class AdDetail extends AppModel {
                 'className'              => 'Tag',
                 'joinTable'              => 'ad_tags',
                 'foreignKey'             => 'ad_id',
-                'associationForeignKey'  => 'tag_id'
+                'associationForeignKey'  => 'tag_id',
             )
     );
 	

@@ -7,8 +7,9 @@ class AdTag extends AppModel {
 							   		 'foreignKey' => 'tag_id'
 							   ),
 						  	  'AdDetail' =>
-							  array('className' => 'AdDetail',
+							  array('className'   => 'AdDetail',
 							        'foreignKey'  => 'ad_id',
+									'conditions'  => array('AdDetail.status'=>1)
 							   )
 							 );
 }

@@ -156,7 +156,7 @@ class AdsController extends AppController {
 		$this->loadModel('Tag');
 		$this->loadModel('AdDetail');
 		
-		$conditions = array('Tag.is_active'=>1, 'Tag.tag_name'=>$tagname);
+		$conditions = array('Tag.is_active'=>1, 'Tag.tag_name'=>$tagname, 'AdDetail.status'=>1);
 		$this->paginate = array(
 			'conditions' => $conditions,
 			'limit' => 2
