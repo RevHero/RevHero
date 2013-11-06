@@ -24,6 +24,7 @@ function getTheDetails(ad_id)
 					<?php
 					//echo "<pre>";print_r($alltags);exit;
 					foreach($alltags as $tag){
+					if(count($tag['AdDetail']) > 0){
 					?>
 						<li class="tag-item" title="<?php echo $tag['Tag']['tag_name']; ?>">
 							<a style="background-color: #2C3E50; color:#FFF;" href="<?php echo HTTP_ROOT; ?>ads/tagdetails/<?php echo str_replace(" ","+",$tag['Tag']['tag_name']); ?>" class="1111">
@@ -39,7 +40,7 @@ function getTheDetails(ad_id)
 								</span>
 							</a>
 						</li>
-					<?php } ?>
+					<?php } } ?>
 				</ul>
 			</div>
 		</div>

@@ -93,6 +93,9 @@ class AdsController extends AppController {
 		$this->loadModel('Tag');
 		
 		$alltags = $this->Tag->find('all', array('limit' => 10));
+		
+		//echo "<pre>";print_r($alltags);exit;
+		
 		$this->Session->write('alltags', $alltags); //This is require to show the tags in the tagdetails page.
 		$this->set('alltags', $alltags);
 		
