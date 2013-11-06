@@ -11,25 +11,22 @@ class UsersController extends AppController {
 		
 		if(!empty($this->request->data))
 		{
-			if(!empty($this->request->data['User']['registration']) && $this->request->data['User']['registration'] == 1)
-			{
-				$email = $this->request->data['User']['email'];
-				$this->request->data['User']['pass'] = $this->Auth->password($this->request->data['User']['pass']);
-				$this->request->data['User']['uniq_id'] = $this->Format->generateUniqNumber();
-				
-				$getDuplicate = $this->User->CheckDuplicate($email); //This is require to check the DUPLICATE registration with the same Email.
-				
-				if(!$getDuplicate){ //If the Email id is not present in the database
-					$successSave = $this->User->saveUserDetails($this->request->data['User']);
-					if($successSave){
-						$this->logincheck($email,$this->request->data['User']['pass']);
-						//$this->Session->write("SUCCESS","1");
-						//$this->redirect(HTTP_ROOT);
-					}
-				}else{ //If the USER email is already present in the database
-					$this->Session->write("SUCCESS","0");
-					$this->redirect(HTTP_ROOT);
+			$email = $this->request->data['User']['email'];
+			$this->request->data['User']['pass'] = $this->Auth->password($this->request->data['User']['pass']);
+			$this->request->data['User']['uniq_id'] = $this->Format->generateUniqNumber();
+			
+			$getDuplicate = $this->User->CheckDuplicate($email); //This is require to check the DUPLICATE registration with the same Email.
+			
+			if(!$getDuplicate){ //If the Email id is not present in the database
+				$successSave = $this->User->saveUserDetails($this->request->data['User']);
+				if($successSave){
+					$this->logincheck($email,$this->request->data['User']['pass']);
+					//$this->Session->write("SUCCESS","1");
+					//$this->redirect(HTTP_ROOT);
 				}
+			}else{ //If the USER email is already present in the database
+				$this->Session->write("SUCCESS","0");
+				$this->redirect(HTTP_ROOT);
 			}
 		}
 	}
