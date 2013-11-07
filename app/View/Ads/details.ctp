@@ -44,6 +44,8 @@ $(document).ready(function()
 				}else{
 					$("#loader").show();
 					$("#publishBtn").hide();
+					$("#notavail").hide();
+					$("#avail").hide();
 					$.post(strURL+"ads/getUniqueKeyword",{customKeyword:customKeyword},function(data){
 						//alert(JSON.stringify(data, null, 4));
 						$("#loader").hide();
