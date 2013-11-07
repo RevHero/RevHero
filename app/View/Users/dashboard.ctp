@@ -78,7 +78,7 @@ if(count($getallplacements) == 0)
 		?>
 		        <img src="<?php echo HTTP_FILES; ?>ad_photos/<?php echo $placement['AdDetail']['ad_image']; ?>" alt="" class="thumbnail">
 		<?php }else{ ?>
-				<img src="<?php echo HTTP_IMAGES; ?>img/no_image.gif" alt="" class="thumbnail">
+				<img src="<?php echo HTTP_IMAGES; ?>no_image.gif" alt="" class="thumbnail">
 		<?php } ?>
       </div>
       <div class="span6">      
