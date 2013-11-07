@@ -103,7 +103,7 @@ class AdsController extends AppController {
 		$allAdStore = $this->paginate('AdDetail');
 		$this->set('allAdStore', $allAdStore);
 		
-		$getallActiveAdsforUser = $this->AdDetail->getAllAds($this->Auth->user['id']);
+		$getallActiveAdsforUser = $this->AdDetail->getAllAds($this->Auth->user('id'));
 		$this->set('countgetallActivedAds', count($getallActiveAdsforUser));
 		
 	}
