@@ -63,7 +63,7 @@ $("#dest_url").change(function()
 	},'json');
 });
 
-$("#SaveButton").click(function()
+/*$("#SaveButton").click(function()
 {
 	var cpa = $("#cpa").val();
 	var allTags = $("#allTags").val();
@@ -76,7 +76,7 @@ $("#SaveButton").click(function()
 	}else if(cpa && allTags != ''){
 		$(".bootstrap-tagsinput").css("border-color", "#47AEE9");
 	}
-});
+});*/
 
 });
 </script>
@@ -124,7 +124,7 @@ $("#SaveButton").click(function()
 					<div class="control-group">
 						<label class="control-label">Tags <b>:</b></label>
 						<div class="controls">
-							<input type="text" name="data[Ad][alltags]" data-role="tagsinput" id="allTags" required="true"/>
+							<input type="text" name="data[Ad][alltags]" data-role="tagsinput" id="allTags"/>
 						</div>
 					</div>
 					<div class="control-group">

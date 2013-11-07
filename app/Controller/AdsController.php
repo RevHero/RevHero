@@ -87,7 +87,7 @@ class AdsController extends AppController {
 		$this->loadModel('AdDetail');
 		$this->loadModel('Tag');
 		
-		$alltags = $this->Tag->find('all', array('limit' => 10));
+		$alltags = $this->Tag->find('all', array('conditions'=>array('Tag.tag_name !=' => ''), 'limit' => 10));
 		
 		//echo "<pre>";print_r($alltags);exit;
 		
