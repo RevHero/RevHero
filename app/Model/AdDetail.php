@@ -44,7 +44,7 @@ class AdDetail extends AppModel {
 		$adsall = new AdDetail(); 
 		
 		$ad['AdDetail']['advertiser_id'] = $userId;
-		$ad['AdDetail']['headline'] = $requires['hid_headline'];
+		$ad['AdDetail']['headline'] = $requires['headline'];
 		$ad['AdDetail']['body'] = $requires['bodytext'];
 		$ad['AdDetail']['dest_url'] = $requires['dest_url'];
 		$ad['AdDetail']['CPC'] = $requires['cpc'];

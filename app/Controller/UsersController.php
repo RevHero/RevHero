@@ -90,6 +90,7 @@ class UsersController extends AppController {
 	{
 		$this->layout = 'default';
 		$this->loadModel('Placement');
+		$this->loadModel('AdDetail');
 		$userId = $this->Session->read('Auth.User.id');
 		$gettotalplacementcounts = $this->Placement->allplacementdetails($userId);
 		
@@ -104,9 +105,16 @@ class UsersController extends AppController {
 		
 		//echo "<pre>";print_r($getallplacements);exit;
 		
+		$getallActiveAdsforUser = $this->AdDetail->getAllAds($this->Auth->user['id']);
+		
+		$getallApprovedAds = $this->AdDetail->find('count', array('conditions'=>array('AdDetail.is_active'=>1, 'AdDetail.status'=>1)));
+		//echo "<pre>";print_r($getallApprovedAds);exit;
+		
 		$this->set('getallplacements', $getallplacements);
 		$this->set('totalplacementcounts', $gettotalplacementcounts);
 		
+		$this->set('countgetallActivedAds', count($getallActiveAdsforUser));
+		$this->set('countgetallApprovedAds', $getallApprovedAds);
 	}
 	
 	function logout()
@@ -192,12 +200,24 @@ class UsersController extends AppController {
 	{
 		$this->layout = 'default';
 		$this->loadModel('Placement');
+		$this->loadModel('AdClick');
+		$this->AdClick->recursive = -1;
 		
 		$getplacementdetails = $this->Placement->find('all', array('conditions'=>array('Placement.id'=>$placementId, 'Placement.publisher_id'=>$this->Auth->user('id'))));
 		
 		$this->set('getDetails',$getplacementdetails[0]);
 		
-		//echo "<pre>";print_r($getplacementdetails);exit;
+		$getclickdetails = $this->AdClick->find('all', array('conditions'=>array('AdClick.placement_id'=>$placementId)));
+		//echo "<pre>";print_r($getclickdetails);exit;
+		
+		$dt_arr=array();
+		foreach($getclickdetails as $eachclick)
+		{
+			$dt=date('M j, Y',strtotime(date("Y-m-d", strtotime($eachclick['AdClick']['created']))));
+			array_push($dt_arr,$dt);
+		}
+		//echo "<pre>";print_r($dt_arr);exit;
+		$this->set('dt_arr',json_encode($dt_arr));
 	}
 	
 }

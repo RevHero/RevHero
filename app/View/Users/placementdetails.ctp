@@ -14,6 +14,24 @@
       <p class="displayDetails" style="font-size:14px;">
         <i class="icon-globe"></i> <a href="<?php echo $getDetails['AdDetail']['dest_url']; ?>" style="outline:none;" target="_blank"><?php echo $getDetails['AdDetail']['dest_url']; ?></a><br />
         <p class="displayDetails"><b>Placement Created:</b> <?php echo date("F j, Y", strtotime($getDetails['Placement']['created'])); ?></p>
+		<p class="displayDetails">
+			<b>Type:</b>
+			<?php
+				if($getDetails['Placement']['type'] == 'html'){
+					echo "HTML";
+				}else{
+					echo "TEXT";
+				}	
+			?> &nbsp;<strong>|</strong>&nbsp;
+			<b>Format:</b>
+			<?php
+				if($getDetails['Placement']['format'] == '3'){
+					echo "3 Line Format";
+				}else{
+					echo "1 Line Format";
+				}	
+			?>
+		</p>
 		<div class="pull-left" style="color:#232323;font-size:11px;font-weight:bold;">
 			<?php
 				if(count($getDetails['AdClick']) > 0){
@@ -33,5 +51,4 @@
       </p>
     </div>
   </div>
-  
 </div>

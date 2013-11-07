@@ -132,7 +132,13 @@ function getTheDetails(ad_id)
 				<div class="row-fluid">
 					<div class="span12" style="text-align:center;color:#FF0000;border:1px solid #999999;padding-top:10px;">
 					  <p>There are currently no ads available.</p>
+					  <?php if($countgetallActivedAds > 0){ ?>
+						  <p style="color:#333333;">
+							  Publish your created <a href="<?php echo HTTP_ROOT; ?>ads/lists">Ads yet to be approved</a> by the Admin
+						  </p>
+					  <?php } ?>
 					</div>
+					
 				</div>  
 				<?php } ?>
 			<!--</div>-->

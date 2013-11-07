@@ -3,6 +3,8 @@
 <link rel="stylesheet" href="<?php echo CSS_PATH.'bootstrap-tagsinput.css';?>" />
 <script language="javascript" type="text/javascript">
 $(document).ready(function(){
+$(".bootstrap-tagsinput").css("min-width", "270px");
+
 
 $('#testTextarea2').mouseover(function()
 {
@@ -50,15 +52,30 @@ $("#dest_url").change(function()
 			var totalCount = data.title.length;
 			var finalLeft = max_count-totalCount
 			$("#add_headline").val(data.title);
-			$("#hid_headline").val(data.fulltitle);
+			//$("#hid_headline").val(data.fulltitle);
 			$("#textbox_headline").html(finalLeft+' Characters Left');
 		}else{
 			$("#add_headline").val('');
-			$("#hid_headline").val(data.fulltitle);
+			//$("#hid_headline").val(data.fulltitle);
 			$("#textbox_headline").html('35 Characters Left');
 		}
 		
 	},'json');
+});
+
+$("#SaveButton").click(function()
+{
+	var cpa = $("#cpa").val();
+	var allTags = $("#allTags").val();
+	
+	if(cpa && allTags == ''){
+		$(".bootstrap-tagsinput").css("border-color", "#FF0000");
+		//$(".bootstrap-tagsinput").children("input").first().attr("required", "true");
+		$(".bootstrap-tagsinput").children("input").focus();
+		return false;
+	}else if(cpa && allTags != ''){
+		$(".bootstrap-tagsinput").css("border-color", "#47AEE9");
+	}
 });
 
 });
@@ -72,7 +89,7 @@ $("#dest_url").change(function()
 					<div class="control-group">
 						<label class="control-label">Destination URL <b>:</b> </label>
 						<div class="controls">
-							<input type="url" name="data[Ad][dest_url]" id="dest_url" placeholder=""  class="input-xlarge" required="true" maxlength="512" size="512">
+							<input type="url" name="data[Ad][dest_url]" id="dest_url" placeholder="http://www.example.com"  class="input-xlarge" required="true" maxlength="512" size="512">
 							<!--<p class="help-block">Max. 512 Characters</p>-->
 						</div>
 					</div>
@@ -80,7 +97,7 @@ $("#dest_url").change(function()
 						<label class="control-label">Headline <b>:</b></label>
 						<div class="controls">
 							<input type="text" name="data[Ad][headline]" id="add_headline" placeholder=""  class="input-xlarge" required="true" maxlength="35" size="35">
-							<input type="hidden" name="data[Ad][hid_headline]" value="" id="hid_headline" />
+							<!--<input type="hidden" name="data[Ad][hid_headline]" value="" id="hid_headline" />-->
 							<span id="loader" style="margin-left:5px;display:none;"><img src="<?php echo HTTP_ROOT; ?>img/ajax-loader.gif" /> Updating Headline</span>
 						    <div id="textbox_headline"></div>
 						</div>
@@ -107,7 +124,7 @@ $("#dest_url").change(function()
 					<div class="control-group">
 						<label class="control-label">Tags <b>:</b></label>
 						<div class="controls">
-							<input type="text" name="data[Ad][alltags]" data-role="tagsinput" id="allTags" class="input-xlarge"/>
+							<input type="text" name="data[Ad][alltags]" data-role="tagsinput" id="allTags" required="true"/>
 						</div>
 					</div>
 					<div class="control-group">

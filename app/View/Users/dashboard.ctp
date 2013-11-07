@@ -38,11 +38,17 @@ if(count($getallplacements) == 0)
 <div class="row-fluid">
 	<div class="span16" style="text-align:center;color:#FF0000;border:1px solid #999999;padding-top:10px;">
 	  <p>You don't have any placements.</p>
-	  <p style="margin-top:20px;">
-		  <a href="<?php echo HTTP_ROOT; ?>ads/store">
-			  <button class="btn btn-primary" type="button">Create a New Placement</button>
-		  </a>	
-	  </p>
+	  <?php if($countgetallApprovedAds > 0){ ?>
+		  <p style="margin-top:20px;">
+			  <a href="<?php echo HTTP_ROOT; ?>ads/store">
+				  <button class="btn btn-primary" type="button">Create a New Placement</button>
+			  </a>	
+		  </p>
+	  <?php } if($countgetallActivedAds > 0 && $countgetallApprovedAds == 0){ ?>
+		  <p style="color:#333333;">
+			  Publish your created <a href="<?php echo HTTP_ROOT; ?>ads/lists">Ads yet to be approved</a> by the Admin
+		  </p>
+	  <?php } ?>	  
 	</div>
 </div>
 </div>  

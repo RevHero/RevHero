@@ -21,11 +21,6 @@ class AdsController extends AppController {
 			$this->loadModel('AdDetail');
 			$this->loadModel('Tag');
 			
-			$headline    = $this->request['data']['Ad']['headline'];
-			$destination = $this->request['data']['Ad']['dest_url'];
-			$bodytext    = $this->request['data']['Ad']['bodytext'];
-			$alltags     = $this->request['data']['Ad']['alltags'];
-			
 			$saveAdDetails = $this->AdDetail->saveDetails($this->Auth->user('id'), $this->request['data']['Ad']);
 			
 			if($saveAdDetails && $saveAdDetails > 0)
@@ -72,11 +67,11 @@ class AdsController extends AppController {
 				preg_match("/\<title\>(.*)\<\/title\>/",$str,$title);
 				if(strlen($title[1]) > 35){
 					$json_arr['status'] = 1;
-					$json_arr['fulltitle'] = $title[1];
+					//$json_arr['fulltitle'] = $title[1];
 					$json_arr['title'] = substr($title[1],0,35);
 				}else{
 					$json_arr['status'] = 1;
-					$json_arr['fulltitle'] = $title[1];
+					//$json_arr['fulltitle'] = $title[1];
 					$json_arr['title'] = $title[1];
 				}
 			}
@@ -107,6 +102,10 @@ class AdsController extends AppController {
 		);
 		$allAdStore = $this->paginate('AdDetail');
 		$this->set('allAdStore', $allAdStore);
+		
+		$getallActiveAdsforUser = $this->AdDetail->getAllAds($this->Auth->user['id']);
+		$this->set('countgetallActivedAds', count($getallActiveAdsforUser));
+		
 	}
 	
 	function details($adid=NULL,$sessionId=NULL)
