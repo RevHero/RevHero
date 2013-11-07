@@ -87,7 +87,7 @@ class Placement extends AppModel {
 		//$tempRandomKeyword = substr(md5(uniqid(rand())),0,6);
 		$tempRandomKeyword = $this->buildShortUrlKeyword(); //Generate the keyword as per the specified format
 		
-		if(in_array($tempRandomKeyword,$arrReserveKeywords)){//not be a reserved word according to the specified array
+		if(in_array(strtolower($tempRandomKeyword),$arrReserveKeywords)){//not be a reserved word according to the specified array
 			$this->getRandomNum();
 		}else if((substr($tempRandomKeyword,0,1) == "-") || (substr($tempRandomKeyword,0,-1) == "-")){ // Keyword not start or end with a hyphen.
 			$this->getRandomNum();

@@ -20,7 +20,7 @@ $(document).ready(function()
 				$("#avail").hide();
 				$("#notavail").html('Please remove special characters from keyword.');
 				$("#hid_is_keyword_exist").val(1);
-			}else if(arrReserveKeywords.indexOf(customKeyword) > -1){ //not be a reserved word according to the specified array
+			}else if(arrReserveKeywords.indexOf(customKeyword.toLowerCase()) > -1){ //not be a reserved word according to the specified array
 				$("#notavail").show();
 				$("#avail").hide();
 				$("#notavail").html('Sorry! You can not provide a reserve keyword.');
