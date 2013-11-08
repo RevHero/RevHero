@@ -7,5 +7,6 @@ class WebhooksController extends AppController {
 		shell_exec('cd /home/andolarh/public_html');
 		$output = shell_exec('git pull');
 		echo "<pre>$output</pre>";
+		exit;
 	}
 }
