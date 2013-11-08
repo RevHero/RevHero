@@ -1,3 +1,54 @@
+<script type="text/javascript" src="<?php echo JS_PATH; ?>highcharts.js"></script>
+<script type="text/javascript" src="<?php echo JS_PATH; ?>exporting.js"></script>
+<script type="text/javascript">
+var dt = <?php echo $dt_arr;?>;
+var ydata = <?php echo $all_clicks;?>;
+$(function () { 
+    $('#chartPlace').highcharts({
+        chart: {
+            type: 'line'
+        },
+        title: {
+            text: 'Date'
+        },
+        xAxis: {
+			type:'datetime',
+			categories: eval(dt),
+			showFirstLabel:true,
+			showLastLabel:true
+        },
+        yAxis: {
+			min:0,
+			allowDecimals:false,
+			title: {
+				text: 'Click Count'
+			},
+			plotLines: [{
+				value: 0,
+				width: 1,
+				color: '#FF0000'
+			}]
+		},
+		tooltip: {
+			formatter: function() {
+					return '<b>'+ this.series.name +'</b><br/>'+
+					this.x +': '+ this.y +'';
+			}
+		},
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+/*        series: [{
+            name: 'Jane',
+            data: [1, 3, 4, 5, 8]
+        }]*/
+		series: eval(ydata)
+    });
+});
+</script>
 <div class="container well">
   <div>
   	<h3><?php echo substr($getDetails['AdDetail']['headline'],0,35); ?></h3>
@@ -52,3 +103,14 @@
     </div>
   </div>
 </div>
+<?php
+$arrDt = json_decode($dt_arr,true);
+$arrClick = json_decode($all_clicks,true);
+
+if(count($arrDt > 0) && count($arrClick[0]['data']) > 0){ ?>
+	<div class="container well">
+		<div class="row">
+			<div id="chartPlace" style="width:100%;height:400px;margin-left:10px;"></div>
+		</div>
+	</div>
+<?php } ?>	

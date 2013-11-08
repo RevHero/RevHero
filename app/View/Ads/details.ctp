@@ -96,25 +96,25 @@ $(document).ready(function()
 				if(data.status == 1){
 					if(adType == 'text' && adFormat == '1'){
 						//DisplayContent = hid_headline+' - '+hid_body+' - '+hid_destination_url;
-						DisplayContent = hid_headline+' - '+hid_body+' - '+strURL+'s/'+data.customKeyword;
+						DisplayContent = hid_headline+' - '+hid_body+' - '+strURL+data.customKeyword;
 						$("#placementcontainer").show();
 						$("#placementShow").html(DisplayContent);
 						$('html, body').animate({scrollTop: $(window).scrollTop() + $(window).height()}, 1000);
 					}else if(adType == 'html' && adFormat == '1'){
 						//DisplayContent = '&lt;a href="'+hid_destination_url+'" target="_blank">'+hid_headline+'&lt;/a&gt; - '+hid_body;
-						DisplayContent = '&lt;a href="'+strURL+'s/'+data.customKeyword+'" target="_blank">'+hid_headline+'&lt;/a&gt; - '+hid_body;
+						DisplayContent = '&lt;a href="'+strURL+data.customKeyword+'" target="_blank">'+hid_headline+'&lt;/a&gt; - '+hid_body;
 						$("#placementcontainer").show();
 						$("#placementShow").html(DisplayContent);
 						$('html, body').animate({scrollTop: $(window).scrollTop() + $(window).height()}, 1000);
 					}else if(adType == 'text' && adFormat == '3'){
 						//DisplayContent = hid_headline+'<br>'+hid_destination_url+'<br>'+hid_body;
-						DisplayContent = hid_headline+'<br>'+strURL+'s/'+data.customKeyword+'<br>'+hid_body;
+						DisplayContent = hid_headline+'<br>'+strURL+data.customKeyword+'<br>'+hid_body;
 						$("#placementcontainer").show();
 						$("#placementShow").html(DisplayContent);
 						$('html, body').animate({scrollTop: $(window).scrollTop() + $(window).height()}, 1000);
 					}else if(adType == 'html' && adFormat == '3'){
 						//DisplayContent = '&lt;a href="'+hid_destination_url+'" target="_blank"&gt;'+hid_headline+'&lt;/a&gt;&lt;br&gt;&lt;a href="'+hid_destination_url+'" target="_blank"&gt;'+hid_destination_url+'&lt;/a&gt;&lt;br&gt;'+hid_body;
-						DisplayContent = '&lt;a href="'+strURL+'s/'+data.customKeyword+'" target="_blank"&gt;'+hid_headline+'&lt;/a&gt;&lt;br&gt;&lt;a href="'+strURL+'s/'+data.customKeyword+'" target="_blank"&gt;'+strURL+'s/'+data.customKeyword+'&lt;/a&gt;&lt;br&gt;'+hid_body;
+						DisplayContent = '&lt;a href="'+strURL+data.customKeyword+'" target="_blank"&gt;'+hid_headline+'&lt;/a&gt;&lt;br&gt;&lt;a href="'+strURL+data.customKeyword+'" target="_blank"&gt;'+strURL+data.customKeyword+'&lt;/a&gt;&lt;br&gt;'+hid_body;
 						$("#placementcontainer").show();
 						$("#placementShow").html(DisplayContent);
 						$('html, body').animate({scrollTop: $(window).scrollTop() + $(window).height()}, 1000);

@@ -104,10 +104,11 @@ class UsersController extends AppController {
 		$getallplacements = $this->paginate('Placement');
 		
 		//echo "<pre>";print_r($getallplacements);exit;
-		
+
 		$getallActiveAdsforUser = $this->AdDetail->getAllAds($this->Auth->user('id'));
 		
 		$getallApprovedAds = $this->AdDetail->find('count', array('conditions'=>array('AdDetail.is_active'=>1, 'AdDetail.status'=>1)));
+		
 		//echo "<pre>";print_r($getallApprovedAds);exit;
 		
 		$this->set('getallplacements', $getallplacements);
@@ -204,20 +205,22 @@ class UsersController extends AppController {
 		$this->AdClick->recursive = -1;
 		
 		$getplacementdetails = $this->Placement->find('all', array('conditions'=>array('Placement.id'=>$placementId, 'Placement.publisher_id'=>$this->Auth->user('id'))));
-		
 		$this->set('getDetails',$getplacementdetails[0]);
 		
-		$getclickdetails = $this->AdClick->find('all', array('conditions'=>array('AdClick.placement_id'=>$placementId)));
-		//echo "<pre>";print_r($getclickdetails);exit;
+		$getclickdetails = $this->AdClick->getChartResult($placementId);
 		
 		$dt_arr=array();
+		$all_clicks=array();
 		foreach($getclickdetails as $eachclick)
 		{
 			$dt=date('M j, Y',strtotime(date("Y-m-d", strtotime($eachclick['AdClick']['created']))));
 			array_push($dt_arr,$dt);
+			array_push($all_clicks,(int)$eachclick[0]['clickCount']);
 		}
-		//echo "<pre>";print_r($dt_arr);exit;
+		$carr = array(array('name'=>'Clicks','color'=>'#36A7E7','connectNulls'=> 'true','data'=>$all_clicks));
+		//echo "<pre>";print_r($dt_arr);print_r($carr);exit;
 		$this->set('dt_arr',json_encode($dt_arr));
+		$this->set('all_clicks',json_encode($carr));
 	}
 	
 }
