@@ -1,6 +1,6 @@
 <?php
-class WebhookController extends AppController {
-    public $name = 'Webhook';
+class WebhooksController extends AppController {
+    public $name = 'Webhooks';
 
 	function updategit()
 	{
