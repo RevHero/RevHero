@@ -66,7 +66,7 @@ class Placement extends AppModel {
 		}	
 		$adp['Placement']['type'] = $details['adType'];
 		$adp['Placement']['format'] = $details['adFormat'];
-		$adp['Placement']['short_url'] = $details['strURL']."s/".$adp['Placement']['keyword'];
+		$adp['Placement']['short_url'] = $details['strURL'].$adp['Placement']['keyword'];
 		$adp['Placement']['creator_ip_address'] = $this->getRealIpAddr();
 		$adp['Placement']['is_active'] = 1;
 		
