@@ -89,7 +89,7 @@ class Placement extends AppModel {
 		
 		if(in_array(strtolower($tempRandomKeyword),$arrReserveKeywords)){//not be a reserved word according to the specified array
 			$this->getRandomNum();
-		}else if((substr($tempRandomKeyword,0,1) == "-") || (substr($tempRandomKeyword,0,-1) == "-")){ // Keyword not start or end with a hyphen.
+		}else if((substr($tempRandomKeyword,0,1) == "-") || (substr($tempRandomKeyword, (strlen($tempRandomKeyword)-1)) == "-")){ // Keyword not start or end with a hyphen.
 			$this->getRandomNum();
 		}else if((strlen($tempRandomKeyword) <3) || (strlen($tempRandomKeyword) > 128)){ // Keyword have a minimum length of 3 and have a maximum length of 128.
 			$this->getRandomNum();
