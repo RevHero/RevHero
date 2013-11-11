@@ -112,7 +112,7 @@ function editPromo(edit_id)
 					<th>Promo Code</th>
 					<th>Charge</th>
 					<th>Valid From</th>
-					<th>Valid True</th>
+					<th>Valid To</th>
 					<th>Status</th>
 					<th>Action</th>
 				</tr>
