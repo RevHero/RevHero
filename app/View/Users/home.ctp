@@ -10,11 +10,13 @@ function validate()
 	var passwordValue = $("#pass").val();
 	var passwordLength = passwordValue.length;
 	
-	if(passwordLength < 6){
-		alert("Please should be minimum 6 characters.");
-		return false;
-	}else{
-		return true;
+	if(passwordValue){
+		if(passwordLength < 6){
+			alert("Password should be minimum 6 characters.");
+			return false;
+		}else{
+			return true;
+		}
 	}
 }
 
