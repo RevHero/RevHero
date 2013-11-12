@@ -118,7 +118,7 @@ $(document).ready(function()
           <div class="control-group">
             <label class="control-label"  for="username">Code</label>
             <div class="controls">
-              <input type="text" id="pcode" name="pcode" placeholder="" value="<?php echo $getEditData[0]['PromoCode']['promocode']; ?>" class="input-xlarge">
+              <input type="text" id="pcode" name="pcode" placeholder="" readonly="readonly" value="<?php echo $getEditData[0]['PromoCode']['promocode']; ?>" class="input-xlarge">
 			  <span id="promoloader" style="margin-left:5px;display:none;"><img src="<?php echo HTTP_ROOT; ?>img/ajax-loader.gif" /> Getting Availibility</span>
 			  <span style="color:#006600;margin-left:10px;" id="avail"></span>
 			  <span style="color:#FF0000;margin-left:10px;" id="notavail"></span>

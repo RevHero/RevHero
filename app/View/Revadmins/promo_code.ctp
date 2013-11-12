@@ -141,7 +141,7 @@ function editPromo(edit_id)
 					<td>
 						<span title="<?php echo $ad['PromoCode']['promocode']; ?>"><?php echo $ad['PromoCode']['promocode']; ?></span>
 					</td>
-					<td align="center">$ <?php echo $ad['PromoCode']['price'];?></td>
+					<td align="center">$ <?php echo number_format($ad['PromoCode']['price'],2);?></td>
 					<td align="center"><?php echo date('M j, Y', strtotime($ad['PromoCode']['validFrom'])); ?></td>
 					<td align="center"><?php echo date('M j, Y', strtotime($ad['PromoCode']['validTo'])); ?></td>
 					<td align="center" id="status_<?php echo $ad['PromoCode']['id']; ?>"><?php echo $status;?></td>
