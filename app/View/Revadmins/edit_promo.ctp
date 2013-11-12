@@ -3,30 +3,34 @@
 <script language="javascript" type="text/javascript">
 $(document).ready(function()
 {
-	//var date = new Date();
-   // var currentMonth = date.getMonth();
-   // var currentDate = date.getDate();
-   // var currentYear = date.getFullYear();
-	
-	//var ssss = currentYear+'-'+(currentMonth+1)+'-'+currentDate;
-	
-	
 	var today = new Date();
 	$('#validFrom').datepicker({
 		autoclose: true,
         startDate: today
 	});
 
-	
 	$('#validTo').datepicker({
 		autoclose: true,
         startDate: today
 	});
 	
+	$('#validTo').datepicker()
+    .on('changeDate', function(ev){
+		
+		var startingdate = $('#datepickerFrom').val().trim();
+		var endingdate   = $('#datepickerTo').val().trim();
+
+		if(endingdate < startingdate){
+			alert("The valid to can not be less then the valid from");
+			$("#hid_is_less").val(1);
+		}else{
+			$("#hid_is_less").val(0);
+		}
+    });
+	
 	$("#pcode").change(function()
 	{
 		var strURL = $('#pageurl').val();
-		var rexp = /^[0-9a-zA-Z-]+$/;
 		var pcode = $("#pcode").val().trim();
 		var hid_edit_pcode = $("#hid_edit_pcode").val().trim();
 		$("#notavail").hide();
@@ -63,24 +67,37 @@ $(document).ready(function()
 	  var amount     = $("#creditamount").val().trim();
 	  var rexp = /^[0-9.]+$/;
 	  
+	  var startingdate = $('#datepickerFrom').val().trim();
+	  var endingdate   = $('#datepickerTo').val().trim();
+	  
 	  if(pcode == ''){
 	  	 alert("Please enter promo code.");
-		 event.preventDefault();
+		 return false;
 	  }
 	  
 	  if(amount == ''){
 	  	 alert("Please enter credit amount.");
-		 event.preventDefault();
+		 return false;
 	  }else if(!rexp.test(amount)){
 		 alert("Please enter only integer for credit amount.");
-		 event.preventDefault();
+		 return false;
 	  }
 	  
-	  if(iskeyword == '0' || iskeyword == ''){
+	  if(endingdate < startingdate){
+		  alert("The valid to can not be less then the valid from");
+		  $("#hid_is_less").val(1);
+		  return false;
+	  }else{
+		  $("#hid_is_less").val(0);
+	  }
+	  
+	  var isendDateLess = $("#hid_is_less").val();
+	  
+	  if((iskeyword == '0' || iskeyword == '') && isendDateLess == '0'){
 	  	  return true;
 	  }else{
 		  alert("Please change promo code.");
-		  event.preventDefault();
+		  return false;
 	  }	
 	});
 		
@@ -93,6 +110,7 @@ $(document).ready(function()
 	  <input type="hidden" name="hid_is_keyword_exist" id="hid_is_keyword_exist" value="" />
 	  <input type="hidden" name="hid_edit_id" id="hid_edit_id" value="<?php echo $getEditData[0]['PromoCode']['id']; ?>" />
 	  <input type="hidden" name="hid_edit_pcode" id="hid_edit_pcode" value="<?php echo $getEditData[0]['PromoCode']['promocode']; ?>" />
+	  <input type="hidden" name="hid_is_less" id="hid_is_less" value="" />
         <fieldset>
           <div id="legend">
             <legend class="">Promotional Code</legend>
