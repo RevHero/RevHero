@@ -136,6 +136,15 @@ class Placement extends AppModel {
 		return $ip;
 	}
 	
+	function isKeywordExists($slugValue)
+	{
+		$getDetail = $this->find('all',array('conditions'=>array('keyword'=>$slugValue)));
+		if(count($getDetail) > 0){
+			return 1;
+		}else{
+			return 0;
+		}
+	}
 	function getDestURL($slugparam)
 	{
 		App::import('Model','Placement');
