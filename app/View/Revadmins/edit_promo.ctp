@@ -21,7 +21,7 @@ $(document).ready(function()
 		var endingdate   = $('#datepickerTo').val().trim();
 
 		if(endingdate < startingdate){
-			alert("The valid to can not be less then the valid from");
+			alert("The valid to can not be less than the valid from");
 			$("#hid_is_less").val(1);
 		}else{
 			$("#hid_is_less").val(0);
@@ -84,7 +84,7 @@ $(document).ready(function()
 	  }
 	  
 	  if(endingdate < startingdate){
-		  alert("The valid to can not be less then the valid from");
+		  alert("The valid to can not be less than the valid from");
 		  $("#hid_is_less").val(1);
 		  return false;
 	  }else{
