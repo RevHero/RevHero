@@ -5,6 +5,9 @@ class UsersController extends AppController {
 	function home($error = NULL)
 	{
 		$this->layout = 'default';
+		$this->loadModel('PromoCode');
+		$this->loadModel('PromoUser');
+		
 		if($this->Session->read('Auth.User.id')){
 			$this->redirect(HTTP_ROOT."users/dashboard");
 		}
@@ -12,18 +15,44 @@ class UsersController extends AppController {
 		if(!empty($this->request->data))
 		{
 			$email = $this->request->data['User']['email'];
+			$promo_code = $this->request->data['User']['promo'];
+			
 			$this->request->data['User']['pass'] = $this->Auth->password($this->request->data['User']['pass']);
 			$this->request->data['User']['uniq_id'] = $this->Format->generateUniqNumber();
 			
 			$getDuplicate = $this->User->CheckDuplicate($email); //This is require to check the DUPLICATE registration with the same Email.
 			
 			if(!$getDuplicate){ //If the Email id is not present in the database
-				$successSave = $this->User->saveUserDetails($this->request->data['User']);
-				if($successSave){
-					$this->logincheck($email,$this->request->data['User']['pass']);
-					//$this->Session->write("SUCCESS","1");
-					//$this->redirect(HTTP_ROOT);
+				
+				if(isset($promo_code) && $promo_code != '') //If user providing the PROMO CODE
+				{
+					$isValidPromo = $this->PromoCode->getValidatePromoCode($promo_code);
+					
+					//echo "<pre>";print_r($isValidPromo);exit;
+					
+					if(count($isValidPromo) > 0){
+						$successSave = $this->User->saveUserDetails($this->request->data['User']);
+						if($successSave){
+							$this->PromoUser->saveDetails($successSave, $isValidPromo[0]['PromoCode']['id']); //This is require to store respective data for user and promo
+							
+							$this->logincheck($email,$this->request->data['User']['pass']);
+							//$this->Session->write("SUCCESS","1");
+							//$this->redirect(HTTP_ROOT);
+						}
+					}else{
+						$this->Session->write("SUCCESS","2"); //This is require to set if the user is giving INVALID Promo Code
+						$this->redirect(HTTP_ROOT);
+					}
 				}
+				else //If user is not providing PROMO CODE
+				{
+					$successSave = $this->User->saveUserDetails($this->request->data['User']);
+					if($successSave){
+						$this->logincheck($email,$this->request->data['User']['pass']);
+						//$this->Session->write("SUCCESS","1");
+						//$this->redirect(HTTP_ROOT);
+					}
+				}	
 			}else{ //If the USER email is already present in the database
 				$this->Session->write("SUCCESS","0");
 				$this->redirect(HTTP_ROOT);

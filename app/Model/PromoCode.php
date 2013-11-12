@@ -61,5 +61,13 @@ class PromoCode extends AppModel{
 	{
 		$delete = $this->query("DELETE from `promo_codes` where `id`='".$promoId."'");
 		return 1;
-	}	
+	}
+	
+	function getValidatePromoCode($promo_code)
+	{
+		$today = date('Y-m-d');
+		$getValid = $this->find('all', array('conditions'=>array('PromoCode.promocode'=>$promo_code, 'PromoCode.validFrom <= '=>$today, 'PromoCode.validTo >= '=>$today, 'PromoCode.status'=>1)));
+		
+		return $getValid;
+	}
 }

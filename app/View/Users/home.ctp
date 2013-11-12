@@ -5,6 +5,19 @@ function closeBox()
 	$("#displayMsg").hide();
 }
 
+function validate()
+{
+	var passwordValue = $("#pass").val();
+	var passwordLength = passwordValue.length;
+	
+	if(passwordLength < 6){
+		alert("Please should be minimum 6 characters.");
+		return false;
+	}else{
+		return true;
+	}
+}
+
 </script>
 <div class="container">
 	<div class="row">
@@ -15,10 +28,15 @@ function closeBox()
 				<a class="close" onclick="closeBox();">x</a>
 				<strong>Thank You.</strong> A confirmation email has been sent to your email.
 			  </div>
-		  <?php }else if(@$success == 0 && @$success != ''){ ?>  
+		  <?php }else if(@$success == 0 && @$success != ''){ ?>
 			  <div class="alert alert-error">
 				<a class="close" onclick="closeBox();">x</a>
 				<strong>Sorry!!</strong> This email id is already registered.
+			  </div>
+		  <?php }else if(@$success == 2 && @$success != ''){ ?>
+	  		  <div class="alert alert-error">
+				<a class="close" onclick="closeBox();">x</a>
+				<strong>Sorry!!</strong> This promo code is invalid.
 			  </div>
 		  <?php } ?>
 		  
@@ -107,13 +125,22 @@ function closeBox()
                             <!-- Password-->
                             <label class="control-label" for="password">Password</label>
                             <div class="controls">
-                             <input type="password" value="" class="input-xlarge" name="data[User][pass]" required="true">
+                             <input type="password" id="pass" value="" class="input-xlarge" name="data[User][pass]" required="true">
                             </div>
                           </div>
+						  
+						  <div class="control-group">
+                            <!-- Promo Code-->
+                            <label class="control-label" for="password">Promo Code</label>
+                            <div class="controls">
+                             <input type="text" value="" class="input-xlarge" name="data[User][promo]"> <strong>(If any)</strong>
+                            </div>
+                          </div>
+						  
                           <div class="control-group">
                             <!-- Button -->
                             <div class="controls">
-                              <button class="btn btn-primary">Create Account</button>
+                              <button class="btn btn-primary" onclick="return validate();">Create Account</button>
                             </div>
                           </div>
                         </fieldset>
