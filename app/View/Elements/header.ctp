@@ -28,9 +28,9 @@
 			</li><?php */?>
 			<li>
 				<?php if($this->Session->read('profile_image') != ''){ ?>
-					<img src="<?php echo HTTP_FILES."profile_images/".$this->Session->read('profile_image'); ?>" class="img-circle img-polaroid" style="width:25px;height:25px;margin-top:8px;" >
+					<img src="<?php echo HTTP_FILES."profile_images/".$this->Session->read('profile_image'); ?>" class="img-circle img-polaroid" style="width:40px;height:40px;margin-top:2px;padding:2px;" >
 				<?php }else{ ?>
-					<img src="<?php echo HTTP_ROOT.'img/no_user.png'; ?>" class="img-circle img-polaroid" style="width:25px;height:25px;margin-top:8px;" >
+					<img src="<?php echo HTTP_ROOT.'img/no_user.png'; ?>" class="img-circle img-polaroid" style="width:40px;height:40px;margin-top:2px;padding:2px;" >
 				<?php } ?>
 				<li class="dropdown">
 				  <a data-toggle="dropdown" class="dropdown-toggle" href="#"><b class="caret"></b></a>
