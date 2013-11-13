@@ -384,7 +384,7 @@ Configure::write(
         'port' => 587,
         'timeout' => 30,
         'host' => 'smtp.mandrillapp.com',
-        'username' => 'mandrill@revhero.com',
-        'password' => 'ElTfJ4NxFBiIrPZ6cBHorw'
+        'username' => 'MY USERNAME',
+        'password' => 'MY PASSWORD'
     )
 );
