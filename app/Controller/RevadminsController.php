@@ -118,4 +118,28 @@ class RevadminsController extends AppController {
 			$this->set('getEditData', $getEditData);
 		}	
 	}
+	
+	function admin_profile()
+	{
+		$this->layout = 'default_admin';
+		$this->loadModel('User');
+		
+		if($this->request['data'] && $this->request['data']['profile']['uploadimage']['tmp_name'] != '' && $this->request['data']['profile']['uploadimage']['name'] != '')
+		{
+			$photo_name = $this->Format->uploadPhoto($this->request['data']['profile']['uploadimage']['tmp_name'],$this->request['data']['profile']['uploadimage']['name'],$this->request['data']['profile']['uploadimage']['size'],DIR_PROFILE_IMAGES,SES_ID,"profile_img");
+			
+			if($photo_name){
+				if($this->request['data']['hid_old_prof_img'] && file_exists(DIR_PROFILE_IMAGES.$this->request['data']['hid_old_prof_img'])){
+					unlink(DIR_PROFILE_IMAGES.$this->request['data']['hid_old_prof_img']);
+				}	
+				$saveImage['User']['id'] = SES_ID;
+				$saveImage['User']['prof_image'] = $photo_name;
+				$saveImageName = $this->User->save($saveImage);
+			}	
+		}
+		
+		$this->User->recursive = -1;		
+		$getProfileImage = $this->User->find('all', array('fields'=>array('User.prof_image'),'conditions'=>array('User.id'=>SES_ID)));
+		$this->Session->write("profile_image", $getProfileImage[0]['User']['prof_image']);
+	}
 }

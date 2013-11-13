@@ -27,11 +27,15 @@
 				Welcome <?php //echo $this->Session->read('Auth.User.first_name'); ?>James
 			</li><?php */?>
 			<li>
-				<img src="<?php echo HTTP_ROOT; ?>img/no_user.png" class="img-circle img-polaroid" style="width:25px;height:25px;margin-top:8px;" >
+				<?php if($this->Session->read('profile_image') != ''){ ?>
+					<img src="<?php echo HTTP_FILES."profile_images/".$this->Session->read('profile_image'); ?>" class="img-circle img-polaroid" style="width:25px;height:25px;margin-top:8px;" >
+				<?php }else{ ?>
+					<img src="<?php echo HTTP_ROOT.'img/no_user.png'; ?>" class="img-circle img-polaroid" style="width:25px;height:25px;margin-top:8px;" >
+				<?php } ?>
 				<li class="dropdown">
 				  <a data-toggle="dropdown" class="dropdown-toggle" href="#"><b class="caret"></b></a>
 				  <ul class="dropdown-menu">
-					<li><a href="#">Profile</a></li>
+					<li><a href="<?php echo HTTP_ROOT; ?>users/profile">Profile</a></li>
 					<li><a href="#">Settings</a></li>
 					<li class="divider"></li>
 					<li><a href="<?php echo HTTP_ROOT ?>users/logout">Logout</a></li>

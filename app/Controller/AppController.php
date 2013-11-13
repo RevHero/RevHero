@@ -45,7 +45,15 @@ class AppController extends Controller {
 			
 			$this->set('successaddsave',$this->Session->read("SAVEADDSUCCESS"));
 			$this->Session->write("SAVEADDSUCCESS","");
-
+			
+			/* Code retriving for PROFILE IMAGE in the header part for both USER and ADMIN starts here */
+			
+			$User = ClassRegistry::init('User');
+			$get_profile_image = $User->query("SELECT `prof_image` from `users` where `id`='".$this->Auth->User("id")."'");
+			$this->Session->write("profile_image", $get_profile_image[0]['users']['prof_image']);
+			
+			/* Code retriving for PROFILE IMAGE in the header part for both USER and ADMIN starts here */
+			
 			//$this->set('loginstatus',$this->Session->read("LOGINSTATUS")); //Requires to hold the session for the loggedin users.
 		}else{ //if the user is coming to the site without login
 			$this->set('success',$this->Session->read("SUCCESS"));
