@@ -166,5 +166,4 @@ class RevadminsController extends AppController {
 		$this->set('promoUsedUsers', $promoUsedUsers);
 		//echo "<pre>";print_r($promoUsedUsers);exit;
 	}
-	
 }
