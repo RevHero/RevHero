@@ -150,6 +150,8 @@ class UsersController extends AppController {
 	function logout()
 	{	
 		$this->Session->write('Auth.User.id','');
+		$this->Session->write('profile_image','');
+		$this->Session->destroy();
 		$this->Auth->logout();
 		$this->redirect(HTTP_ROOT);
 	}
