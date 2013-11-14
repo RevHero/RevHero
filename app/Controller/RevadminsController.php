@@ -142,4 +142,29 @@ class RevadminsController extends AppController {
 		$getProfileImage = $this->User->find('all', array('fields'=>array('User.prof_image'),'conditions'=>array('User.id'=>SES_ID)));
 		$this->Session->write("profile_image", $getProfileImage[0]['User']['prof_image']);
 	}
+	
+	function allusers()
+	{
+		$this->layout = 'default_admin';
+		$this->loadModel('User');
+		$this->User->recursive = -1;
+		
+		$getUserDetailsWithPromoCode = $this->User->getDetailsUser();
+		//echo "<pre>";print_r($getUserDetailsWithPromoCode);exit;
+		$this->set('UserDetailsWithPromoCode', $getUserDetailsWithPromoCode);
+	}
+	
+	function promodetails($promoid = NULL)
+	{
+		$this->layout = 'default_admin';
+		$this->loadModel('PromoCode');
+		
+		$PromoDetails = $this->PromoCode->getPromoDetails($promoid);
+		$promoUsedUsers = $this->PromoCode->getRespectiveUsers($promoid);
+		
+		$this->set('PromoDetails', $PromoDetails);
+		$this->set('promoUsedUsers', $promoUsedUsers);
+		//echo "<pre>";print_r($promoUsedUsers);exit;
+	}
+	
 }

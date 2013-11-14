@@ -31,11 +31,22 @@ class PromoCode extends AppModel{
 	
 	function AllPromoCodes($editId = NULL)
 	{
+		App::import('Model','User');
+		$usercount = new User(); 
+		
 		if(isset($editId) && $editId != ''){
 			$getAll = $this->find('all', array('conditions'=>array('PromoCode.id'=>$editId)));
 		}else{
-			$getAll = $this->find('all');
+			$getAll = $this->find('all', array('order'=>array('Promocode.created DESC')));
+		}
+		$usercounter = 0;
+		foreach($getAll as $single)
+		{
+			$totalUserCount = $usercount->query("select count(users.id) as totalUsers from users, promo_users where users.id=promo_users.user_id and promo_users.promo_id='".$single['PromoCode']['id']."'");
+			$getAll[$usercounter]['userCount'] = $totalUserCount[0][0]['totalUsers'];
+			$usercounter++;
 		}	
+			
 		return $getAll;
 	}
 	
@@ -70,4 +81,17 @@ class PromoCode extends AppModel{
 		
 		return $getValid;
 	}
+	
+	function getRespectiveUsers($promo_id)
+	{
+		$getAllUsers = $this->query("select users.* from users, promo_users where users.id=promo_users.user_id and promo_users.promo_id='".$promo_id."' order by created desc");
+		return $getAllUsers;
+	}
+	
+	function getPromoDetails($promoID)
+	{
+		$getAll = $this->find('all', array('conditions'=>array('PromoCode.id'=>$promoID)));
+		return $getAll;
+	}
+	
 }

@@ -13,8 +13,9 @@ $(document).ready( function () {
 	"aoColumns": [ 
 			{ "sWidth": '22%' },
 			{ "sWidth": '8%' },
-			{ "sWidth": '20%' },
-			{ "sWidth": '20%' },
+			{ "sWidth": '13%' },
+			{ "sWidth": '13%' },
+			{ "sWidth": '14%' },
 			{ "sWidth": '10%' },
 			{ "sWidth": '20%', "bSortable": false }
 		    ]
@@ -96,6 +97,11 @@ function editPromo(edit_id)
 	document.location.href = "<?php echo HTTP_ROOT; ?>revadmins/edit_promo/"+edit_id;
 }
 
+function gotToDetails(promoId)
+{
+	document.location.href = "<?php echo HTTP_ROOT; ?>revadmins/promodetails/"+promoId;
+}
+
 </script>
 <div class="span2"></div>
 <div class="span4" style="margin-left:30px;margin-bottom:12px;">
@@ -113,6 +119,7 @@ function editPromo(edit_id)
 					<th>Charge</th>
 					<th>Valid From</th>
 					<th>Valid To</th>
+					<th>No. Users</th>
 					<th>Status</th>
 					<th>Action</th>
 				</tr>
@@ -144,6 +151,18 @@ function editPromo(edit_id)
 					<td align="center">$ <?php echo number_format($ad['PromoCode']['price'],2);?></td>
 					<td align="center"><?php echo date('M j, Y', strtotime($ad['PromoCode']['validFrom'])); ?></td>
 					<td align="center"><?php echo date('M j, Y', strtotime($ad['PromoCode']['validTo'])); ?></td>
+					<td align="center">
+						<?php 
+							if($ad['userCount'] > 0){
+								echo $ad['userCount']; ?>
+								&nbsp;&nbsp;&nbsp;&nbsp;
+								<input class="btn btn-mini btn-success" type="button" value="Details" onclick="gotToDetails('<?php echo $ad['PromoCode']['id']; ?>')">
+						<?php		
+							}else{
+								echo "0";
+							}
+						?>	
+					</td>
 					<td align="center" id="status_<?php echo $ad['PromoCode']['id']; ?>"><?php echo $status;?></td>
 					<td align="center">
 						<button class="btn btn-mini btn-inverse" type="button" id="appbtn_<?php echo $ad['PromoCode']['id']; ?>" onclick="approvebtn('<?php echo $ad['PromoCode']['id']; ?>')" <?php echo @$showapr; ?>>Enable</button>

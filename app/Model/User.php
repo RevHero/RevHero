@@ -65,4 +65,27 @@ class User extends AppModel{
 		$userLastID = $userall->getLastInsertID();
 		return $userLastID;
 	}
+	
+	function getDetailsUser()
+	{
+		$getUser = $this->find('all', array('conditions'=>array('User.admin'=>0)), array('order'=>'User.created DESC'));
+		
+		$arrCount = 0;
+		foreach($getUser as $user)
+		{
+			//This is required to get the promocode details for that particular user
+			$getPromoCodeForUser = $this->query("SELECT `promo_codes`.`promocode` from `promo_codes`, `promo_users` where `promo_codes`.`id`=`promo_users`.`promo_id` and `promo_users`.`user_id`='".$user['User']['id']."'");
+			
+			$mainArr[$arrCount]['user_id'] = $user['User']['id'];
+			$mainArr[$arrCount]['email'] = $user['User']['email'];
+			$mainArr[$arrCount]['profile_image'] = $user['User']['prof_image'];
+			$mainArr[$arrCount]['signedUp'] = $user['User']['created'];
+			$mainArr[$arrCount]['is_active'] = $user['User']['is_active'];
+			$mainArr[$arrCount]['promocode'] = @$getPromoCodeForUser[0]['promo_codes']['promocode'];
+			
+			$arrCount++;
+		}
+		return $mainArr;
+	}
+	
 }
