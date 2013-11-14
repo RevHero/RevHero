@@ -4,14 +4,20 @@
 $(document).ready(function()
 {
 	var today = new Date();
+	var today = new Date();
+	var currentYear  = today.getFullYear();
+	var currentMonth = (today.getMonth()+1);
+	var currentDay   = today.getDate();
+	var startdate = currentYear+"-"+currentMonth+"-"+currentDay;
+	
 	$('#validFrom').datepicker({
 		autoclose: true,
-        startDate: today
+        startDate: startdate
 	});
 
 	$('#validTo').datepicker({
 		autoclose: true,
-        startDate: today
+        startDate: startdate
 	});
 	
 	$('#validTo').datepicker()
