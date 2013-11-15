@@ -12,10 +12,10 @@ $(document).ready( function () {
     "sPaginationType": "full_numbers",
 	"aoColumns": [ 
 			{ "sWidth": '22%' },
-			{ "sWidth": '8%' },
-			{ "sWidth": '13%' },
-			{ "sWidth": '13%' },
-			{ "sWidth": '14%' },
+			{ "sWidth": '9%' },
+			{ "sWidth": '15%' },
+			{ "sWidth": '15%' },
+			{ "sWidth": '10%' },
 			{ "sWidth": '10%' },
 			{ "sWidth": '20%', "bSortable": false }
 		    ]
@@ -146,7 +146,13 @@ function gotToDetails(promoId)
 				?>
 				<tr id="row_<?php echo $ad['PromoCode']['id']; ?>">
 					<td>
-						<span title="<?php echo $ad['PromoCode']['promocode']; ?>"><?php echo $ad['PromoCode']['promocode']; ?></span>
+						<?php if($ad['userCount'] > 0){ ?>
+							<a onclick="gotToDetails('<?php echo $ad['PromoCode']['id']; ?>')" style="cursor:pointer">
+								<span title="<?php echo $ad['PromoCode']['promocode']; ?>"><?php echo $ad['PromoCode']['promocode']; ?></span>
+							</a>	
+						<?php }else{ ?>
+							<span title="<?php echo $ad['PromoCode']['promocode']; ?>"><?php echo $ad['PromoCode']['promocode']; ?></span>
+						<?php } ?>
 					</td>
 					<td align="center">$ <?php echo number_format($ad['PromoCode']['price'],2);?></td>
 					<td align="center"><?php echo date('M j, Y', strtotime($ad['PromoCode']['validFrom'])); ?></td>
@@ -155,8 +161,6 @@ function gotToDetails(promoId)
 						<?php 
 							if($ad['userCount'] > 0){
 								echo $ad['userCount']; ?>
-								&nbsp;&nbsp;&nbsp;&nbsp;
-								<input class="btn btn-mini btn-success" type="button" value="Details" onclick="gotToDetails('<?php echo $ad['PromoCode']['id']; ?>')">
 						<?php		
 							}else{
 								echo "0";

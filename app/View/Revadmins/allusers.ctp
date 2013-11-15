@@ -11,10 +11,12 @@ $(document).ready( function () {
 	"aaSorting": [[ 2, "desc" ]],
     "sPaginationType": "full_numbers",
 	"aoColumns": [ 
-			{ "sWidth": '40%' },
+			{ "sWidth": '30%' },
+			{ "sWidth": '15%' },
 			{ "sWidth": '20%' },
-			{ "sWidth": '20%' },
-			{ "sWidth": '20%' },
+			{ "sWidth": '10%' },
+			{ "sWidth": '10%' },
+			{ "sWidth": '15%' },
 		    ]
 	});
 });
@@ -30,6 +32,8 @@ $(document).ready( function () {
 					<th>Email</th>
 					<th>Profile Image</th>
 					<th>Used Promo Code</th>
+					<th>Ad Created</th>
+					<th>Ad Published</th>
 					<th>Signed Up</th>
 				</tr>
 			</thead>
@@ -53,6 +57,8 @@ $(document).ready( function () {
 						<td align="center"><?php echo $user['email']; ?></td>
 						<td align="center"><?php echo $ProfileImage; ?></td>
 						<td align="center"><?php echo $user['promocode']; ?></td>
+						<td align="center"><?php echo $user['createdAdCount']; ?></td>
+						<td align="center"><?php echo $user['publishedAdCount']; ?></td>
 						<td align="center"><?php echo date('M j, Y', strtotime($user['signedUp'])); ?></td>
 					</tr>
 				<?php } ?>
