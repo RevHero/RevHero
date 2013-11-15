@@ -75,7 +75,7 @@ if(count($getallplacements) == 0)
       <div class="span2">
 	  	<?php
 			if(isset($placement['AdDetail']['ad_image']) && $placement['AdDetail']['ad_image'] != ''){
-				if(file_exists(HTTP_ROOT."ad_photos/".$placement['AdDetail']['ad_image'])){
+				if(file_exists(DIR_AD_PHOTOS.$placement['AdDetail']['ad_image'])){
 		?>
 			        <img src="<?php echo HTTP_FILES; ?>ad_photos/<?php echo $placement['AdDetail']['ad_image']; ?>" alt="" class="thumbnail">
 			<?php }else{ ?>
