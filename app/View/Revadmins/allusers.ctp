@@ -47,9 +47,9 @@ $(document).ready( function () {
 					
 					if(isset($user['profile_image']) && $user['profile_image'] != '' && file_exists(DIR_PROFILE_IMAGES.$user['profile_image']))
 					{
-						$ProfileImage = '<img src="'.HTTP_FILES."profile_images/".$user['profile_image'].'" style="max-width:50px;max-height:50px;">';
+						$ProfileImage = '<img src="'.HTTP_FILES."profile_images/".$user['profile_image'].'" style="width:50px;height:50px;">';
 					}else{
-						$ProfileImage = '<img src="'.HTTP_IMAGES."no_user.png".'" style="max-width:500px;max-height:50px;">';
+						$ProfileImage = '<img src="'.HTTP_IMAGES."no_user.png".'" style="width:50px;height:50px;">';
 					}
 					
 				?>
