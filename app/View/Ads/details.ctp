@@ -138,7 +138,7 @@ $(document).ready(function()
   </div>
   <div class="row">
     <div class="span1.5">
-	  <?php if($getDetails['AdDetail']['ad_image']){ ?>
+	  <?php if($getDetails['AdDetail']['ad_image'] && file_exists(DIR_AD_PHOTOS.$getDetails['AdDetail']['ad_image'])){ ?>
 	      <img src="<?php echo HTTP_FILES."ad_photos/".$getDetails['AdDetail']['ad_image']; ?>"  alt="<?php echo substr($getDetails['AdDetail']['headline'],0,35); ?>" class="img-rounded" style="max-width:100px;max-height:110px;">
 	  <?php }else{ ?>
     	  <img src="<?php echo HTTP_IMAGES."no_image.gif"; ?>"  alt="<?php echo substr($getDetails['AdDetail']['headline'],0,35); ?>" class="img-rounded" style="max-width:100px;max-height:110px;">
