@@ -64,7 +64,7 @@ function getTheDetails(ad_id)
 						  <div class="thumbnail" style="padding: 0">
 							<div style="padding:4px;height:130px;text-align:center;vertical-align:middle;">
 							<?php
-							  if(isset($addisplay['AdDetail']['ad_image']) && $addisplay['AdDetail']['ad_image'] != ''){
+							  if(isset($addisplay['AdDetail']['ad_image']) && $addisplay['AdDetail']['ad_image'] != '' && file_exists(DIR_AD_PHOTOS.$addisplay['AdDetail']['ad_image'])){
 							?>
 								<img class="img-rounded" style="max-height:125px;max-width:130px;" title="<?php echo $addisplay['AdDetail']['headline']; ?>" alt="<?php echo $addisplay['AdDetail']['headline']; ?>" src="<?php echo HTTP_FILES.'ad_photos/'.$addisplay['AdDetail']['ad_image']; ?>">
 							<?php
