@@ -21,7 +21,7 @@
 		<div class="nav-collapse">
 		  <ul class="nav pull-right">
 			<li>
-				<?php if($this->Session->read('profile_image') != ''){ ?>
+				<?php if($this->Session->read('profile_image') != '' && file_exists(DIR_PROFILE_IMAGES.$this->Session->read('profile_image'))){ ?>
 					<img src="<?php echo HTTP_FILES."profile_images/".$this->Session->read('profile_image'); ?>" class="img-circle img-polaroid" style="width:40px;height:40px;margin-top:2px;padding:2px;" >
 				<?php }else{ ?>
 					<img src="<?php echo HTTP_ROOT.'img/no_user.png'; ?>" class="img-circle img-polaroid" style="width:40px;height:40px;margin-top:2px;padding:2px;" >
