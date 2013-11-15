@@ -37,7 +37,7 @@ class PromoCode extends AppModel{
 		if(isset($editId) && $editId != ''){
 			$getAll = $this->find('all', array('conditions'=>array('PromoCode.id'=>$editId)));
 		}else{
-			$getAll = $this->find('all', array('order'=>array('Promocode.created DESC')));
+			$getAll = $this->find('all', array('order'=>array('PromoCode.created DESC')));
 		}
 		$usercounter = 0;
 		foreach($getAll as $single)
