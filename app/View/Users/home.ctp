@@ -152,6 +152,7 @@ function validate()
                 </div>
               </div>
             </div>
+			</div>
         </div>
 	</div>
 </div>
