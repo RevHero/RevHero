@@ -11,24 +11,33 @@ class DeployController extends AppController {
 
 	function index()
 	{
-		$commands = array(
-		'cd '.WEBHOOK_SERVER_PATH,
-		'git pull',
-		'git reset --hard HEAD',
-		'git pull',
-		'chmod -R 755 '.WEBHOOK_SERVER_PATH,
-		);
-	
-		// Run the commands for output
-		$output = '';
-		foreach($commands AS $command){
-			// Run it
-			$tmp = shell_exec($command);
-			// Output
-			$output .= "<span style=\"color: #6BE234;\">\$</span> <span style=\"color: #729FCF;\">{$command}\n</span>";
-			$output .= htmlentities(trim($tmp)) . "\n";
+		if($_SERVER['REQUEST_METHOD'] == 'POST')
+		{
+			var $webhook_path = Configure::read('server_path');
+			
+			$commands = array(
+			'cd '.$webhook_path,
+			'git pull',
+			'git reset --hard HEAD',
+			'git pull',
+			'chmod -R 755 '.$webhook_path,
+			);
+		
+			// Run the commands for output
+			$output = '';
+			foreach($commands AS $command){
+				// Run it
+				$tmp = shell_exec($command);
+				// Output
+				$output .= "<span style=\"color: #6BE234;\">\$</span> <span style=\"color: #729FCF;\">{$command}\n</span>";
+				$output .= htmlentities(trim($tmp)) . "\n";
+			}
+			exit;
 		}
-		exit;
+		else
+		{
+			echo "This is not a post request.";
+		}	
 	}
 }
 ?>

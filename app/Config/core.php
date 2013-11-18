@@ -388,3 +388,10 @@ Configure::write(
         'password' => 'MY PASSWORD'
     )
 );
+
+Configure::write(
+    'DEPLOY_SERVER_PATH',
+    array(
+        'server_path' => '/home/andolarh/public_html/'
+    )
+);
