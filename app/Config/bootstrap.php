@@ -19,6 +19,9 @@ define('DIR_FILES', WWW_ROOT.'files/');
 define('DIR_AD_PHOTOS', DIR_FILES.'ad_photos/');
 define('DIR_PROFILE_IMAGES', DIR_FILES.'profile_images/');
 
+//Server path for updating the GIT
+define('WEBHOOK_SERVER_PATH', '/home/andolarh/public_html/');
+
 Cache::config('default', array('engine' => 'File'));
 
 /**
