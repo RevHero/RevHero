@@ -28,6 +28,7 @@ class DeployController extends AppController {
 			$output .= "<span style=\"color: #6BE234;\">\$</span> <span style=\"color: #729FCF;\">{$command}\n</span>";
 			$output .= htmlentities(trim($tmp)) . "\n";
 		}
+		exit;
 	}
 }
 ?>
