@@ -41,6 +41,10 @@ class AppController extends Controller {
 				}
 			}
 			
+			if(CONTROLLER == 'deploy'){
+				$this->redirect(HTTP_ROOT."deploy/index");
+			}
+			
 			if (!defined('WWW_ROOT')) {
 				define('WWW_ROOT', dirname(__FILE__) . DS);
 			}
