@@ -5,11 +5,11 @@ class WebhooksController extends AppController {
 	function updategit()
 	{
 		//shell_exec('#!/bin/bash');
-		shell_exec('cd  /home/andolarh/public_html/RevHero');
+		shell_exec('cd  /home/andolarh/public_html/');
 		shell_exec('git pull');
 		shell_exec('git reset --hard HEAD');
 		$output = shell_exec('git pull');
-		shell_exec('chmod -R 755 /home/andolarh/public_html/RevHero');
+		shell_exec('chmod -R 755 /home/andolarh/public_html/');
 		echo "<pre>$output</pre>";
 		exit;
 	}
