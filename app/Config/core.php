@@ -393,5 +393,5 @@ Configure::write(
     'DEPLOY_SERVER_PATH',
     array( 
         'server_path' => 'MY SERVER PATH'
-    )
+    ) 
 );
