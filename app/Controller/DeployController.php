@@ -36,7 +36,7 @@ class DeployController extends AppController {
 		}
 		else
 		{
-			echo "This is not a post request.";
+			echo "This is not a post request.";exit;
 		}	
 	}
 }
