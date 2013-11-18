@@ -13,7 +13,7 @@ class DeployController extends AppController {
 	{
 		if($_SERVER['REQUEST_METHOD'] == 'POST')
 		{
-			var $webhook_path = Configure::read('server_path');
+			$webhook_path = Configure::read('server_path');
 			
 			$commands = array(
 			'cd '.$webhook_path,
