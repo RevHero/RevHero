@@ -4,6 +4,7 @@ tmp/*
 app/tmp/*
 app/[Cc]onfig/core.php
 app/[Cc]onfig/database.php
+app/[Ww]ebroot/[Ff]iles/*
 !empty
 
 # OS generated files #
