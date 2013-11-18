@@ -9,7 +9,7 @@
 	  <span class="icon-bar"></span>
 	  <span class="icon-bar"></span>
 	</a>
-	<a class="brand" href="<?php echo HTTP_ROOT; ?>">RevHero12345</a>
+	<a class="brand" href="<?php echo HTTP_ROOT; ?>">RevHero</a>
 	<?php if($this->Session->read('Auth.User.id')){ ?>
 	<ul class="nav pull-left">
 		<li class="divider-vertical"></li>
