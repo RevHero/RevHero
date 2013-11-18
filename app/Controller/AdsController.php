@@ -45,6 +45,80 @@ class AdsController extends AppController {
 		}	
 	}
 	
+	function edit($editId = NULL)
+	{
+		$this->layout = 'default';
+		$this->loadModel('AdDetail');
+		$this->loadModel('Tag');
+		
+		//echo "<pre>";print_r($this->request['data']);exit;
+		
+		if(isset($this->request['data']['Ad']) && $this->request['data']['Ad'])
+		{
+			//Checking whether the user edits anything or not and uploaded any image or not
+			if($this->request['data']['Ad']['dest_url'] == $this->request['data']['hid_dest_url'] && 
+			   $this->request['data']['Ad']['headline'] == $this->request['data']['hid_headline'] &&
+			   $this->request['data']['Ad']['bodytext'] == $this->request['data']['hid_body'] &&
+			   $this->request['data']['Ad']['cpc'] == $this->request['data']['hid_CPC'] &&
+			   $this->request['data']['Ad']['cpa'] == $this->request['data']['hid_CPA'] &&
+			   $this->request['data']['Ad']['alltags'] == $this->request['data']['hid_alltags'] &&
+			   $this->request['data']['Ad']['uploadimage']['name'] == '')
+			{   
+			   $this->Session->write("SAVEADDSUCCESS","2"); //Holds the session to display the error msg that nothing is edited
+			   $this->redirect(HTTP_ROOT."ads/lists");
+			}
+			else
+			{
+				$saveAdDetails = $this->AdDetail->saveDetails($this->Auth->user('id'), $this->request['data']['Ad']);
+				if($saveAdDetails && $saveAdDetails > 0)
+				{
+					$adDetailsId = $saveAdDetails;
+					if($this->request['data']['Ad']['uploadimage']['tmp_name'] && $this->request['data']['Ad']['uploadimage']['name'])
+					{
+						$photo_name = $this->Format->uploadPhoto($this->request['data']['Ad']['uploadimage']['tmp_name'],$this->request['data']['Ad']['uploadimage']['name'],$this->request['data']['Ad']['uploadimage']['size'],DIR_AD_PHOTOS,SES_ID,"ad_img");
+						
+						$adImage['AdDetail']['id'] = $adDetailsId;
+						$adImage['AdDetail']['ad_image'] = $photo_name;
+						$saveImageName = $this->AdDetail->save($adImage);
+					}
+					else if(!$this->request['data']['Ad']['uploadimage']['tmp_name'] && !$this->request['data']['Ad']['uploadimage']['name'] && $this->request['data']['hid_image'])
+					{
+						$copyImage = $this->request['data']['hid_image'];
+						$oldname = strtolower($this->request['data']['hid_image']);
+						$ext = substr(strrchr($oldname, "."), 1);
+						$newname = md5(time().SES_ID).".".$ext;
+						copy(DIR_AD_PHOTOS.$copyImage, DIR_AD_PHOTOS.$newname);
+						
+						$adImage['AdDetail']['id'] = $adDetailsId;
+						$adImage['AdDetail']['ad_image'] = $newname;
+						$saveImageName = $this->AdDetail->save($adImage);
+						
+						//$targetpath = $path.$newname;
+						//move_uploaded_file($tmp_name, $targetpath);
+					}
+					//echo $this->request['data']['Ad']['alltags']."#######".$this->request['data']['hid_alltags'];
+					
+					//if($this->request['data']['Ad']['alltags'] != $this->request['data']['hid_alltags'])
+					//{
+						$saveTagDetails = $this->Tag->saveTags($adDetailsId, $this->request['data']['Ad']['alltags']);
+					//}
+					
+					$this->Session->write("SAVEADDSUCCESS","1"); //Holds the session to display the successfully ad creation message
+					$this->redirect(HTTP_ROOT."ads/lists");
+				}
+				else
+				{
+					$this->Session->write("SAVEADDSUCCESS","0"); //Holds the session to display the error ad creation message
+					$this->redirect(HTTP_ROOT);
+				}
+			}
+		}
+		else
+		{
+			$getEditDetails = $this->AdDetail->getAdDetails($editId);
+			$this->set('getEditDetails', $getEditDetails);
+		}	
+	}
 	function getTag()
 	{
 		$this->layout = 'ajax';

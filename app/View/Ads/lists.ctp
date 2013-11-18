@@ -27,6 +27,10 @@ function closeBox()
 	$("#displayMsg").hide();
 }
 
+function EditAd(editid)
+{
+	document.location.href = "<?php echo HTTP_ROOT; ?>"+"ads/edit/"+editid;
+}
 </script>
 <div class="span2"></div>
 <div class="span4" style="margin-left:30px;margin-bottom:12px;"><a href="<?php echo HTTP_ROOT; ?>ads/add"><button class="btn btn-primary" type="button">Create new Ad</button></a></div>
@@ -34,9 +38,14 @@ function closeBox()
 <?php if(@$successaddsave && @$successaddsave == 1){ ?>
   <div class="alert alert-success">
 	<a class="close" onclick="closeBox();">x</a>
-	<strong>Thank You.</strong> You have created advertise successfully.
+	<strong>Thank You.</strong> You have created new advertise successfully.
   </div>
-<?php }else if(@$successaddsave == 0 && @$successaddsave != ''){ ?>  
+<?php }else if(@$successaddsave == 2 && @$successaddsave != ''){ ?> 
+  <div class="alert alert-error">
+	<a class="close" onclick="closeBox();">x</a>
+	<strong>Sorry!!</strong> You have not edited anything.
+  </div>
+<?php }else if(@$successaddsave == 0 && @$successaddsave != ''){ ?>
   <div class="alert alert-error">
 	<a class="close" onclick="closeBox();">x</a>
 	<strong>Sorry!!</strong> Advertise did not save.
@@ -112,7 +121,10 @@ function closeBox()
 				</div>
 			</td>
 			<td align="center"><?php echo $active;?></td>
-			<td align="center"><i class="icon-pencil"></i> <i class="icon-trash"></i></td>
+			<td align="center">
+				<i class="icon-pencil" onclick="EditAd('<?php echo $ad['AdDetail']['id']; ?>');" style="cursor:pointer;"></i>
+				<i class="icon-trash"></i>
+			</td>
         </tr>
 		<?php } ?>
     </tbody>
