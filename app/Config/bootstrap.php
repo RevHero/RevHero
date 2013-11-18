@@ -19,6 +19,7 @@ define('DIR_FILES', WWW_ROOT.'files/');
 define('DIR_AD_PHOTOS', DIR_FILES.'ad_photos/');
 define('DIR_PROFILE_IMAGES', DIR_FILES.'profile_images/');
 
+
 Cache::config('default', array('engine' => 'File'));
 
 /**
