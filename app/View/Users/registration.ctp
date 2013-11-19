@@ -5,21 +5,6 @@ function closeBox()
 	$("#displayMsg").hide();
 }
 
-function validate()
-{
-	var passwordValue = $("#pass").val();
-	var passwordLength = passwordValue.length;
-	
-	if(passwordValue){
-		if(passwordLength < 6){
-			alert("Password should be minimum 6 characters.");
-			return false;
-		}else{
-			return true;
-		}
-	}
-}
-
 </script>
 <div class="container">
 	<div class="row">
@@ -71,43 +56,12 @@ function validate()
               <div class="modal-body" style="overflow:visible">
                 <div class="well">
                   <ul class="nav nav-tabs">
-                    <li class="active"><a href="#login" data-toggle="tab">Login</a></li>
-                    <li><a href="#create" data-toggle="tab">Create Account</a></li>
+                    <li class="active"><a href="#login" data-toggle="tab">Create Account</a></li>
                   </ul>
                   <div id="myTabContent" class="tab-content">
                     <div class="tab-pane active in" id="login">
-                      <form class="form-horizontal" action='users/logincheck' method="POST">
-                        <fieldset>
-                          <div id="legend">
-                            <legend class="">Login</legend>
-                          </div>    
-                          <div class="control-group">
-                            <!-- Username -->
-                            <label class="control-label"  for="username">Email</label>
-                            <div class="controls">
-                              <input type="text" name="email" placeholder="" class="input-xlarge" required="true">
-                            </div>
-                          </div>
-     
-                          <div class="control-group">
-                            <!-- Password-->
-                            <label class="control-label" for="password">Password</label>
-                            <div class="controls">
-                              <input type="password" name="password" placeholder="" class="input-xlarge" required="true">
-                            </div>
-                          </div>
-                          <div class="control-group">
-                            <!-- Button -->
-                            <div class="controls">
-                              <button class="btn btn-success">Login</button>
-							  <span style="margin-left:110px;color:#317EAC;"><a href="<?php echo HTTP_ROOT; ?>users/forgotpassword">Forgot Password?</a></span>
-                            </div>
-                          </div>
-                        </fieldset>
-                      </form>                
-                    </div>
-                    <div class="tab-pane fade" id="create">
                       <form class="form-horizontal" id="tab" action="" name="registration" method="post">
+					  	<input type="hidden" name="data[User][hid_promocode_id]" id="hid_promocode_id" value="<?php echo $promocodeId; ?>">
 						<fieldset>
                           <div id="legend">
                             <legend class="">Create Account</legend>
@@ -119,12 +73,18 @@ function validate()
                               <input type="email" value="" class="input-xlarge" name="data[User][email]" required="true">
                             </div>
                           </div>
-     
                           <div class="control-group">
                             <!-- Password-->
                             <label class="control-label" for="password">Password</label>
                             <div class="controls">
                              <input type="password" id="pass" value="" class="input-xlarge" name="data[User][pass]" required="true">
+                            </div>
+                          </div>
+						  <div class="control-group">
+                            <!-- Promo Code-->
+                            <label class="control-label" for="password">Promo Code</label>
+                            <div class="controls">
+                             <input type="text" class="input-xlarge" name="data[User][promo]" value="<?php echo $displaypromo; ?>" readonly="readonly">
                             </div>
                           </div>
                           <div class="control-group">
@@ -134,8 +94,7 @@ function validate()
                             </div>
                           </div>
                         </fieldset>
-
-                      </form>
+                      </form>                
                     </div>
                 </div>
               </div>

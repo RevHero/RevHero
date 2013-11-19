@@ -1,15 +1,5 @@
 <?php
 App::uses('Controller', 'Controller');
-
-/**
- * Application Controller
- *
- * Add your application-wide methods in the class below, your controllers
- * will inherit them.
- *
- * @package		app.Controller
- * @link		http://book.cakephp.org/2.0/en/controllers.html#the-app-controller
- */
 class AppController extends Controller {
 	public $helpers = array('Html', 'Form');
 	public $components = array('Auth','Session','Format'); //Including the required components
@@ -82,7 +72,7 @@ class AppController extends Controller {
 			
 			$this->Auth->autoRedirect = false;
 			Security::setHash('md5'); //Setting for conveting the password to hash format
-			$this->Auth->allow('home','confirmation','logincheck','forgotpassword','admin_login','route_url','index'); //here we have to specify the actions which we want to load without the user authentication.
+			$this->Auth->allow('home','confirmation','logincheck','forgotpassword','admin_login','route_url','index','registration'); //here we have to specify the actions which we want to load without the user authentication.
 			
 			$this->Session->write("SUCCESS","");
 			$this->Session->write("CONFIRMREG","");
