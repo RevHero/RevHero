@@ -25,12 +25,7 @@ function validate()
 	<div class="row">
 		<div class="span4"></div>
 		<div class="span4" id="displayMsg">
-		  <?php if(@$success && @$success == 1){ ?>
-			  <div class="alert alert-success">
-				<a class="close" onclick="closeBox();">x</a>
-				<strong>Thank You.</strong> A confirmation email has been sent to your email.
-			  </div>
-		  <?php }else if(@$success == 0 && @$success != ''){ ?>
+		  <?php if(@$success == 0 && @$success != ''){ ?>
 			  <div class="alert alert-error">
 				<a class="close" onclick="closeBox();">x</a>
 				<strong>Sorry!!</strong> This email id is already registered.

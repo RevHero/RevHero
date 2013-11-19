@@ -102,20 +102,27 @@ class RevadminsController extends AppController {
 		echo json_encode($json_arr);exit;
 	}
 	
-	function edit_promo($editId)
+	function edit_promo($editId = NULL)
 	{
 		$this->layout = 'default_admin';
 		$this->loadModel('PromoCode');
 		//echo "<pre>";print_r($this->request);exit;
 		if($this->request->data){
 			$savePromoCode = $this->PromoCode->saveDetails($this->request->data);
-			
 			if($savePromoCode){
 				$this->redirect(HTTP_ROOT."revadmins/promo_code");
 			}
 		}else{
-			$getEditData = $this->PromoCode->AllPromoCodes($editId);
-			$this->set('getEditData', $getEditData);
+			if(isset($editId) && $editId != ''){
+				$getEditData = $this->PromoCode->AllPromoCodes($editId);
+				if($getEditData && count($getEditData) > 0){
+					$this->set('getEditData', $getEditData);
+				}else{
+					$this->redirect(HTTP_ROOT."revadmins/promo_code"); //If the user is providing manually the wrong promo id
+				}
+			}else{
+				$this->redirect(HTTP_ROOT."revadmins/promo_code"); //if the user is removing the ID manually
+			}	
 		}	
 	}
 	
@@ -159,11 +166,18 @@ class RevadminsController extends AppController {
 		$this->layout = 'default_admin';
 		$this->loadModel('PromoCode');
 		
-		$PromoDetails = $this->PromoCode->getPromoDetails($promoid);
-		$promoUsedUsers = $this->PromoCode->getRespectiveUsers($promoid);
-		
-		$this->set('PromoDetails', $PromoDetails);
-		$this->set('promoUsedUsers', $promoUsedUsers);
-		//echo "<pre>";print_r($promoUsedUsers);exit;
+		if(isset($promoid) && $promoid != ''){
+			$PromoDetails = $this->PromoCode->getPromoDetails($promoid);
+			$promoUsedUsers = $this->PromoCode->getRespectiveUsers($promoid);
+			
+			if($PromoDetails && $promoUsedUsers && $promoUsedUsers != '' && $PromoDetails != ''){
+				$this->set('PromoDetails', $PromoDetails);
+				$this->set('promoUsedUsers', $promoUsedUsers);
+			}else{
+				$this->redirect(HTTP_ROOT."revadmins/promo_code");
+			}
+		}else{
+			$this->redirect(HTTP_ROOT."revadmins/promo_code");
+		}	
 	}
 }

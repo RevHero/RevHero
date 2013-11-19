@@ -94,4 +94,9 @@ class PromoCode extends AppModel{
 		return $getAll;
 	}
 	
+	function getPromoIdFromPromoCode($promoCode)
+	{
+		$getpromocodeid = $this->find('all', array('fields'=>array('PromoCode.id'), 'conditions'=>array('PromoCode.promocode'=>$promoCode)));
+		return $getpromocodeid[0]['PromoCode']['id'];
+	}
 }

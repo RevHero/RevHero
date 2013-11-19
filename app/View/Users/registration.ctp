@@ -5,17 +5,21 @@ function closeBox()
 	$("#displayMsg").hide();
 }
 
+function validate()
+{
+	var errorMsg = $("#hid_error").val();
+	if(errorMsg && errorMsg == 1){
+		return false;
+	}else{
+		return true;
+	}
+}
 </script>
 <div class="container">
 	<div class="row">
 		<div class="span4"></div>
 		<div class="span4" id="displayMsg">
-		  <?php if(@$success && @$success == 1){ ?>
-			  <div class="alert alert-success">
-				<a class="close" onclick="closeBox();">x</a>
-				<strong>Thank You.</strong> A confirmation email has been sent to your email.
-			  </div>
-		  <?php }else if(@$success == 0 && @$success != ''){ ?>
+		  <?php if(@$success == 0 && @$success != ''){ ?>
 			  <div class="alert alert-error">
 				<a class="close" onclick="closeBox();">x</a>
 				<strong>Sorry!!</strong> This email id is already registered.
@@ -25,18 +29,6 @@ function closeBox()
 				<a class="close" onclick="closeBox();">x</a>
 				<strong>Sorry!!</strong> This promo code is invalid.
 			  </div>
-		  <?php } ?>
-		  
-		  <?php if(@$confirmReg && @$confirmReg == 1){ ?>
-		  		  <div class="alert alert-success">
-					<a class="close" onclick="closeBox();">x</a>
-					<strong>Thank You.</strong> Now you can login with your email and password.
-				  </div>
-		  <?php }else if(@$confirmReg == 0 && @$confirmReg != ''){ ?>
-		  		  <div class="alert alert-error">
-					<a class="close" onclick="closeBox();">x</a>
-					<strong>Sorry!!</strong> This email id is already confirmed.
-				  </div>
 		  <?php } ?>
 		  
 		  <?php if(@$loginresult == 0 && @$loginresult != ''){ ?>
@@ -61,7 +53,6 @@ function closeBox()
                   <div id="myTabContent" class="tab-content">
                     <div class="tab-pane active in" id="login">
                       <form class="form-horizontal" id="tab" action="" name="registration" method="post">
-					  	<input type="hidden" name="data[User][hid_promocode_id]" id="hid_promocode_id" value="<?php echo $promocodeId; ?>">
 						<fieldset>
                           <div id="legend">
                             <legend class="">Create Account</legend>
@@ -84,7 +75,15 @@ function closeBox()
                             <!-- Promo Code-->
                             <label class="control-label" for="password">Promo Code</label>
                             <div class="controls">
-                             <input type="text" class="input-xlarge" name="data[User][promo]" value="<?php echo $displaypromo; ?>" readonly="readonly">
+	                             <input type="text" class="input-xlarge" name="data[User][promo]" value="<?php echo @$displaypromo; ?>" readonly="readonly">
+								 <?php
+								 	 if(isset($errorMsg) && $errorMsg != ''){
+									 	echo @$errorMsg;
+										echo '<input type="hidden" name="data[User][hid_error]" id="hid_error" value="1">';
+									 }else{
+									 	echo '<input type="hidden" name="data[User][hid_error]" id="hid_error" value="0">';
+									 }
+								 ?>	
                             </div>
                           </div>
                           <div class="control-group">
