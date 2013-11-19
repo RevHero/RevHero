@@ -82,7 +82,7 @@ class Placement extends AppModel {
 		App::import('Model','Placement');
 		$placement = new Placement();
 		
-		$arrReserveKeywords = array("javascript","javascripts","image","images","img","imgs","css","style","styles","icon","icons","static","server","admin","user","administrator","login","password");
+		$arrReserveKeywords = array("javascript","javascripts","image","images","img","imgs","css","style","styles","icon","icons","static","server","admin","user","administrator","login","password","deploy");
 		
 		//$tempRandomKeyword = substr(md5(uniqid(rand())),0,6);
 		$tempRandomKeyword = $this->buildShortUrlKeyword(); //Generate the keyword as per the specified format
