@@ -20,14 +20,20 @@ class AdsController extends AppController {
 		{
 			$this->loadModel('AdDetail');
 			$this->loadModel('Tag');
-			
-			$saveAdDetails = $this->AdDetail->saveDetails($this->Auth->user('id'), $this->request['data']['Ad']);
+			if($this->Auth->user('id')){
+				$saveAdDetails = $this->AdDetail->saveDetails($this->Auth->user('id'), $this->request['data']['Ad']);
+			}else{
+				$saveAdDetails = $this->AdDetail->saveDetails(0, $this->request['data']['Ad']);
+			}
 			
 			if($saveAdDetails && $saveAdDetails > 0)
 			{
 				$adDetailsId = $saveAdDetails;
-				$photo_name = $this->Format->uploadPhoto($this->request['data']['Ad']['uploadimage']['tmp_name'],$this->request['data']['Ad']['uploadimage']['name'],$this->request['data']['Ad']['uploadimage']['size'],DIR_AD_PHOTOS,SES_ID,"ad_img");
-				
+				if($this->Auth->user('id')){
+					$photo_name = $this->Format->uploadPhoto($this->request['data']['Ad']['uploadimage']['tmp_name'],$this->request['data']['Ad']['uploadimage']['name'],$this->request['data']['Ad']['uploadimage']['size'],DIR_AD_PHOTOS,SES_ID,"ad_img");
+				}else{
+					$photo_name = $this->Format->uploadPhoto($this->request['data']['Ad']['uploadimage']['tmp_name'],$this->request['data']['Ad']['uploadimage']['name'],$this->request['data']['Ad']['uploadimage']['size'],DIR_AD_PHOTOS,0,"ad_img");
+				}
 				$this->loadModel('AdDetail');
 				$adImage['AdDetail']['id'] = $adDetailsId;
 				$adImage['AdDetail']['ad_image'] = $photo_name;
@@ -35,8 +41,29 @@ class AdsController extends AppController {
 				
 				$saveTagDetails = $this->Tag->saveTags($adDetailsId, $this->request['data']['Ad']['alltags']);
 				if($saveTagDetails == 1){
-					$this->Session->write("SAVEADDSUCCESS","1"); //Holds the session to display the successfully ad creation message
-					$this->redirect(HTTP_ROOT."ads/lists");
+					if($this->Auth->user('id')){
+						$this->Session->write("SAVEADDSUCCESS","1"); //Holds the session to display the successfully ad creation message
+						$this->redirect(HTTP_ROOT."ads/lists");
+					}else{
+						//$this->Session->setFlash('Ad is created successfully.', 'default', array(), 'S'); 
+						$id_arr = array();
+						$lastkey = 0;
+						if($this->Cookie->read('advertiseid')){
+							$cookiearr = $this->Cookie->read('advertiseid');
+							foreach($cookiearr as $k=>$v){
+								$id_arr[$k] = $v;
+								$lastkey = $k;
+							}
+							$id_arr[$lastkey++] = $adDetailsId;
+							$this->Cookie->write('advertiseid',$id_arr,false,strtotime('+30 days'));
+						}else{
+							$id_arr[$lastkey] = $adDetailsId;
+							$this->Cookie->write('advertiseid',$id_arr,false,strtotime('+30 days'));
+						}
+						
+						$this->Session->write("VISITORAD",$adDetailsId);
+						$this->redirect(HTTP_ROOT);
+					}
 				}else{
 					$this->Session->write("SAVEADDSUCCESS","0"); //Holds the session to display the error ad creation message
 					$this->redirect(HTTP_ROOT);
