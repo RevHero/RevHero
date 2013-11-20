@@ -30,6 +30,15 @@ class UsersController extends AppController {
 				$this->redirect(HTTP_ROOT);
 			}
 		}
+		if($this->Session->read("VISITORAD")){
+			$this->loadModel('AdDetail');
+			$getDetails = $this->AdDetail->getAdDetails($this->Session->read("VISITORAD"));
+			//pr($getDetails);exit;
+			if($getDetails && count($getDetails) >0){
+				$this->set('getDetails', $getDetails);
+			}
+			$this->Session->write("VISITORAD","");
+		}
 	}
 	
 	public function login($emailConf= NULL,$passConf= NULL)
