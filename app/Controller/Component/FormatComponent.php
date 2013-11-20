@@ -40,7 +40,7 @@ class FormatComponent extends Component
 			{
 				list($width,$height) = getimagesize($tmp_name);
 				
-				if($width > 800)
+				/*if($width > 800)
 				{
 					try {
 						if($ext == "png") {
@@ -75,16 +75,16 @@ class FormatComponent extends Component
 					}
 				}
 				else
-				{
+				{*/
 					$newname = md5(time().$count).".".$ext;
 					$targetpath = $path.$newname;
 					move_uploaded_file($tmp_name, $targetpath);
-				}
+				//}
 				
-				if($width < 200 || $height < 200){
+				/*if($width < 200 || $height < 200){
 					$im_P = 'convert '.$targetpath.'  -background white -gravity center -extent 200x200 '.$targetpath;
 					exec($im_P);
-				}
+				}*/
 				
 				return $newname;
 			}

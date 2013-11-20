@@ -5,31 +5,29 @@ class UsersController extends AppController {
 	function home($error = NULL)
 	{
 		$this->layout = 'default';
+		$this->loadModel('PromoCode');
+		$this->loadModel('PromoUser');
+		
 		if($this->Session->read('Auth.User.id')){
 			$this->redirect(HTTP_ROOT."users/dashboard");
 		}
-		
+		//echo "<pre>";print_r($this->request->data);exit;
 		if(!empty($this->request->data))
 		{
-			if(!empty($this->request->data['User']['registration']) && $this->request->data['User']['registration'] == 1)
-			{
-				$email = $this->request->data['User']['email'];
-				$this->request->data['User']['pass'] = $this->Auth->password($this->request->data['User']['pass']);
-				$this->request->data['User']['uniq_id'] = $this->Format->generateUniqNumber();
-				
-				$getDuplicate = $this->User->CheckDuplicate($email); //This is require to check the DUPLICATE registration with the same Email.
-				
-				if(!$getDuplicate){ //If the Email id is not present in the database
-					$successSave = $this->User->saveUserDetails($this->request->data['User']);
-					if($successSave){
-						$this->logincheck($email,$this->request->data['User']['pass']);
-						//$this->Session->write("SUCCESS","1");
-						//$this->redirect(HTTP_ROOT);
-					}
-				}else{ //If the USER email is already present in the database
-					$this->Session->write("SUCCESS","0");
-					$this->redirect(HTTP_ROOT);
+			$email = $this->request->data['User']['email'];
+			$this->request->data['User']['pass'] = $this->Auth->password($this->request->data['User']['pass']);
+			$this->request->data['User']['uniq_id'] = $this->Format->generateUniqNumber();
+			
+			$getDuplicate = $this->User->CheckDuplicate($email); //This is require to check the DUPLICATE registration with the same Email.
+			
+			if(!$getDuplicate){ //If the Email id is not present in the database
+				$successSave = $this->User->saveUserDetails($this->request->data['User']);
+				if($successSave){
+					$this->logincheck($email,$this->request->data['User']['pass']);
 				}
+			}else{ //If the USER email is already present in the database
+				$this->Session->write("SUCCESS","0");
+				$this->redirect(HTTP_ROOT);
 			}
 		}
 	}
@@ -42,6 +40,9 @@ class UsersController extends AppController {
 	//Require to implement the login functionality
 	public function logincheck($emailConf= NULL,$passConf= NULL)
 	{
+		if($this->Session->read('Auth.User.id')){
+			$this->redirect(HTTP_ROOT."users/dashboard");
+		}
 		if($emailConf && $passConf && $emailConf != '' && $passConf != ''){
 			$email = $emailConf;
 			$pass = $passConf;
@@ -86,6 +87,9 @@ class UsersController extends AppController {
 				$this->redirect(HTTP_ROOT);
 			}
 		}
+		else{ //This is require if the user manually enter this action without login, then he will be redirected to the home page/login page
+			$this->redirect(HTTP_ROOT);
+		}
 		exit;
 	}
 	
@@ -93,6 +97,7 @@ class UsersController extends AppController {
 	{
 		$this->layout = 'default';
 		$this->loadModel('Placement');
+		$this->loadModel('AdDetail');
 		$userId = $this->Session->read('Auth.User.id');
 		$gettotalplacementcounts = $this->Placement->allplacementdetails($userId);
 		
@@ -106,15 +111,25 @@ class UsersController extends AppController {
 		$getallplacements = $this->paginate('Placement');
 		
 		//echo "<pre>";print_r($getallplacements);exit;
+
+		$getallActiveAdsforUser = $this->AdDetail->getAllAds($this->Auth->user('id'));
+		
+		$getallApprovedAds = $this->AdDetail->find('count', array('conditions'=>array('AdDetail.is_active'=>1, 'AdDetail.status'=>1)));
+		
+		//echo "<pre>";print_r($getallApprovedAds);exit;
 		
 		$this->set('getallplacements', $getallplacements);
 		$this->set('totalplacementcounts', $gettotalplacementcounts);
 		
+		$this->set('countgetallActivedAds', count($getallActiveAdsforUser));
+		$this->set('countgetallApprovedAds', $getallApprovedAds);
 	}
 	
 	function logout()
 	{	
 		$this->Session->write('Auth.User.id','');
+		$this->Session->write('profile_image','');
+		$this->Session->destroy();
 		$this->Auth->logout();
 		$this->redirect(HTTP_ROOT);
 	}
@@ -188,6 +203,132 @@ class UsersController extends AppController {
 				$this->User->query("UPDATE users SET encrypted_password='".$newMd5Passwrod."',reset_token='' WHERE id=".$id);
 				$this->set('chkemail','11');
 			}
+		}
+	}
+	
+	function placementdetails($placementId = NULL)
+	{
+		$this->layout = 'default';
+		$this->loadModel('Placement');
+		$this->loadModel('AdClick');
+		$this->AdClick->recursive = -1;
+		
+		if(isset($placementId) && $placementId != '')
+		{
+			$getplacementdetails = $this->Placement->find('all', array('conditions'=>array('Placement.id'=>$placementId, 'Placement.publisher_id'=>$this->Auth->user('id'))));
+			if($getplacementdetails && count($getplacementdetails) > 0)
+			{
+				$this->set('getDetails',$getplacementdetails[0]);
+				
+				$getclickdetails = $this->AdClick->getChartResult($placementId);
+				
+				$dt_arr=array();
+				$all_clicks=array();
+				foreach($getclickdetails as $eachclick)
+				{
+					$dt=date('M j, Y',strtotime(date("Y-m-d", strtotime($eachclick['AdClick']['created']))));
+					array_push($dt_arr,$dt);
+					array_push($all_clicks,(int)$eachclick[0]['clickCount']);
+				}
+				$carr = array(array('name'=>'Clicks','color'=>'#36A7E7','connectNulls'=> 'true','data'=>$all_clicks));
+				//echo "<pre>";print_r($dt_arr);print_r($carr);exit;
+				$this->set('dt_arr',json_encode($dt_arr));
+				$this->set('all_clicks',json_encode($carr));
+			}
+			else
+			{
+				$this->redirect(HTTP_ROOT."users/dashboard/");
+			}
+		}
+		else
+		{
+			$this->redirect(HTTP_ROOT."users/dashboard/");
+		}	
+	}
+	
+	function profile()
+	{
+		$this->layout = 'default';
+		if($this->request['data'] && $this->request['data']['profile']['uploadimage']['tmp_name'] != '' && $this->request['data']['profile']['uploadimage']['name'] != '')
+		{
+			$photo_name = $this->Format->uploadPhoto($this->request['data']['profile']['uploadimage']['tmp_name'],$this->request['data']['profile']['uploadimage']['name'],$this->request['data']['profile']['uploadimage']['size'],DIR_PROFILE_IMAGES,SES_ID,"profile_img");
+			
+			if($photo_name){
+				if($this->request['data']['hid_old_prof_img'] && file_exists(DIR_PROFILE_IMAGES.$this->request['data']['hid_old_prof_img'])){
+					unlink(DIR_PROFILE_IMAGES.$this->request['data']['hid_old_prof_img']);
+				}	
+				$saveImage['User']['id'] = SES_ID;
+				$saveImage['User']['prof_image'] = $photo_name;
+				$saveImageName = $this->User->save($saveImage);
+			}	
+		}
+		
+		$this->User->recursive = -1;		
+		$getProfileImage = $this->User->find('all', array('fields'=>array('User.prof_image'),'conditions'=>array('User.id'=>SES_ID)));
+		$this->Session->write("profile_image", $getProfileImage[0]['User']['prof_image']);
+	}
+	
+	function registration()
+	{
+		if($this->Session->read('Auth.User.id')){
+			$this->redirect(HTTP_ROOT."users/dashboard");
+		}
+		$this->layout = 'default';
+		$this->loadModel('PromoCode');
+		if(isset($this->request->query['promocode']) && $this->request->query['promocode'] != '') //If PROMOCODE present in the query string
+		{
+			$promo_code = $this->request->query['promocode'];
+			
+			if(isset($promo_code) && $promo_code != '') //If user providing the PROMO CODE
+			{
+				$isValidPromo = $this->PromoCode->getValidatePromoCode($promo_code);
+				if(count($isValidPromo) > 0){
+					$this->set('displaypromo', @$promo_code);
+					$this->set('promocodeId', @$isValidPromo[0]['PromoCode']['id']);
+				}else{
+					$this->set('displaypromo', @$promo_code);
+					$this->set('errorMsg', "<b class='text-error'>This is a invalid promo code</b>");
+					//$this->Session->write("SUCCESS","2"); //This is require to set if the user is giving INVALID Promo Code
+					//$this->redirect(HTTP_ROOT);
+				}
+			}
+		}
+		else //If user is not giving promocode or trying to run the url with only registration action name
+		{
+			$this->set('displaypromo', @$promo_code);
+			$this->set('errorMsg', "<b class='text-error'>Please enter a valid URL with promo code</b>");
+			//$this->redirect(HTTP_ROOT);
+		}
+		
+		if(isset($this->request->data['User']))
+		{
+			$this->loadModel('User');
+			$this->loadModel('PromoUser');
+			//echo "<pre>";print_r($this->request->data['User']);exit;
+			
+			if($this->request->data['User']['hid_error'] == 0 && $this->request->data['User']['hid_error'] != 1)
+			{
+				$email = $this->request->data['User']['email'];
+				$this->request->data['User']['pass'] = $this->Auth->password($this->request->data['User']['pass']);
+				
+				$getDuplicate = $this->User->CheckDuplicate($email); //This is require to check the DUPLICATE registration with the same Email.
+				
+				if(!$getDuplicate){ //If the Email id is not present in the database
+					$successSave = $this->User->saveUserDetails($this->request->data['User']);
+					if($successSave){
+						$promocodeId = $this->PromoCode->getPromoIdFromPromoCode($this->request->data['User']['promo']); //Get the promo code id from promo code
+						$this->PromoUser->saveDetails($successSave, $promocodeId); //This is require to store respective data for user and promo
+						$this->logincheck($this->request->data['User']['email'], $this->request->data['User']['pass']);
+					}
+				}else{ //If the USER email is already present in the database
+					$this->Session->write("SUCCESS","0");
+					$this->redirect(HTTP_ROOT."users/registration?promocode=".$this->request->data['User']['promo']);
+				}
+			}
+			else
+			{
+				$this->redirect(HTTP_ROOT."users/registration?promocode=".$this->request->data['User']['promo']);
+			}	
 		}
 	}
 }

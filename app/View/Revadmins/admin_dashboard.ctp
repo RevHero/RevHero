@@ -11,12 +11,12 @@ $(document).ready( function () {
 	"aaSorting": [[ 2, "desc" ]],
     "sPaginationType": "full_numbers",
 	"aoColumns": [ 
-			{ "sWidth": '27%' },
 			{ "sWidth": '25%' },
-			{ "sWidth": '17%' },
-			{ "sWidth": '10%' },
+			{ "sWidth": '27%' },
+			{ "sWidth": '15%' },
+			{ "sWidth": '8%' },
 			{ "sWidth": '5%' },
-			{ "sWidth": '16%', "bSortable": false }
+			{ "sWidth": '20%', "bSortable": false }
 		    ]
 	});
 });
@@ -95,8 +95,8 @@ function rejectbtn(adId)
 					if($ad['AdDetail']['status'] == '' || $ad['AdDetail']['status'] == 0){
 						$status = 'Pending';
 						$showapr = 'style="display:;"';
-						$showrejdis = 'style="display:none;"';
-						$showrej = 'style="display:;"';
+						$showrejdis = 'style="display:;"';
+						$showrej = 'style="display:none;"';
 						$showaprdis = 'style="display:none;"';
 					}else if($ad['AdDetail']['status'] == 1){
 						$status = 'Approved';
@@ -142,7 +142,7 @@ function rejectbtn(adId)
 							echo $allTags;
 						?>
 					</td>
-					<td align="center"><?php echo $ad['AdDetail']['created'];?></td>
+					<td align="center"><?php echo date('M j, Y', strtotime($ad['AdDetail']['created'])); ?></td>
 					<td align="center" id="status_<?php echo $ad['AdDetail']['id']; ?>"><?php echo $status;?></td>
 					<td align="center"><?php echo $active;?></td>
 					<td align="center">
