@@ -161,7 +161,7 @@ function showtab(showid,hideid){
 				<div class="span6"> 
 				<form class="form-horizontal" method="post" id="advertiseform" name="advertiseform">
 					<div class="input-append">
-						<input type="url" class="span5" id="adv_url" name="adv_url" required="true" />
+						<input type="url" class="span5" id="adv_url" name="adv_url" required="true" placeholder="Enter a url to advertise"/>
 						<button class="btn btn-primary" type="submit">Advertise</button>
 					</div>
 				</form>
