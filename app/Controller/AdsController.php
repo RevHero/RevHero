@@ -48,17 +48,17 @@ class AdsController extends AppController {
 						//$this->Session->setFlash('Ad is created successfully.', 'default', array(), 'S'); 
 						$id_arr = array();
 						$lastkey = 0;
-						if($this->Cookie->read('advertiseid')){
-							$cookiearr = $this->Cookie->read('advertiseid');
+						if($this->Cookie->read('advertised')){
+							$cookiearr = $this->Cookie->read('advertised');
 							foreach($cookiearr as $k=>$v){
 								$id_arr[$k] = $v;
 								$lastkey = $k;
 							}
-							$id_arr[$lastkey++] = $adDetailsId;
-							$this->Cookie->write('advertiseid',$id_arr,false,strtotime('+30 days'));
+							$id_arr[++$lastkey] = $adDetailsId;
+							$this->Cookie->write('advertised',$id_arr,'/',strtotime('+30 days'));
 						}else{
 							$id_arr[$lastkey] = $adDetailsId;
-							$this->Cookie->write('advertiseid',$id_arr,false,strtotime('+30 days'));
+							$this->Cookie->write('advertised',$id_arr,'/',strtotime('+30 days'),'/');
 						}
 						
 						$this->Session->write("VISITORAD",$adDetailsId);
@@ -296,5 +296,27 @@ class AdsController extends AppController {
 		{
 			$this->redirect(HTTP_ROOT."ads/store");
 		}	
+	}
+	
+	function anonymousads(){
+		if($this->Cookie->read('advertised')){
+			$this->loadModel('AdDetail');
+			$getDetails = $this->AdDetail->find('all',array('conditions'=>array('AdDetail.id'=>($this->Cookie->read('advertised')))));
+			$this->set('anonymousads',$getDetails);
+		}else{
+			$this->redirect(HTTP_ROOT);
+		}
+	}
+	
+	function linkad(){
+		if(isset($this->data['linked'])){
+			$this->loadModel('AdDetail');
+			foreach($this->data['cpc'] as $k => $v){
+				$this->AdDetail->query("UPDATE ad_details set cpc = ".$v.",cpa= ".$this->data['cpa'][$k].",advertiser_id=".SES_ID." WHERE id = ".$k);
+			}
+		}
+		unset($_COOKIE['advertised']);
+		$this->Cookie->write('advertised','','/',time()-10000);
+		$this->redirect(HTTP_ROOT);
 	}
 }
