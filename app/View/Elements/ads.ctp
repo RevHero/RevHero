@@ -27,8 +27,15 @@
 				echo $allTags;
 			?>
 		</p>
+		<?php if(isset($detailpg)){ ?>
+			<p class="displayDetails"><b>CPA:</b> $<?php echo number_format($getDetails['AdDetail']['CPA'],2); ?></p>
+			<p class="displayDetails"><i class="icon-envelope"></i> <?php echo $getDetails['User']['email']; ?></p>
+			<p class="displayDetails"><b>Created:</b> <?php echo date("F j, Y", strtotime($getDetails['AdDetail']['created'])); ?></p>
+		<?php } ?>
+		
       </p>
     </div>
+	<?php if(!isset($home) && !isset($detailpg)){ ?>
 	<div class="span12" >&nbsp;</div>
 	<div class="span12" >
 		<div class="span4.5">
@@ -48,9 +55,19 @@
 		</div>	
 		</div>
 	</div>
+	
+	<?php } ?>
+	
+	
+	
 	</div>
 
   <?php } ?>
+  <?php if(isset($detailpg)){ ?>
+	<div style="margin-top:10px;">
+	 	<?php echo $getDetails['AdDetail']['body']; ?>
+	</div>
+ <?php } ?>
 </div>
 <?php }
 } ?>

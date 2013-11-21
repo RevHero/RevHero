@@ -132,41 +132,7 @@ $(document).ready(function()
 	});
 });
 </script>
-<div class="container well">
-  <div>
-  	<h3><?php echo substr($getDetails['AdDetail']['headline'],0,35); ?></h3>
-  </div>
-  <div class="row">
-    <div class="span1.5">
-	  <?php if($getDetails['AdDetail']['ad_image'] && file_exists(DIR_AD_PHOTOS.$getDetails['AdDetail']['ad_image'])){ ?>
-	      <img src="<?php echo HTTP_FILES."ad_photos/".$getDetails['AdDetail']['ad_image']; ?>"  alt="<?php echo substr($getDetails['AdDetail']['headline'],0,35); ?>" class="img-rounded" style="max-width:100px;max-height:110px;">
-	  <?php }else{ ?>
-    	  <img src="<?php echo HTTP_IMAGES."no_image.gif"; ?>"  alt="<?php echo substr($getDetails['AdDetail']['headline'],0,35); ?>" class="img-rounded" style="max-width:100px;max-height:110px;">
-	  <?php } ?>
-    </div>
-    <div class="span4.5">
-      <p class="displayDetails">
-        <i class="icon-globe"></i> <a href="<?php echo $getDetails['AdDetail']['dest_url']; ?>" style="outline:none;" target="_blank"><?php echo $getDetails['AdDetail']['dest_url']; ?></a><br />
-		<p class="displayDetails"><b>Tags:</b>
-			<?php
-				$allTags = '';
-				foreach($getDetails['Tag'] as $tag)
-				{
-					$allTags .= '<span class="tag label label-info">'.$tag['tag_name']."</span> ";
-				}
-				echo $allTags;
-			?>
-		</p>
-		<p class="displayDetails"><b>CPA:</b> $<?php echo number_format($getDetails['AdDetail']['CPA'],2); ?></p>
-		<p class="displayDetails"><i class="icon-envelope"></i> <?php echo $getDetails['User']['email']; ?></p>
-        <p class="displayDetails"><b>Created:</b> <?php echo date("F j, Y", strtotime($getDetails['AdDetail']['created'])); ?></p>
-      </p>
-    </div>
-  </div>
-  <div style="margin-top:10px;">
-	 <?php echo $getDetails['AdDetail']['body']; ?>
-  </div>
-</div>
+<?php echo $this->element('ads'); ?>
 
 <div class="container well">
 	<div class="row">
@@ -176,12 +142,12 @@ $(document).ready(function()
 	</div>
 	<div class="row">
 		<form class="form-horizontal" method="post" onsubmit="return false;">
-			<input type="hidden" name="hid_ad_id" id="hid_ad_id" value="<?php echo $getDetails['AdDetail']['id']; ?>" />
+			<input type="hidden" name="hid_ad_id" id="hid_ad_id" value="<?php echo $anonymousads[0]['AdDetail']['id']; ?>" />
 			<input type="hidden" name="hid_publisher_id" id="hid_publisher_id" value="<?php echo $this->Session->read('Auth.User.id'); ?>" />
 			<input type="hidden" name="hid_is_keyword_exist" id="hid_is_keyword_exist" value="" />
-			<input type="hidden" name="hid_headline" id="hid_headline" value="<?php echo substr($getDetails['AdDetail']['headline'],0,35); ?>" />
-			<input type="hidden" name="hid_body" id="hid_body" value="<?php echo substr($getDetails['AdDetail']['body'],0,104); ?>" />
-			<input type="hidden" name="hid_destination_url" id="hid_destination_url" value="<?php echo $getDetails['AdDetail']['dest_url']; ?>" />
+			<input type="hidden" name="hid_headline" id="hid_headline" value="<?php echo substr($anonymousads[0]['AdDetail']['headline'],0,35); ?>" />
+			<input type="hidden" name="hid_body" id="hid_body" value="<?php echo substr($anonymousads[0]['AdDetail']['body'],0,104); ?>" />
+			<input type="hidden" name="hid_destination_url" id="hid_destination_url" value="<?php echo $anonymousads[0]['AdDetail']['dest_url']; ?>" />
 			<div class="control-group">
 				<label class="control-label" for="inputKeyword">Custom Keyword</label>
 				<div class="controls">

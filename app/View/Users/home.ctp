@@ -25,8 +25,15 @@ $(document).ready(function(){
 		$('#login_div').hide('slow');
 		$('#signup_div').hide('slow');
 		$('#detailid').hide('slow');
+		$('#placements').hide('slow');
+		$('#placementcontainer').hide('slow');
 		$('#ad_div').show('slow');
 		$('#dest_url').val($('#adv_url').val());
+		$('#testTextarea2').val('');
+		$("#add_headline").val('');
+		$("#allTags").val('');
+		$("span[class='tag label label-info']").remove();
+		$('#prfimg').val('');
 		headline_txt();
 	});
 });
@@ -64,6 +71,9 @@ function homepage(){
 	$('#adv_url').val('');
 }
 
+function showplacement(){
+	$('#placements').toggle('slow');
+}
 
 </script>
 
@@ -161,7 +171,7 @@ function showtab(showid,hideid){
 				<div class="span6"> 
 				<form class="form-horizontal" method="post" id="advertiseform" name="advertiseform">
 					<div class="input-append">
-						<input type="url" class="span5" id="adv_url" name="adv_url" required="true" placeholder="Enter a url to advertise"/>
+						<input type="url" class="span5" id="adv_url" name="adv_url" required="true" placeholder="Enter a url to advertise" />
 						<button class="btn btn-primary" type="submit">Advertise</button>
 					</div>
 				</form>
@@ -172,42 +182,13 @@ function showtab(showid,hideid){
 				<div style="clear:both;"></div>
               </div>
 			  
-			  <div class="container well" id="detailid" <?php if(!isset($getDetails)){ ?>style="display:none;" <?php } ?> >
-  <?php if(isset($getDetails)){ ?>
-  <div>
-  	<h3><?php echo substr($getDetails['AdDetail']['headline'],0,35); ?></h3>
-  </div>
-  <div class="row">
-    <div class="span1.5">
-	  <?php if($getDetails['AdDetail']['ad_image'] && file_exists(DIR_AD_PHOTOS.$getDetails['AdDetail']['ad_image'])){ ?>
-	      <img src="<?php echo HTTP_FILES."ad_photos/".$getDetails['AdDetail']['ad_image']; ?>"  alt="<?php echo substr($getDetails['AdDetail']['headline'],0,35); ?>" class="img-rounded" style="max-width:100px;max-height:110px;">
-	  <?php }else{ ?>
-    	  <img src="<?php echo HTTP_IMAGES."no_image.gif"; ?>"  alt="<?php echo substr($getDetails['AdDetail']['headline'],0,35); ?>" class="img-rounded" style="max-width:100px;max-height:110px;">
-	  <?php } ?>
-    </div>
-    <div class="span4.5">
-      <p class="displayDetails">
-        <i class="icon-globe"></i> <a href="<?php echo $getDetails['AdDetail']['dest_url']; ?>" style="outline:none;" target="_blank"><?php echo $getDetails['AdDetail']['dest_url']; ?></a><br />
-		<p class="displayDetails"><b>Tags:</b>
-			<?php
-				$allTags = '';
-				foreach($getDetails['Tag'] as $tag)
-				{
-					$allTags .= '<span class="tag label label-info">'.$tag['tag_name']."</span> ";
-				}
-				echo $allTags;
-			?>
-		</p>
-		<p>
-		Sign up or Login to link this Advertisement to your account.
-		</p>
-      </p>
-    </div>
-  </div>
-  <?php } ?>
-</div>
-			  
-			  
+			  <?php echo $this->element('ads'); ?>
+			  <?php if(isset($anonymousads)){  ?>
+					<a href="javascript:void(0);" onclick="showplacement();"><h4>Create Ad Placement</h4></a>
+			 <?php } ?>
+			    <div id="placements" <?php if(isset($home)){ ?> style="display:none;" <?php } ?> >
+			  		<?php echo $this->element('placements'); ?>
+				</div>			  
 			  
               <div class="modal-body" style="overflow:visible" id="login_div">
                 <div class="well">
@@ -317,7 +298,7 @@ function showtab(showid,hideid){
 					<div class="control-group">
 						<label class="control-label">Image <b>:</b></label>
 						<div class="controls">
-							<input type="file" name="data[Ad][uploadimage]" class="input-xlarge"/>
+							<input type="file" name="data[Ad][uploadimage]" class="input-xlarge" id="prfimg"/>
 						</div>
 					</div>
 					<div class="form-actions">

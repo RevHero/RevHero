@@ -224,7 +224,8 @@ class AdsController extends AppController {
 			$this->loadModel('User');
 			$getDetails = $this->AdDetail->getAdDetails($adid);
 			if($getDetails && count($getDetails) >0){
-				$this->set('getDetails', $getDetails);
+				$this->set('anonymousads', array($getDetails));
+				$this->set('detailpg', 1);
 			}else{
 				$this->redirect(HTTP_ROOT."ads/lists");
 			}	
@@ -260,6 +261,22 @@ class AdsController extends AppController {
 		if($savePlacementDetails){
 			$json_arr['status'] = 1;
 			$json_arr['customKeyword'] = $savePlacementDetails;
+			if(!$this->Auth->user('id')){
+				$id_arr = array();
+				$lastkey = 0;
+				if($this->Cookie->read('placements')){
+					$cookiearr = $this->Cookie->read('placements');
+					foreach($cookiearr as $k=>$v){
+						$id_arr[$k] = $v;
+						$lastkey = $k;
+					}
+					$id_arr[++$lastkey] = $savePlacementDetails;
+					$this->Cookie->write('placements',$id_arr,'/',strtotime('+30 days'));
+				}else{
+					$id_arr[$lastkey] = $savePlacementDetails;
+					$this->Cookie->write('placements',$id_arr,'/',strtotime('+30 days'),'/');
+				}
+			}
 		}else{
 			$json_arr['status'] = 0;
 		}

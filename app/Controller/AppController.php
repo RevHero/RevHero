@@ -72,7 +72,7 @@ class AppController extends Controller {
 			
 			$this->Auth->autoRedirect = false;
 			Security::setHash('md5'); //Setting for conveting the password to hash format
-			$this->Auth->allow('home','confirmation','logincheck','forgotpassword','admin_login','route_url','index','registration','getTitleFromUrl','getTag','add'); //here we have to specify the actions which we want to load without the user authentication.
+			$this->Auth->allow('home','confirmation','logincheck','forgotpassword','admin_login','route_url','index','registration','getTitleFromUrl','getTag','add','savePlacements'); //here we have to specify the actions which we want to load without the user authentication.
 			
 			$this->Session->write("SUCCESS","");
 			$this->Session->write("CONFIRMREG","");

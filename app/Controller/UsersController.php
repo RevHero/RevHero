@@ -35,7 +35,8 @@ class UsersController extends AppController {
 			$getDetails = $this->AdDetail->getAdDetails($this->Session->read("VISITORAD"));
 			//pr($getDetails);exit;
 			if($getDetails && count($getDetails) >0){
-				$this->set('getDetails', $getDetails);
+				$this->set('anonymousads', array($getDetails));
+				$this->set('home', 1);
 			}
 			$this->Session->write("VISITORAD","");
 		}
