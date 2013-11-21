@@ -104,12 +104,15 @@ class UsersController extends AppController {
 	
 	function dashboard()
 	{
+		$advcookie = $this->Cookie->read('advertised');
+		if(!empty($advcookie)){
+			$this->redirect(HTTP_ROOT."ads/anonymousads");
+		}
 		$this->layout = 'default';
 		$this->loadModel('Placement');
 		$this->loadModel('AdDetail');
 		$userId = $this->Session->read('Auth.User.id');
 		$gettotalplacementcounts = $this->Placement->allplacementdetails($userId);
-		
 		$conditions = array('Placement.is_active'=>1, 'Placement.publisher_id'=>$userId);
 		$this->paginate = array(
 			'conditions' => $conditions,
