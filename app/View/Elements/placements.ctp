@@ -20,7 +20,7 @@
 				<label class="control-label" for="inputKeyword">Custom Keyword</label>
 				<div class="controls">
 					<input type="text" id="customKeyword" placeholder="Custom Keyword">
-					<span id="loader" style="margin-left:5px;display:none;"><img src="<?php echo HTTP_ROOT; ?>img/ajax-loader.gif" /> Getting Availability</span>
+					<span id="loader1" style="margin-left:5px;display:none;"><img src="<?php echo HTTP_ROOT; ?>img/ajax-loader.gif" /> Getting Availability</span>
 					<span style="color:#006600;margin-left:10px;" id="avail"></span>
 					<span style="color:#FF0000;margin-left:10px;" id="notavail"></span>
 				</div>

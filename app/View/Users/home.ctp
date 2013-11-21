@@ -30,6 +30,7 @@ $(document).ready(function(){
 		$('#ad_div').show('slow');
 		$('#dest_url').val($('#adv_url').val());
 		$('#testTextarea2').val('');
+		$('#createad').hide('slow');
 		$("#add_headline").val('');
 		$("#allTags").val('');
 		$("span[class='tag label label-info']").remove();
@@ -184,7 +185,7 @@ function showtab(showid,hideid){
 			  
 			  <?php echo $this->element('ads'); ?>
 			  <?php if(isset($anonymousads)){  ?>
-					<a href="javascript:void(0);" onclick="showplacement();"><h4>Create Ad Placement</h4></a>
+					<a href="javascript:void(0);" onclick="showplacement();" id="createad"><h4>Create Ad Placement</h4></a>
 			 <?php } ?>
 			    <div id="placements" <?php if(isset($home)){ ?> style="display:none;" <?php } ?> >
 			  		<?php echo $this->element('placements'); ?>
