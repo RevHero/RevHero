@@ -29,7 +29,7 @@
 		</p>
 		<?php if(isset($detailpg)){ ?>
 			<p class="displayDetails"><b>CPA:</b> $<?php echo number_format($getDetails['AdDetail']['CPA'],2); ?></p>
-			<p class="displayDetails"><i class="icon-envelope"></i> <?php echo $getDetails['User']['email']; ?></p>
+			<?php if(!empty($getDetails['User']['email'])) { ?> <p class="displayDetails"><i class="icon-envelope"></i> <?php echo $getDetails['User']['email']; ?></p> <?php } ?>
 			<p class="displayDetails"><b>Created:</b> <?php echo date("F j, Y", strtotime($getDetails['AdDetail']['created'])); ?></p>
 		<?php } ?>
 		
