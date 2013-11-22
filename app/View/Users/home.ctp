@@ -168,8 +168,8 @@ function showtab(showid,hideid){
     		<div class="" id="loginModal">
               <div class="modal-header">
                 <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>-->
-				<div class="span5" id="signup_div" <?php if(isset($getDetails)){ ?>style="display:none;" <?php } ?>> <h3>Have an Account?</h3></div>
-				<div class="span6"> 
+				<div class="span5" id="signup_div" <?php if(isset($getDetails) || isset($anonymousplacements)){ ?>style="display:none;" <?php } ?>> <h3>Have an Account?</h3></div>
+				<div class="span6 pull-right"> 
 				<form class="form-horizontal" method="post" id="advertiseform" name="advertiseform">
 					<div class="input-append">
 						<input type="url" class="span5" id="adv_url" name="adv_url" required="true" placeholder="Enter a url to advertise" />
@@ -190,7 +190,37 @@ function showtab(showid,hideid){
 			    <div id="placements" <?php if(isset($home)){ ?> style="display:none;" <?php } ?> >
 			  		<?php echo $this->element('placements'); ?>
 				</div>			  
-			  
+			  <?php if(isset($anonymousplacements)){ ?>
+			    <div class="container well" id="placementcontainer">
+					<div class="row">
+						<div class="span1"></div>
+						<div class="span11">
+						  <h4>Copy the below content to display in your website.</h4>
+						  <p id="placementShow">
+						  	
+							<?php
+							$DisplayContent = '';
+							if($anonymousplacements[0][0]['Placement']['type'] == 'text' && $anonymousplacements[0][0]['Placement']['format'] == '1'){
+								$DisplayContent = $anonymousplacements[0][0]['AdDetail']['headline'].' - '.$anonymousplacements[0][0]['AdDetail']['body'].' - '.HTTP_ROOT.$anonymousplacements[0][0]['Placement']['keyword'];
+							}else if($anonymousplacements[0][0]['Placement']['type'] == 'html' && $anonymousplacements[0][0]['Placement']['format'] == '1'){
+								$DisplayContent = '<a href="'.HTTP_ROOT.$anonymousplacements[0][0]['Placement']['keyword'].'" target="_blank">'.$anonymousplacements[0][0]['AdDetail']['headline'].'</a> - '.$anonymousplacements[0][0]['AdDetail']['body'];
+							}else if($anonymousplacements[0][0]['Placement']['type'] == 'text' && $anonymousplacements[0][0]['Placement']['format'] == '3'){
+								$DisplayContent = $anonymousplacements[0][0]['AdDetail']['headline'].'<br>'.HTTP_ROOT.$anonymousplacements[0][0]['Placement']['keyword'].'<br>'.$anonymousplacements[0][0]['AdDetail']['body'];
+							}else if($anonymousplacements[0][0]['Placement']['type'] == 'html' && $anonymousplacements[0][0]['Placement']['format'] == '3'){
+								$DisplayContent = '<a href="'.HTTP_ROOT.$anonymousplacements[0][0]['Placement']['keyword'].'" target="_blank">'.$anonymousplacements[0][0]['AdDetail']['headline'].'</a><br/><a href="'.HTTP_ROOT.$anonymousplacements[0][0]['Placement']['keyword'].'" target="_blank">'.HTTP_ROOT.$anonymousplacements[0][0]['Placement']['keyword'].'</a><br/>'.$anonymousplacements[0][0]['AdDetail']['body'];
+							}
+							echo $DisplayContent;
+							?>
+								<?php if(isset($home)){ ?>
+									<p>
+									Sign up or Login to link this Placement to your account.
+									</p>
+								<?php } ?>	
+						  </p>
+						</div>
+					</div>
+				</div>
+			  <?php } ?>
               <div class="modal-body" style="overflow:visible" id="login_div">
                 <div class="well">
                   <ul class="nav nav-tabs">

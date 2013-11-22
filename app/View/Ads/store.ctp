@@ -54,7 +54,7 @@ function getTheDetails(ad_id)
 						$counter = 1;
 						
 						foreach($allAdStore as $addisplay){
-						if($counter % 7 == 0){
+						if($counter % 6 == 0){
 							$first_child = 'margin-left:0px;padding-left:0px;';
 						}else{
 							$first_child = '';

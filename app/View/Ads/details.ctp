@@ -44,12 +44,14 @@ $(document).ready(function()
 				}else{
 					$("#loader").show();
 					$("#publishBtn").hide();
+					$(".publishBtn").hide();
 					$("#notavail").hide();
 					$("#avail").hide();
 					$.post(strURL+"ads/getUniqueKeyword",{customKeyword:customKeyword},function(data){
 						//alert(JSON.stringify(data, null, 4));
 						$("#loader").hide();
 						$("#publishBtn").show();
+						$(".publishBtn").show();
 						if(data.status == 1){
 							$("#notavail").show();
 							$("#avail").hide();
@@ -141,9 +143,9 @@ $(document).ready(function()
 		</div>
 	</div>
 	<div class="row">
-		<form class="form-horizontal" method="post" onsubmit="return false;">
-			<input type="hidden" name="hid_ad_id" id="hid_ad_id" value="<?php echo $anonymousads[0]['AdDetail']['id']; ?>" />
-			<input type="hidden" name="hid_publisher_id" id="hid_publisher_id" value="<?php echo $this->Session->read('Auth.User.id'); ?>" />
+		<form class="form-horizontal" method="post" action="<?php echo HTTP_ROOT."ads/savePlacements" ?>">
+			<input type="hidden" name="adversiteId" id="hid_ad_id" value="<?php echo $anonymousads[0]['AdDetail']['id']; ?>" />
+			<input type="hidden" name="publisherId" id="hid_publisher_id" value="<?php if($this->Session->read('Auth.User.id')) { echo $this->Session->read('Auth.User.id'); }else{ echo 0; }?>" />
 			<input type="hidden" name="hid_is_keyword_exist" id="hid_is_keyword_exist" value="" />
 			<input type="hidden" name="hid_headline" id="hid_headline" value="<?php echo substr($anonymousads[0]['AdDetail']['headline'],0,35); ?>" />
 			<input type="hidden" name="hid_body" id="hid_body" value="<?php echo substr($anonymousads[0]['AdDetail']['body'],0,104); ?>" />
@@ -151,7 +153,7 @@ $(document).ready(function()
 			<div class="control-group">
 				<label class="control-label" for="inputKeyword">Custom Keyword</label>
 				<div class="controls">
-					<input type="text" id="customKeyword" placeholder="Custom Keyword">
+					<input type="text" name="customKeyword" id="customKeyword" placeholder="Custom Keyword">
 					<span id="loader" style="margin-left:5px;display:none;"><img src="<?php echo HTTP_ROOT; ?>img/ajax-loader.gif" /> Getting Availability</span>
 					<span style="color:#006600;margin-left:10px;" id="avail"></span>
 					<span style="color:#FF0000;margin-left:10px;" id="notavail"></span>
@@ -171,12 +173,17 @@ $(document).ready(function()
 					<input type="radio" name="adFormat" id="adType2" value="3"> <span style="vertical-align:text-top">Three Line</span>
 				</div>
 			</div>
-		</form>
 	</div>
 	<div>
-	   <button class="btn btn-primary" id="publishBtn">Publish</button>
+	<div>
+  	   <?php if($this->Session->read('Auth.User.id')) { ?>
+	   		<button class="btn btn-primary" id="publishBtn">Publish</button>
+	   <?php }else{ ?>
+	   		<button class="btn btn-primary publishBtn" type="submit" name="pub_submit">Publish</button>
+	   <?php } ?>
 	   <span id="mainloader" style="margin-left:5px;display:none;"><img src="<?php echo HTTP_ROOT; ?>img/ajax-loader.gif" /> Creating Ad Placement</span>
     </div>
+	    </form>
 </div>
 
 <div class="container well" id="placementcontainer" style="display:none;">

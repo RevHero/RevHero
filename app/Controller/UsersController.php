@@ -40,6 +40,16 @@ class UsersController extends AppController {
 			}
 			$this->Session->write("VISITORAD","");
 		}
+		if($this->Session->read("VISITORPLACEMENT")){
+			$this->loadModel('Placement');
+			$getDetails = $this->Placement->find('all', array('conditions'=>array('Placement.id'=>$this->Session->read("VISITORPLACEMENT"))));
+			//pr($getDetails);exit;
+			if($getDetails && count($getDetails) >0){
+				$this->set('anonymousplacements', array($getDetails));
+				$this->set('home', 1);
+			}
+			$this->Session->write("VISITORPLACEMENT","");
+		}
 	}
 	
 	public function login($emailConf= NULL,$passConf= NULL)
@@ -109,6 +119,11 @@ class UsersController extends AppController {
 		if(!empty($advcookie)){
 			$this->redirect(HTTP_ROOT."ads/anonymousads");
 		}
+		
+		$placementcookie = isset($_COOKIE['publish_placement'])?$_COOKIE['publish_placement']:'';
+		if(!empty($placementcookie)){
+			$this->redirect(HTTP_ROOT."ads/anonymousplacements");
+		}
 		$this->layout = 'default';
 		$this->loadModel('Placement');
 		$this->loadModel('AdDetail');
@@ -117,7 +132,7 @@ class UsersController extends AppController {
 		$conditions = array('Placement.is_active'=>1, 'Placement.publisher_id'=>$userId);
 		$this->paginate = array(
 			'conditions' => $conditions,
-			'limit' => 2,
+			'limit' => 5,
 			'order' => array('Placement.created'=>'DESC'),
 		);
 		

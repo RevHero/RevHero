@@ -89,8 +89,34 @@
 <?php } ?>
 
 <script type="text/javascript">
+var placeARR = new Array();
+
+function getCookie(c_name)
+{
+	var c_value = document.cookie;
+	var c_start = c_value.indexOf(" " + c_name + "=");
+	if (c_start == -1)
+    {
+  		c_start = c_value.indexOf(c_name + "=");
+    }
+	if (c_start == -1)
+    {
+  		c_value = null;
+    }
+	else
+    {
+  		c_start = c_value.indexOf("=", c_start) + 1;
+  		var c_end = c_value.indexOf(";", c_start);
+  		if (c_end == -1)
+  		{
+			c_end = c_value.length;
+		}
+		c_value = unescape(c_value.substring(c_start,c_end));
+	}
+	return c_value;
+}
 $(document).ready(function(){
-		$("#publishBtn").click(function()
+	$("#publishBtn").click(function()
 	{
 		var strURL = $('#pageurl').val();
 		var customKeyword = $("#customKeyword").val().trim();
@@ -116,6 +142,27 @@ $(document).ready(function(){
 				$("#notavail").hide();
 				$("#avail").hide();
 				if(data.status == 1){
+					
+					var cookieName = 'publish_placement';
+					var today = new Date();
+					var expire = new Date();
+					var nDays=1;
+					
+					if(!getCookie('publish_placement'))
+					{
+						placeARR[0] = data.placementId;
+						expire.setTime(today.getTime() + 3600000*24*nDays);
+					}
+					else
+					{
+						placeARR = getCookie('publish_placement').split(",");
+						var keyValue = placeARR.length;
+						placeARR[keyValue] = data.placementId;
+						expire.setTime(today.getTime() + 3600000*24*nDays);
+					}	
+					
+					document.cookie = cookieName+"="+escape(placeARR)+ ";expires="+expire.toGMTString()+";path=/";
+					
 					if(adType == 'text' && adFormat == '1'){
 						//DisplayContent = hid_headline+' - '+hid_body+' - '+hid_destination_url;
 						DisplayContent = hid_headline+' - '+hid_body+' - '+strURL+data.customKeyword;
