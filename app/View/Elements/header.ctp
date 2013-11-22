@@ -17,6 +17,9 @@
 		<li class="divider-vertical"></li>
 	<?php } ?>	
 	<ul class="nav pull-left"> <!--  Ad Store link will come in both way during login and not login  -->
+		<?php if(!$this->Session->read('Auth.User.id')){ ?>
+			<li class="divider-vertical"></li>
+		<?php } ?>
 		<li><a href="<?php echo HTTP_ROOT ?>ads/store">Ad Store</a></li>
 		<li class="divider-vertical"></li>
 	</ul>
