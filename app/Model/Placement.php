@@ -142,24 +142,81 @@ class Placement extends AppModel {
 			return 0;
 		}
 	}
-	function getDestURL($slugparam)
+	function getDestURL($slugparam, $loggedInId=NULL)
 	{
 		App::import('Model','Placement');
 		$placement = new Placement();
 		
+		App::import('Model','AdDetail');
+		$adDetail = new AdDetail();
+		
+		App::import('Model','Config');
+		$config = new Config();
+		
+		$DestUrl = $placement->find('all',array('conditions'=>array('keyword'=>$slugparam)));//pr($DestUrl);exit;
+		
+		$isAdvertiser = false;
+		
+		if(isset($loggedInId) && $loggedInId != ''){
+			$getAdDetail = $adDetail->find('all', array('conditions'=>array('AdDetail.advertiser_id'=>$loggedInId, 'AdDetail.id'=>$DestUrl[0]['AdDetail']['id'])));
+			$isAdvertiser = true;
+		}
+		
+		switch ($isAdvertiser)
+		{
+			case true:
+			  $duplicateDayCount = $config->getDuplicateDaysCount();
+			  $returnDuplicateDetails = $this->VerifyDuplicateClick($DestUrl[0]['Placement']['id'], $_SERVER['REMOTE_ADDR'], $DestUrl, $duplicateDayCount);
+			  return $returnDuplicateDetails;
+			  
+			case false:
+			  $duplicateDayCount = $config->getDuplicateDaysCountAdv();
+			  $returnDuplicateDetails = $this->VerifyDuplicateClick($DestUrl[0]['Placement']['id'], $_SERVER['REMOTE_ADDR'], $DestUrl, $duplicateDayCount);
+			  return $returnDuplicateDetails;
+		}
+		
+	}
+	
+	function VerifyDuplicateClick($placeMentid, $userIp, $DestUrl, $duplicateDayCount)
+	{
 		App::import('Model','AdClick');
 		$adclick = new AdClick();
 		
-		$DestUrl = $placement->find('all',array('conditions'=>array('keyword'=>$slugparam)));
+		//$duplicateDayCount = 1;
+		$checkDuplicateClick = $adclick->find('first', array('fields'=>array('AdClick.placement_id', 'AdClick.user_ip_address', 'AdClick.created'), 'conditions'=>array('AdClick.placement_id'=>$placeMentid, 'AdClick.user_ip_address'=>$userIp), 'order'=>'AdClick.created DESC'));
 		
-		$adclickarr['AdClick']['ad_detail_id'] = $DestUrl[0]['AdDetail']['id'];
-		$adclickarr['AdClick']['placement_id'] = $DestUrl[0]['Placement']['id'];
-		$adclickarr['AdClick']['user_ip_address'] = $this->getRealIpAddr();
-		
-		$saveAdclicks = $adclick->save($adclickarr);
-		$adclickId = $adclick->getLastInsertID();
-		
-		return $adclickId."####".$DestUrl[0]['AdDetail']['dest_url'];
+		if($checkDuplicateClick) //Check if the data is present in the database for the above condition
+		{
+			$date1 = date('Y-m-d',strtotime($checkDuplicateClick['AdClick']['created']));
+			$date2 = date('Y-m-d');
+			$diff = abs(strtotime($date2) - strtotime($date1));
+			
+			$years = floor($diff / (365*60*60*24));
+			$months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
+			$days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
+
+			if($days > $duplicateDayCount || $duplicateDayCount == 0){ //if the difference day is greater than the ADMIN specified day
+				$adclickarr['AdClick']['ad_detail_id'] = $DestUrl[0]['AdDetail']['id'];
+				$adclickarr['AdClick']['placement_id'] = $DestUrl[0]['Placement']['id'];
+				$adclickarr['AdClick']['user_ip_address'] = $this->getRealIpAddr();
+				
+				$saveAdclicks = $adclick->save($adclickarr);
+				$adclickId = $adclick->getLastInsertID();
+				
+				return $adclickId."####".$DestUrl[0]['AdDetail']['dest_url'];
+			}else{
+				return "0####0";
+			}
+		}else{ //if not present in the database then we have to insert into database and redirect to the destination url
+			$adclickarr['AdClick']['ad_detail_id'] = $DestUrl[0]['AdDetail']['id'];
+			$adclickarr['AdClick']['placement_id'] = $DestUrl[0]['Placement']['id'];
+			$adclickarr['AdClick']['user_ip_address'] = $this->getRealIpAddr();
+			
+			$saveAdclicks = $adclick->save($adclickarr);
+			$adclickId = $adclick->getLastInsertID();
+			
+			return $adclickId."####".$DestUrl[0]['AdDetail']['dest_url'];
+		}
 	}
 	
 	function allplacementdetails($userId)

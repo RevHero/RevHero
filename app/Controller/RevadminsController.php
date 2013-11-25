@@ -37,8 +37,18 @@ class RevadminsController extends AppController {
 	function admin_config()
 	{
 		$this->layout = 'default_admin';
+		$this->loadModel('Config');
 		if($this->request->data){
-			$this->request->data['duplicateDays'];
+			$saveDuplicate = $this->Config->saveCofigData($this->request->data);
+
+			if($saveDuplicate)
+			{
+				$this->redirect(HTTP_ROOT."revadmins/admin_config");
+			}
+		}else{
+			$getAllValues = $this->Config->retrieveAllData();
+			//pr($getAllValues);exit;
+			$this->set('getAllValues', $getAllValues);
 		}
 	}
 	

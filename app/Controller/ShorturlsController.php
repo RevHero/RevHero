@@ -6,12 +6,10 @@ class ShorturlsController extends AppController {
 	{
 		$this->loadModel('Placement');
 		$checkKeywordExists = $this->Placement->isKeywordExists($this->params['slug']);
-		if(isset($checkKeywordExists) && $checkKeywordExists == 1){
-		
-			$saveAdClickandGetDestinationUrl = $this->Placement->getDestURL($this->params['slug']);
-			
+		if(isset($checkKeywordExists) && $checkKeywordExists == 1)
+		{
+			$saveAdClickandGetDestinationUrl = $this->Placement->getDestURL($this->params['slug'], $this->Auth->user('id'));
 			$explode = explode("####", $saveAdClickandGetDestinationUrl);
-			
 			$returnsuccess = $explode[0];
 			$destinationUrl = $explode[1];
 	
@@ -20,7 +18,9 @@ class ShorturlsController extends AppController {
 			}else{
 				$this->redirect(HTTP_ROOT);
 			}
-		}else{
+		}
+		else
+		{
 			//If the keyword is not exist then the user will be redirected as per the login as ADMIN/USER
 			if($this->Auth->user('admin') && $this->Auth->user('admin') == 1)
 			{
