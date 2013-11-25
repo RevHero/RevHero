@@ -335,7 +335,7 @@ class AdsController extends AppController {
 	
 	function anonymousplacements()
 	{
-		if($_COOKIE['publish_placement']){
+		if(isset($_COOKIE['publish_placement']) && $_COOKIE['publish_placement'] != ''){
 			$this->loadModel('Placement');
 			$arrPlacements = explode(",",$_COOKIE['publish_placement']);
 			$getDetails = $this->Placement->find('all',array('conditions'=>array('Placement.id'=>($arrPlacements))));

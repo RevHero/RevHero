@@ -55,7 +55,7 @@ $(document).ready( function () {
 				?>
 					<tr id="row_<?php echo $user['user_id']; ?>">
 						<td align="center"><?php echo $user['email']; ?></td>
-						<td align="center"><?php echo $ProfileImage; ?></td>
+						<td align="center"><?php if($user['email'] != 'Anonymous User'){ echo $ProfileImage; } ?></td>
 						<td align="center"><?php echo $user['promocode']; ?></td>
 						<td align="center"><?php echo $user['createdAdCount']; ?></td>
 						<td align="center"><?php echo $user['publishedAdCount']; ?></td>
