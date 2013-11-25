@@ -47,9 +47,9 @@ $(document).ready( function () {
 					
 					if(isset($user['profile_image']) && $user['profile_image'] != '' && file_exists(DIR_PROFILE_IMAGES.$user['profile_image']))
 					{
-						$ProfileImage = '<img src="'.HTTP_FILES."profile_images/".$user['profile_image'].'" style="width:50px;height:50px;">';
+						$ProfileImage = '<img class="img-rounded img-polaroid" src="'.HTTP_FILES."profile_images/".$user['profile_image'].'" style="width:50px;height:50px;">';
 					}else{
-						$ProfileImage = '<img src="'.HTTP_IMAGES."no_user.png".'" style="width:50px;height:50px;">';
+						$ProfileImage = '<img class="img-rounded img-polaroid" src="'.HTTP_IMAGES."no_user.png".'" style="width:50px;height:50px;">';
 					}
 					
 				?>
@@ -59,7 +59,7 @@ $(document).ready( function () {
 						<td align="center"><?php echo $user['promocode']; ?></td>
 						<td align="center"><?php echo $user['createdAdCount']; ?></td>
 						<td align="center"><?php echo $user['publishedAdCount']; ?></td>
-						<td align="center"><?php echo date('M j, Y', strtotime($user['signedUp'])); ?></td>
+						<td align="center"><?php if(isset($user['signedUp']) && $user['signedUp'] != ''){ echo date('M j, Y', strtotime($user['signedUp'])); }else{ echo ""; } ?></td>
 					</tr>
 				<?php } ?>
 			</tbody>
