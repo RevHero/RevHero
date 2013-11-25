@@ -143,7 +143,11 @@ $(document).ready(function()
 		</div>
 	</div>
 	<div class="row">
-		<form class="form-horizontal" method="post" action="<?php echo HTTP_ROOT."ads/savePlacements" ?>">
+		<?php if($this->Session->read('Auth.User.id')) { ?>
+			<form class="form-horizontal" method="post" onsubmit="return false">
+		<?php }else{ ?>	
+			<form class="form-horizontal" method="post" action="<?php echo HTTP_ROOT."ads/savePlacements" ?>">
+		<?php } ?>
 			<input type="hidden" name="adversiteId" id="hid_ad_id" value="<?php echo $anonymousads[0]['AdDetail']['id']; ?>" />
 			<input type="hidden" name="publisherId" id="hid_publisher_id" value="<?php if($this->Session->read('Auth.User.id')) { echo $this->Session->read('Auth.User.id'); }else{ echo 0; }?>" />
 			<input type="hidden" name="hid_is_keyword_exist" id="hid_is_keyword_exist" value="" />
@@ -174,7 +178,7 @@ $(document).ready(function()
 				</div>
 			</div>
 	</div>
-	<div>
+
 	<div>
   	   <?php if($this->Session->read('Auth.User.id')) { ?>
 	   		<button class="btn btn-primary" id="publishBtn">Publish</button>

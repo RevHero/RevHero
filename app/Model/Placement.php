@@ -155,25 +155,32 @@ class Placement extends AppModel {
 		
 		$DestUrl = $placement->find('all',array('conditions'=>array('keyword'=>$slugparam)));//pr($DestUrl);exit;
 		
-		$isAdvertiser = false;
-		
-		if(isset($loggedInId) && $loggedInId != ''){
-			$getAdDetail = $adDetail->find('all', array('conditions'=>array('AdDetail.advertiser_id'=>$loggedInId, 'AdDetail.id'=>$DestUrl[0]['AdDetail']['id'])));
-			$isAdvertiser = true;
-		}
-		
-		switch ($isAdvertiser)
+		if($DestUrl && count($DestUrl) > 0)
 		{
-			case true:
-			  $duplicateDayCount = $config->getDuplicateDaysCount();
-			  $returnDuplicateDetails = $this->VerifyDuplicateClick($DestUrl[0]['Placement']['id'], $_SERVER['REMOTE_ADDR'], $DestUrl, $duplicateDayCount);
-			  return $returnDuplicateDetails;
-			  
-			case false:
-			  $duplicateDayCount = $config->getDuplicateDaysCountAdv();
-			  $returnDuplicateDetails = $this->VerifyDuplicateClick($DestUrl[0]['Placement']['id'], $_SERVER['REMOTE_ADDR'], $DestUrl, $duplicateDayCount);
-			  return $returnDuplicateDetails;
+			$isAdvertiser = false;
+			
+			if(isset($loggedInId) && $loggedInId != ''){
+				$getAdDetail = $adDetail->find('all', array('conditions'=>array('AdDetail.advertiser_id'=>$loggedInId, 'AdDetail.id'=>$DestUrl[0]['AdDetail']['id'])));
+				$isAdvertiser = true;
+			}
+			
+			switch ($isAdvertiser)
+			{
+				case true:
+				  $duplicateDayCount = $config->getDuplicateDaysCount();
+				  $returnDuplicateDetails = $this->VerifyDuplicateClick($DestUrl[0]['Placement']['id'], $_SERVER['REMOTE_ADDR'], $DestUrl, $duplicateDayCount);
+				  return $returnDuplicateDetails;
+				  
+				case false:
+				  $duplicateDayCount = $config->getDuplicateDaysCountAdv();
+				  $returnDuplicateDetails = $this->VerifyDuplicateClick($DestUrl[0]['Placement']['id'], $_SERVER['REMOTE_ADDR'], $DestUrl, $duplicateDayCount);
+				  return $returnDuplicateDetails;
+			}
 		}
+		else
+		{
+			return "0####0";
+		}	
 		
 	}
 	
