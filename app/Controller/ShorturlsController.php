@@ -21,7 +21,7 @@ class ShorturlsController extends AppController {
 				$this->redirect(HTTP_ROOT);
 			}
 		}else{
-		
+			//If the keyword is not exist then the user will be redirected as per the login as ADMIN/USER
 			if($this->Auth->user('admin') && $this->Auth->user('admin') == 1)
 			{
 				$this->redirect(HTTP_ROOT."revadmins/admin_dashboard");
