@@ -17,7 +17,7 @@
 							<div class="control-group">
 								<label class="control-label">Duplicate Days</label>
 								<div class="controls">
-									<input id="duplicateDays" name="duplicate_days" type="text" placeholder="Duplicate Days" value="<?php echo @$getAllValues[0]['Config']['value']; ?>">
+									<input id="duplicateDays" name="duplicate_days" type="text" placeholder="Duplicate Days" value="<?php echo @$getAllValues[0]['Config']['value']; ?>" required="true">
 									<p class="help-block"></p>
 								</div>
 							</div>
@@ -26,7 +26,7 @@
 							<div class="control-group">
 								<label class="control-label">Advertiser Duplicate Days</label>
 								<div class="controls">
-									<input id="advduplicateDays" name="adv_duplicate_days" type="text" placeholder="Advertiser Duplicate Days" value="<?php echo @$getAllValues[1]['Config']['value']; ?>">
+									<input id="advduplicateDays" name="adv_duplicate_days" type="text" placeholder="Advertiser Duplicate Days" value="<?php echo @$getAllValues[1]['Config']['value']; ?>" required="true">
 									<p class="help-block"></p>
 								</div>
 							</div>
