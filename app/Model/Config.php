@@ -33,12 +33,20 @@ class Config extends AppModel{
 	function getDuplicateDaysCount()
 	{
 		$getCount = $this->find('all', array('conditions'=>array('Config.name'=>'duplicate_days')));
-		return $getCount[0]['Config']['value'];
+		if($getCount && count($getCount) > 0){
+			return $getCount[0]['Config']['value'];
+		}else{
+			return 0;
+		}	
 	}
 	
 	function getDuplicateDaysCountAdv()
 	{
 		$getCount = $this->find('all', array('conditions'=>array('Config.name'=>'adv_duplicate_days')));
-		return $getCount[0]['Config']['value'];
+		if($getCount && count($getCount) > 0){
+			return $getCount[0]['Config']['value'];
+		}else{
+			return 0;
+		}	
 	}
 }
