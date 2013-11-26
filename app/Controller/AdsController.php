@@ -196,8 +196,6 @@ class AdsController extends AppController {
 		
 		$alltags = $this->Tag->find('all', array('conditions'=>array('Tag.tag_name !=' => ''), 'limit' => 10));
 		
-		//echo "<pre>";print_r($alltags);exit;
-		
 		$this->Session->write('alltags', $alltags); //This is require to show the tags in the tagdetails page.
 		$this->set('alltags', $alltags);
 		
@@ -359,8 +357,16 @@ class AdsController extends AppController {
 	function linkplacement(){
 		if(isset($this->data['linked'])){
 			$this->loadModel('Placement');
-			$placementids = implode(',',$this->data['hid_placement_id']);
-			$this->Placement->query("UPDATE placements set publisher_id=".SES_ID." WHERE id IN (".$placementids.")");
+			//$placementids = implode(',',$this->data['hid_placement_id']);
+			//$this->Placement->query("UPDATE placements set publisher_id=".SES_ID." WHERE id IN (".$placementids.")");
+			
+			/* Added the functionality to update the "Publisher ID" and "Placememnt Format ID" in the placements table STARTS here */
+				foreach($this->data['hid_placement_id'] as $val)
+				{
+					$placementFormatId = "P".str_pad(SES_ID,5,"0",STR_PAD_LEFT)."-".str_pad($val,5,"0",STR_PAD_LEFT);
+					$this->Placement->query("update `placements` set publisher_id=".SES_ID.", `placementId`='".$placementFormatId."' where `id`='".$val."'");
+				}	
+			/* Added the functionality to update the Placememnt Format ID in the placements table ENDS here */
 		}
 		unset($_COOKIE['publish_placement']);
 		setcookie('publish_placement','',time()-10000,'/');

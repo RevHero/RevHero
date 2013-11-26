@@ -190,4 +190,16 @@ class RevadminsController extends AppController {
 			$this->redirect(HTTP_ROOT."revadmins/promo_code");
 		}	
 	}
+	
+	function saveRevenuePercentage()
+	{
+		$this->layout = 'ajax';
+		$this->loadModel('User');
+		
+		$saverevenue = $this->User->savePercentage($this->request->data);
+		if($saverevenue){
+			$json_arr['status'] = 1;
+			echo json_encode($json_arr);exit;
+		}	
+	}
 }

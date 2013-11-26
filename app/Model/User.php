@@ -85,6 +85,7 @@ class User extends AppModel{
 		$mainArr[0]['createdAdCount'] = $createdAdCount;
 		$mainArr[0]['publishedAdCount'] = $publishedAdCount;
 		$mainArr[0]['signedUp'] = '';
+		$mainArr[0]['revenue'] = '';
 		$mainArr[0]['is_active'] = '';
 		$mainArr[0]['promocode'] = '';
 		
@@ -104,11 +105,16 @@ class User extends AppModel{
 			$mainArr[$arrCount]['createdAdCount'] = $createdAdCount;
 			$mainArr[$arrCount]['publishedAdCount'] = $publishedAdCount;
 			$mainArr[$arrCount]['signedUp'] = $user['User']['created'];
+			$mainArr[$arrCount]['revenue'] = $user['User']['revenue_percentage'];
 			$mainArr[$arrCount]['is_active'] = $user['User']['is_active'];
 			$mainArr[$arrCount]['promocode'] = @$getPromoCodeForUser[0]['promo_codes']['promocode'];
 			$arrCount++;
 		}
 		return $mainArr;
 	}
-	
+	function savePercentage($data)
+	{
+		$this->query("update `users` set `revenue_percentage`='".$data['share']."' where `id`=".$data['userId']);
+		return 1;
+	}
 }
