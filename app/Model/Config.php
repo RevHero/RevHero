@@ -4,29 +4,23 @@ class Config extends AppModel{
 	
 	function saveCofigData($data)
 	{
-		//pr($data);
-		
 		foreach($data as $key=>$value)
 		{
-			$findDuplicate = $this->find('all', array('conditions'=>array('Config.name'=>$key)));
-			
-			//pr($findDuplicate);
-			
-			if($findDuplicate && count($findDuplicate) > 0){
-				$this->query("update `configs` set `value`='".$value."' where `name`='".$key."'");
-			}else{
-				$this->query("insert into `configs` set `name`='".$key."', `value`=".$value);
-			}
+			if(isset($value) && $value != ''){ //if the value comes from the config variables
+				$findDuplicate = $this->find('all', array('conditions'=>array('Config.name'=>$key)));
+				if($findDuplicate && count($findDuplicate) > 0){
+					$this->query("update `configs` set `value`='".$value."' where `name`='".$key."'");
+				}else{
+					$this->query("insert into `configs` set `name`='".$key."', `value`=".$value);
+				}
+			}	
 		}
-		//exit;
-
 		return 1;
 	}
 	
 	function retrieveAllData()
 	{
 		$getAll = $this->find('all');
-		//pr($getAll);exit;
 		return $getAll;
 	}
 	

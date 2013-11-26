@@ -47,7 +47,6 @@ class RevadminsController extends AppController {
 			}
 		}else{
 			$getAllValues = $this->Config->retrieveAllData();
-			//pr($getAllValues);exit;
 			$this->set('getAllValues', $getAllValues);
 		}
 	}
