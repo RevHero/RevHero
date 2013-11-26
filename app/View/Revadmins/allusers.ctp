@@ -105,7 +105,7 @@ function saveRevenue(userId)
 							<?php if($key > 0){ ?> <!-- This condition requires to restrict for displaying the textbox of revenue share to the ANONYMOUS user -->
 								
 								<div class="input-append">
-									<input class="span2" type="text" name="revenue" id="revenue_<?php echo $user['user_id']; ?>" value="<?php if(isset($user['revenue']) && $user['revenue'] != 0){ echo $user['revenue']; }else{ echo "68"; } ?>" style="width:50px;height:20px;" onfocus="showBtn('<?php echo $user['user_id']; ?>')" />
+									<input class="span2" type="text" name="revenue" id="revenue_<?php echo $user['user_id']; ?>" value="<?php if(isset($user['revenue']) && $user['revenue'] != 0){ echo $user['revenue']; }else{ echo "68"; } ?>" style="width:40px;height:20px;" onfocus="showBtn('<?php echo $user['user_id']; ?>')" />
 									<span class="add-on">%</span>
 								</div>
 								

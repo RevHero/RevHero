@@ -59,6 +59,7 @@ class User extends AppModel{
 		$user['User']['admin'] = 0;
 		$user['User']['reset_token'] = '';
 		$user['User']['confirmation_token'] = '';
+		$user['User']['revenue_percentage'] = 68;
 		$user['User']['is_active'] = 1;
 		
 		$saveUser = $userall->save($user);
