@@ -137,14 +137,8 @@ class UsersController extends AppController {
 		);
 		
 		$getallplacements = $this->paginate('Placement');
-		
-		//echo "<pre>";print_r($getallplacements);exit;
-
 		$getallActiveAdsforUser = $this->AdDetail->getAllAds($this->Auth->user('id'));
-		
 		$getallApprovedAds = $this->AdDetail->find('count', array('conditions'=>array('AdDetail.is_active'=>1, 'AdDetail.status'=>1)));
-		
-		//echo "<pre>";print_r($getallApprovedAds);exit;
 		
 		$this->set('getallplacements', $getallplacements);
 		$this->set('totalplacementcounts', $gettotalplacementcounts);

@@ -24,7 +24,7 @@ class Placement extends AppModel {
 			'className' => 'AdClick',
 			'foreignKey' => 'placement_id',
 			'dependent' => false, //When dependent is set to true, recursive model deletion is possible. In this example, AdClick records will be deleted when their associated Placement record has been deleted.
-			'conditions' => '',
+			'conditions' => array('AdClick.is_duplicate' => ''),
 			'fields' => '',
 			'order' => array('AdClick.created' => 'DESC'),
 			'limit' => '',
@@ -173,15 +173,17 @@ class Placement extends AppModel {
 				$isAdvertiser = true;
 			}
 			
+			//If the loggedin user is same as the advertiser for this Ad, then it will check for "Advertiser Duplicate Days". Otherwise it will check for the normal duplicate days
+			
 			switch ($isAdvertiser)
 			{
 				case true:
-				  $duplicateDayCount = $config->getDuplicateDaysCount();
+				  $duplicateDayCount = $config->getDuplicateDaysCountAdv();				  
 				  $returnDuplicateDetails = $this->VerifyDuplicateClick($DestUrl[0]['Placement']['id'], $_SERVER['REMOTE_ADDR'], $DestUrl, $duplicateDayCount);
 				  return $returnDuplicateDetails;
 				  
 				case false:
-				  $duplicateDayCount = $config->getDuplicateDaysCountAdv();
+				  $duplicateDayCount = $config->getDuplicateDaysCount();
 				  $returnDuplicateDetails = $this->VerifyDuplicateClick($DestUrl[0]['Placement']['id'], $_SERVER['REMOTE_ADDR'], $DestUrl, $duplicateDayCount);
 				  return $returnDuplicateDetails;
 			}
@@ -198,8 +200,7 @@ class Placement extends AppModel {
 		App::import('Model','AdClick');
 		$adclick = new AdClick();
 		
-		//$duplicateDayCount = 1;
-		$checkDuplicateClick = $adclick->find('first', array('fields'=>array('AdClick.placement_id', 'AdClick.user_ip_address', 'AdClick.created'), 'conditions'=>array('AdClick.placement_id'=>$placeMentid, 'AdClick.user_ip_address'=>$userIp), 'order'=>'AdClick.created DESC'));
+		$checkDuplicateClick = $adclick->find('first', array('fields'=>array('AdClick.placement_id', 'AdClick.user_ip_address', 'AdClick.created'), 'conditions'=>array('AdClick.placement_id'=>$placeMentid, 'AdClick.user_ip_address'=>$userIp, 'AdClick.is_duplicate'=>0), 'order'=>'AdClick.created DESC'));
 		
 		if($checkDuplicateClick) //Check if the data is present in the database for the above condition
 		{
@@ -215,18 +216,28 @@ class Placement extends AppModel {
 				$adclickarr['AdClick']['ad_detail_id'] = $DestUrl[0]['AdDetail']['id'];
 				$adclickarr['AdClick']['placement_id'] = $DestUrl[0]['Placement']['id'];
 				$adclickarr['AdClick']['user_ip_address'] = $this->getRealIpAddr();
+				$adclickarr['AdClick']['is_duplicate'] = 0; //Inserts 0 i.e TRUE click
 				
 				$saveAdclicks = $adclick->save($adclickarr);
 				$adclickId = $adclick->getLastInsertID();
 				
 				return $adclickId."####".$DestUrl[0]['AdDetail']['dest_url'];
 			}else{
-				return "0####0";
+				$adclickarr['AdClick']['ad_detail_id'] = $DestUrl[0]['AdDetail']['id'];
+				$adclickarr['AdClick']['placement_id'] = $DestUrl[0]['Placement']['id'];
+				$adclickarr['AdClick']['user_ip_address'] = $this->getRealIpAddr();
+				$adclickarr['AdClick']['is_duplicate'] = 1; //Inserts 1 i.e DUPLICATE click
+				
+				$saveAdclicks = $adclick->save($adclickarr);
+				$adclickId = $adclick->getLastInsertID();
+				
+				return $adclickId."####".$DestUrl[0]['AdDetail']['dest_url'];
 			}
 		}else{ //if not present in the database then we have to insert into database and redirect to the destination url
 			$adclickarr['AdClick']['ad_detail_id'] = $DestUrl[0]['AdDetail']['id'];
 			$adclickarr['AdClick']['placement_id'] = $DestUrl[0]['Placement']['id'];
 			$adclickarr['AdClick']['user_ip_address'] = $this->getRealIpAddr();
+			$adclickarr['AdClick']['is_duplicate'] = 0; //Inserts 0 i.e TRUE click
 			
 			$saveAdclicks = $adclick->save($adclickarr);
 			$adclickId = $adclick->getLastInsertID();
