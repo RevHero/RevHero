@@ -2,8 +2,7 @@
 <html>
 <head>
 	<title>
-		RevHero:
-		<?php echo $title_for_layout; ?>
+		RevHero: <?php echo $title_for_layout; ?>
 	</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 	<link rel="shortcut icon" href="favicon.ico"/>
