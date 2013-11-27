@@ -39,9 +39,10 @@ class Placement extends AppModel {
 	{
 		App::import('Model','Placement');
 		$getKeyWord = new Placement();
-		
-		$allkeyword = $getKeyWord->find('all',array('conditions'=>array('Placement.is_active'=>1, 'Placement.keyword'=>$keyword)));
-		
+		$getKeyWord->recursive = -1;
+
+		//This query is used to get the details for case sensitive custom keywords
+		$allkeyword = $getKeyWord->find('all',array('conditions'=>array('Placement.is_active'=>1, array("BINARY Placement.keyword = '".$keyword."'"))));
 		if(count($allkeyword) > 0){
 			$status = 1;
 		}else{
