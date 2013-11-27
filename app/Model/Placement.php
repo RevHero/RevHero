@@ -162,7 +162,7 @@ class Placement extends AppModel {
 		App::import('Model','Config');
 		$config = new Config();
 		
-		$DestUrl = $placement->find('all',array('conditions'=>array('keyword'=>$slugparam)));//pr($DestUrl);exit;
+		$DestUrl = $placement->find('all',array('conditions'=>array(array("BINARY keyword = '".$slugparam."'"))));
 		
 		if($DestUrl && count($DestUrl) > 0)
 		{
