@@ -346,7 +346,8 @@ class AdsController extends AppController {
 		if(isset($this->data['linked'])){
 			$this->loadModel('AdDetail');
 			foreach($this->data['cpc'] as $k => $v){
-				$this->AdDetail->query("UPDATE ad_details set cpc = ".$v.",cpa= ".$this->data['cpa'][$k].",advertiser_id=".SES_ID." WHERE id = ".$k);
+				$adFormatId = "A".str_pad(SES_ID,5,"0",STR_PAD_LEFT)."-".str_pad($k,5,"0",STR_PAD_LEFT); //This is the specified format for Advertise ID
+				$this->AdDetail->query("UPDATE ad_details set cpc = ".$v.",cpa= ".$this->data['cpa'][$k].",advertiser_id=".SES_ID.",ad_id='".$adFormatId."' WHERE id = ".$k);
 			}
 		}
 		unset($_COOKIE['advertised']);

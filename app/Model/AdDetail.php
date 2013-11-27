@@ -49,11 +49,19 @@ class AdDetail extends AppModel {
 		$ad['AdDetail']['dest_url'] = $requires['dest_url'];
 		$ad['AdDetail']['CPC'] = $requires['cpc'];
 		$ad['AdDetail']['CPA'] = $requires['cpa'];
-		$ad['AdDetail']['staus'] = 0;
+		$ad['AdDetail']['status'] = 0;
 		$ad['AdDetail']['is_active'] = 1;
 		
 		$saveAds = $adsall->save($ad);
 		$adDetailID = $adsall->getLastInsertID();
+		
+		/* Added the functionality to update the "Ad Format ID" in the placements table STARTS here */
+		
+			$adFormatId = "A".str_pad($userId,5,"0",STR_PAD_LEFT)."-".str_pad($adDetailID,5,"0",STR_PAD_LEFT);
+			$this->query("update `ad_details` set `ad_id`='".$adFormatId."' where `id`='".$adDetailID."'");
+			
+		/* Added the functionality to update the "Ad Format ID" in the placements table ENDS here */	
+		
 		return $adDetailID;
 	}
 	

@@ -72,7 +72,7 @@ class Placement extends AppModel {
 		$saveAdplacements = $placement->save($adp);
 		$placementDetailID = $placement->getLastInsertID();
 		
-		/* Added the functionality to update the "Placememnt Format ID" in the placements table ENDS here */
+		/* Added the functionality to update the "Placememnt Format ID" in the placements table STARTS here */
 		
 			$placementFormatId = "P".str_pad($details['publisherId'],5,"0",STR_PAD_LEFT)."-".str_pad($placementDetailID,5,"0",STR_PAD_LEFT);
 			$this->query("update `placements` set `placementId`='".$placementFormatId."' where `id`='".$placementDetailID."'");
