@@ -133,6 +133,17 @@ $(document).ready(function()
 		}	
 	});
 });
+
+function validate()
+{
+	var iskeyword = $("#hid_is_keyword_exist").val().trim();
+	if(iskeyword == '0' || iskeyword == ''){
+		return true
+	}else{
+		return false;
+	}
+}
+
 </script>
 <?php echo $this->element('ads'); ?>
 
@@ -183,7 +194,7 @@ $(document).ready(function()
   	   <?php if($this->Session->read('Auth.User.id')) { ?>
 	   		<button class="btn btn-primary" id="publishBtn">Publish</button>
 	   <?php }else{ ?>
-	   		<button class="btn btn-primary publishBtn" type="submit" name="pub_submit">Publish</button>
+	   		<button class="btn btn-primary publishBtn" type="submit" name="pub_submit" onclick="return validate();">Publish</button>
 	   <?php } ?>
 	   <span id="mainloader" style="margin-left:5px;display:none;"><img src="<?php echo HTTP_ROOT; ?>img/ajax-loader.gif" /> Creating Ad Placement</span>
     </div>
