@@ -129,6 +129,7 @@ class AdsController extends AppController {
 	{
 		$this->layout = 'ajax';
 		$this->loadModel('Placement');
+		
 		$savePlacementDetails = $this->Placement->savePlacementDetails($this->data);
 		
 		if($savePlacementDetails){

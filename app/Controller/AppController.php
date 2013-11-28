@@ -24,14 +24,14 @@ class AppController extends Controller {
 		if(!defined('PAGE_NAME')) { 
 			define('PAGE_NAME', $this->action); //This require to hold the action name
 		}
-		
 		if($this->Auth->User("id")){ //If the user logs in correctly
-
 			//This is require to restrict the user to enter the user section with loggedin as ADMIN
 			if(CONTROLLER == 'users' || CONTROLLER == 'ads'){
-				if($this->Auth->User("admin") == 1){
-					$this->redirect(HTTP_ROOT."revadmins");
-				}
+				if(PAGE_NAME != 'logout'){
+					if($this->Auth->User("admin") == 1){
+						$this->redirect(HTTP_ROOT."revadmins");
+					}
+				}	
 			}
 			
 			//This is require to restrict the user to enter the admin section without the admin credential. By loggedin with normal user credentials.
@@ -70,7 +70,7 @@ class AppController extends Controller {
 			
 			$this->Auth->autoRedirect = false;
 			Security::setHash('md5'); //Setting for conveting the password to hash format
-			$this->Auth->allow('home','confirmation','logincheck','forgotpassword','admin_login'); //here we have to specify the actions which we want to load without the user authentication.
+			$this->Auth->allow('home','confirmation','logincheck','forgotpassword','admin_login','route_url'); //here we have to specify the actions which we want to load without the user authentication.
 			
 			$this->Session->write("SUCCESS","");
 			$this->Session->write("CONFIRMREG","");

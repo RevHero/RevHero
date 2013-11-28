@@ -99,7 +99,7 @@ function getTheDetails(ad_id)
 	</div>
 	<?php }else{ ?>
 	<div class="row-fluid">
-        <div class="span16" style="text-align:center;color:#FF0000;">
+        <div class="span16" style="text-align:center;color:#FF0000;border:1px solid #999999;padding-top:10px;">
           <p>No Ad Store available.</p>
         </div>
 	</div>  

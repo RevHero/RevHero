@@ -4,7 +4,7 @@ class UsersController extends AppController {
 	
 	function home($error = NULL)
 	{
-		$this->layout = 'default';		
+		$this->layout = 'default';
 		if($this->Session->read('Auth.User.id')){
 			$this->redirect(HTTP_ROOT."users/dashboard");
 		}
@@ -91,7 +91,25 @@ class UsersController extends AppController {
 	
 	function dashboard()
 	{
-
+		$this->layout = 'default';
+		$this->loadModel('Placement');
+		$userId = $this->Session->read('Auth.User.id');
+		$gettotalplacementcounts = $this->Placement->allplacementdetails($userId);
+		
+		$conditions = array('Placement.is_active'=>1, 'Placement.publisher_id'=>$userId);
+		$this->paginate = array(
+			'conditions' => $conditions,
+			'limit' => 2,
+			'order' => array('Placement.created'=>'DESC'),
+		);
+		
+		$getallplacements = $this->paginate('Placement');
+		
+		//echo "<pre>";print_r($getallplacements);exit;
+		
+		$this->set('getallplacements', $getallplacements);
+		$this->set('totalplacementcounts', $gettotalplacementcounts);
+		
 	}
 	
 	function logout()
