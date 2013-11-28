@@ -211,8 +211,7 @@ class Placement extends AppModel {
 			$years = floor($diff / (365*60*60*24));
 			$months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
 			$days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
-
-			if($days > $duplicateDayCount || $duplicateDayCount == 0){ //if the difference day is greater than the ADMIN specified day
+			if($days >= $duplicateDayCount || $duplicateDayCount == 0){ //if the difference day is greater than the ADMIN specified day
 				$adclickarr['AdClick']['ad_detail_id'] = $DestUrl[0]['AdDetail']['id'];
 				$adclickarr['AdClick']['placement_id'] = $DestUrl[0]['Placement']['id'];
 				$adclickarr['AdClick']['user_ip_address'] = $this->getRealIpAddr();

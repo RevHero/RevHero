@@ -27,8 +27,10 @@
 
 			<?php echo $this->Session->flash(); ?>
 			<?php echo $this->element('header'); ?>
-			<?php echo $this->fetch('content'); ?>
-			<?php //echo $this->element('footer'); ?>
+			<div style="min-height:400px;">
+				<?php echo $this->fetch('content'); ?>
+			</div>
+			<?php echo $this->element('footer'); ?>
 		</div>
 		<div id="footer">
 			<?php /*echo $this->Html->link(
