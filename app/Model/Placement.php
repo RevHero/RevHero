@@ -164,7 +164,7 @@ class Placement extends AppModel {
 		
 		$DestUrl = $placement->find('all',array('conditions'=>array(array("BINARY keyword = '".$slugparam."'"))));
 		
-		if($DestUrl && count($DestUrl) > 0)
+		if($DestUrl && count($DestUrl) > 0) //If the custom keyword matches in the table
 		{
 			$isAdvertiser = false;
 			
@@ -188,7 +188,7 @@ class Placement extends AppModel {
 				  return $returnDuplicateDetails;
 			}
 		}
-		else
+		else //If the provided custom keyword is not a valid keyword
 		{
 			return "0####0";
 		}	
@@ -211,38 +211,65 @@ class Placement extends AppModel {
 			$years = floor($diff / (365*60*60*24));
 			$months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
 			$days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
-			if($days >= $duplicateDayCount || $duplicateDayCount == 0){ //if the difference day is greater than the ADMIN specified day
-				$adclickarr['AdClick']['ad_detail_id'] = $DestUrl[0]['AdDetail']['id'];
-				$adclickarr['AdClick']['placement_id'] = $DestUrl[0]['Placement']['id'];
-				$adclickarr['AdClick']['user_ip_address'] = $this->getRealIpAddr();
+			if($days >= $duplicateDayCount || $duplicateDayCount == 0) //if the difference day is greater than the ADMIN specified day
+			{
 				$adclickarr['AdClick']['is_duplicate'] = 0; //Inserts 0 i.e TRUE click
-				
-				$saveAdclicks = $adclick->save($adclickarr);
-				$adclickId = $adclick->getLastInsertID();
-				
-				return $adclickId."####".$DestUrl[0]['AdDetail']['dest_url'];
-			}else{
-				$adclickarr['AdClick']['ad_detail_id'] = $DestUrl[0]['AdDetail']['id'];
-				$adclickarr['AdClick']['placement_id'] = $DestUrl[0]['Placement']['id'];
-				$adclickarr['AdClick']['user_ip_address'] = $this->getRealIpAddr();
-				$adclickarr['AdClick']['is_duplicate'] = 1; //Inserts 1 i.e DUPLICATE click
-				
-				$saveAdclicks = $adclick->save($adclickarr);
-				$adclickId = $adclick->getLastInsertID();
-				
-				return $adclickId."####".$DestUrl[0]['AdDetail']['dest_url'];
 			}
-		}else{ //if not present in the database then we have to insert into database and redirect to the destination url
-			$adclickarr['AdClick']['ad_detail_id'] = $DestUrl[0]['AdDetail']['id'];
-			$adclickarr['AdClick']['placement_id'] = $DestUrl[0]['Placement']['id'];
-			$adclickarr['AdClick']['user_ip_address'] = $this->getRealIpAddr();
-			$adclickarr['AdClick']['is_duplicate'] = 0; //Inserts 0 i.e TRUE click
-			
-			$saveAdclicks = $adclick->save($adclickarr);
-			$adclickId = $adclick->getLastInsertID();
-			
-			return $adclickId."####".$DestUrl[0]['AdDetail']['dest_url'];
+			else
+			{
+				$adclickarr['AdClick']['is_duplicate'] = 1; //Inserts 1 i.e DUPLICATE click
+			}
 		}
+		else //if not present in the database then we have to insert into database and redirect to the destination url
+		{
+			$adclickarr['AdClick']['is_duplicate'] = 0; //Inserts 0 i.e TRUE click
+		}
+		
+		$adclickarr['AdClick']['ad_detail_id'] = $DestUrl[0]['AdDetail']['id'];
+		$adclickarr['AdClick']['placement_id'] = $DestUrl[0]['Placement']['id'];
+		$adclickarr['AdClick']['user_ip_address'] = $this->getRealIpAddr();
+		
+		$latandlong = $this->getLatandLongFromUserIP($adclickarr['AdClick']['user_ip_address']); //Get the lat and long from User IP address
+		
+		if(is_array($latandlong) && count($latandlong) > 0)
+		{
+			$adclickarr['AdClick']['lattitude'] = $latandlong[0];
+			$adclickarr['AdClick']['longitude'] = $latandlong[1];
+			$adclickarr['AdClick']['City'] = $latandlong[2];
+			$adclickarr['AdClick']['State'] = $latandlong[3];
+			$adclickarr['AdClick']['CountryName'] = $latandlong[4];
+			$adclickarr['AdClick']['Country'] = $latandlong[5];
+		}	
+		
+		$saveAdclicks = $adclick->save($adclickarr);
+		$adclickId = $adclick->getLastInsertID();
+
+		return $adclickId."####".$DestUrl[0]['AdDetail']['dest_url'];
+	}
+	
+	function getLatandLongFromUserIP($userIPAddress)
+	{
+		$IPdetails = $this->iptoloccation($userIPAddress);
+		
+		//$details = json_decode(file_get_contents("http://ipinfo.io/49.14.204.81/json"),true); //Call the url for getting the details from user IP address
+		//$meta_tags = get_meta_tags('http://www.geobytes.com/IPLocator.htm?GetLocation&template=php3.txt&IPAddress=49.14.204.81') or die('Error getting meta tags');
+		
+		if(isset($IPdetails['latitude']) && $IPdetails['longitude'] != ''){
+			return array($IPdetails['latitude'], $IPdetails['longitude'], $IPdetails['cityName'], $IPdetails['regionName'], $IPdetails['countryName'], $IPdetails['countryCode']); //If success value return
+		}else{
+			return 0; //If failure value return
+		}
+	}
+	
+	function iptoloccation($ip){
+		
+		$ipinfokey = Configure::read('IP_TRACK_INFO');
+		$key = $ipinfokey['ip_info_track_key'];
+		
+		$data = file_get_contents('http://api.ipinfodb.com/v3/ip-city/?key='.$key.'&ip='.$ip.'&format=json');
+		$data = json_decode($data,true);
+
+		return $data;
 	}
 	
 	function allplacementdetails($userId)

@@ -3,8 +3,9 @@
 <script type="text/javascript">
 var dt = <?php echo $dt_arr;?>;
 var ydata = <?php echo $all_clicks;?>;
+var countryData = <?php echo $distinctCountry; ?>;
 $(function () { 
-    $('#chartPlace').highcharts({
+	$('#chartPlace').highcharts({
         chart: {
             type: 'line'
         },
@@ -49,6 +50,81 @@ $(function () {
     });
 });
 </script>
+<script type='text/javascript' src='https://www.google.com/jsapi'></script>
+<script type='text/javascript'>
+ google.load('visualization', '1', {'packages': ['geochart']});
+ google.setOnLoadCallback(drawRegionsMap);
+
+function drawRegionsMap() {
+	//alert(JSON.stringify(countryData, null, 4));
+	
+	var data = new google.visualization.DataTable(); 
+	
+	data.addRows(countryData.length); 
+	
+	data.addColumn('string', 'Country'); 
+	data.addColumn('number', 'Click'); 
+	
+	for(var i=0; i<countryData.length; i++)
+	{
+		var country_name = countryData[i]['ad_clicks']['Country'];
+		var click_count  = countryData[i][0]['total_count'];
+		
+		data.setValue(i, 0, country_name);
+    	data.setValue(i, 1, parseInt(click_count));
+	}
+
+	/*var data = google.visualization.arrayToDataTable([
+	  ['Country', 'Popularity'],
+	  ['Germany', 200],
+	  ['United States', 300],
+	  ['Brazil', 400],
+	  ['Canada', 500],
+	  ['France', 600],
+	  ['RU', 700],
+	  ['IN', 1200]
+	]);*/
+	
+	var options = {colorAxis: {colors: ['green', 'blue']}};
+
+	var map= document.getElementById('chart_div') 
+	var chart = new google.visualization.GeoChart(map); 
+	
+	/*google.visualization.events.addListener(chart, 'regionClick', function(eventData){
+		getCities(eventData.region);
+	});*/ 
+	
+	chart.draw(data, options);
+}
+
+/*function getCities(requireRegion)
+{
+	alert(requireRegion);return false;
+	var data = google.visualization.arrayToDataTable([
+	  ['City', 'Popularity'],
+	  ['Mumbai', 200],
+	  ['Kolkata', 300],
+	  ['Chennai', 400],
+	  ['Delhi', 500],
+	  ['Bhubaneswar', 600],
+	  ['Cuttack', 700],
+	  ['Puri', 1200]
+	]);
+
+	var options = {
+        region: 'IN',
+        displayMode: 'markers',
+        colorAxis: {colors: ['green', 'blue']}
+    };
+
+	var map= document.getElementById('chart_div') 
+	var chart = new google.visualization.GeoChart(map); 
+
+	chart.draw(data, options);
+}
+*/
+</script>
+
 <div class="container well">
   <div>
   	<h3><?php echo substr($getDetails['AdDetail']['headline'],0,35); ?></h3>
@@ -98,6 +174,7 @@ $(function () {
 	   </div>
 	   <div class="input-append pull-right">
 		<input class="span4 shorturl" id="box-content" type="text" readonly="readonly" value="<?php echo $getDetails['Placement']['short_url']; ?>" style="height:16px;">
+		<input type="hidden" value="<?php echo $placementId; ?>" name="hid_place_id" id="hid_place_id" />
 	   </div>
       </p>
     </div>
@@ -113,4 +190,9 @@ if(count($arrDt > 0) && count($arrClick[0]['data']) > 0){ ?>
 			<div id="chartPlace" style="width:100%;height:400px;margin-left:10px;"></div>
 		</div>
 	</div>
-<?php } ?>	
+<?php } ?>
+<div class="container well">
+	<div class="row">
+		<div id="chart_div" style="width:100%; height: 500px;margin-left:10px;"></div>
+	</div>
+</div>

@@ -217,8 +217,6 @@ class UsersController extends AppController {
 			}
 		}
 		
-		//echo "<pre>";print_r($this->request->data);exit;
-		
 		if(!empty($this->request->data) && !empty($this->request->data['User']['repass']) && !empty($this->request->data['User']['newpass']))
 		{
 			if($this->request->data['User']['repass']==$this->request->data['User']['newpass'])
@@ -268,6 +266,11 @@ class UsersController extends AppController {
 				$carr = array(array('name'=>'Unique Clicks','color'=>'#36A7E7','connectNulls'=> 'true','data'=>$unique_clicks), array('name'=>'Total(including duplicate) Clicks','color'=>'#910000','connectNulls'=> 'true','data'=>$all_duplicate_clicks));
 				$this->set('dt_arr',json_encode($dt_arr));
 				$this->set('all_clicks',json_encode($carr));
+				
+				
+				$distinctCountry = $this->AdClick->query("select Country, count(user_ip_address) as total_count from ad_clicks where is_duplicate=0 group by Country");
+				//pr($distinctCountry);exit;
+				$this->set('distinctCountry', json_encode($distinctCountry));
 			}
 			else
 			{
