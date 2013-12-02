@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Nov 19, 2013 at 01:56 PM
+-- Generation Time: Dec 02, 2013 at 08:16 PM
 -- Server version: 5.1.41
 -- PHP Version: 5.3.1
 
@@ -30,9 +30,16 @@ CREATE TABLE IF NOT EXISTS `ad_clicks` (
   `ad_detail_id` int(11) NOT NULL,
   `placement_id` int(11) NOT NULL,
   `user_ip_address` varchar(100) NOT NULL,
+  `City` varchar(100) DEFAULT NULL,
+  `State` varchar(100) DEFAULT NULL,
+  `Country` varchar(100) DEFAULT NULL,
+  `CountryCode` varchar(50) DEFAULT NULL,
+  `lattitude` varchar(200) DEFAULT NULL,
+  `longitude` varchar(200) DEFAULT NULL,
+  `is_duplicate` tinyint(1) NOT NULL,
   `created` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=25 ;
 
 -- --------------------------------------------------------
 
@@ -43,6 +50,7 @@ CREATE TABLE IF NOT EXISTS `ad_clicks` (
 CREATE TABLE IF NOT EXISTS `ad_details` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `advertiser_id` int(11) NOT NULL,
+  `ad_Id` varchar(100) NOT NULL,
   `headline` varchar(200) NOT NULL,
   `body` varchar(255) NOT NULL,
   `dest_url` varchar(255) NOT NULL,
@@ -55,7 +63,7 @@ CREATE TABLE IF NOT EXISTS `ad_details` (
   `status` int(4) NOT NULL DEFAULT '0' COMMENT '0 - Pending, 1 - approved, 2 - Rejected',
   `is_active` int(4) NOT NULL DEFAULT '1' COMMENT '0 - Disabled, 1 - Active',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=49 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 -- --------------------------------------------------------
 
@@ -70,7 +78,21 @@ CREATE TABLE IF NOT EXISTS `ad_tags` (
   `created` datetime NOT NULL,
   `modified` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=128 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `configs`
+--
+
+CREATE TABLE IF NOT EXISTS `configs` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(200) DEFAULT NULL,
+  `value` varchar(200) DEFAULT NULL,
+  `status` int(3) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 -- --------------------------------------------------------
 
@@ -82,6 +104,7 @@ CREATE TABLE IF NOT EXISTS `placements` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `publisher_id` int(11) NOT NULL,
   `ad_detail_id` int(11) NOT NULL,
+  `placementId` varchar(100) NOT NULL,
   `keyword` varchar(255) NOT NULL,
   `type` varchar(45) NOT NULL,
   `format` varchar(45) NOT NULL,
@@ -91,7 +114,7 @@ CREATE TABLE IF NOT EXISTS `placements` (
   `modified` datetime NOT NULL,
   `is_active` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 -- --------------------------------------------------------
 
@@ -108,7 +131,7 @@ CREATE TABLE IF NOT EXISTS `promo_codes` (
   `status` int(3) NOT NULL,
   `created` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -122,7 +145,7 @@ CREATE TABLE IF NOT EXISTS `promo_users` (
   `promo_id` int(11) NOT NULL,
   `created` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -137,7 +160,7 @@ CREATE TABLE IF NOT EXISTS `tags` (
   `modified` datetime NOT NULL,
   `is_active` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=36 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 -- --------------------------------------------------------
 
@@ -155,11 +178,12 @@ CREATE TABLE IF NOT EXISTS `users` (
   `reset_token` varchar(255) DEFAULT NULL,
   `confirmation_token` varchar(255) DEFAULT NULL,
   `prof_image` varchar(200) NOT NULL,
+  `revenue_percentage` float NOT NULL,
   `created` datetime NOT NULL,
   `modified` datetime NOT NULL,
   `is_active` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=33 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
