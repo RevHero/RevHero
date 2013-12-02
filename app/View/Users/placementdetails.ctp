@@ -10,6 +10,9 @@ $(function () {
             type: 'line'
         },
         title: {
+            text: ''
+        },
+		subtitle: {
             text: 'Date'
         },
         xAxis: {
@@ -38,14 +41,10 @@ $(function () {
 		},
         legend: {
             layout: 'vertical',
-            align: 'right',
-            verticalAlign: 'middle',
-            borderWidth: 0
+            align: 'center',
+            verticalAlign: 'bottom',
+            borderWidth: 1
         },
-/*        series: [{
-            name: 'Jane',
-            data: [1, 3, 4, 5, 8]
-        }]*/
 		series: eval(ydata)
     });
 });
@@ -178,19 +177,31 @@ function getCities(requireRegion)
     </div>
   </div>
 </div>
-<?php
-$arrDt = json_decode($dt_arr,true);
-$arrClick = json_decode($all_clicks,true);
 
-if(count($arrDt > 0) && count($arrClick[0]['data']) > 0){ ?>
-	<div class="container well">
-		<div class="row">
-			<div id="chartPlace" style="width:100%;height:400px;margin-left:10px;"></div>
+<div class="container well">
+	<div class="row">
+		<div class="span6">
+			<?php
+				$arrDt = json_decode($dt_arr,true);
+				$arrClick = json_decode($all_clicks,true);
+
+				if(count($arrDt > 0) && count($arrClick[0]['data']) > 0){
+			?>
+				<h4>Latest 7 days click counts</h4>
+				<div id="chartPlace" style="width:100%;height:400px;"></div>
+			<?php } ?>
+		</div>
+		<div class="span6">
+			<h4>Click Activity Chart</h4>
+			<div id="chart_div" style="width:100%; height: 400px;"></div>
 		</div>
 	</div>
-<?php } ?>
-<div class="container well">
+</div>
+
+
+
+<!--<div class="container well">
 	<div class="row">
 		<div id="chart_div" style="width:100%; height: 500px;margin-left:10px;"></div>
 	</div>
-</div>
+</div>-->
