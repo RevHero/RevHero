@@ -268,8 +268,7 @@ class UsersController extends AppController {
 				$this->set('all_clicks',json_encode($carr));
 				
 				
-				$distinctCountry = $this->AdClick->query("select Country, count(user_ip_address) as total_count from ad_clicks where is_duplicate=0 group by Country");
-				//pr($distinctCountry);exit;
+				$distinctCountry = $this->AdClick->query("select Country, CountryCode, count(user_ip_address) as total_count from ad_clicks where is_duplicate=0 group by Country");
 				$this->set('distinctCountry', json_encode($distinctCountry));
 			}
 			else
@@ -283,6 +282,14 @@ class UsersController extends AppController {
 		}	
 	}
 	
+	function getAllCities()
+	{
+		$this->layout = 'ajax';
+		$this->loadModel('AdClick');
+		$this->AdClick->recursive = -1;
+		$distinctCities = $this->AdClick->query("select City, count(user_ip_address) as total_count from ad_clicks where is_duplicate=0 and CountryCode='".$this->request->data['country_code']."' group by City");
+		echo json_encode($distinctCities);exit;
+	}
 	function profile()
 	{
 		$this->layout = 'default';

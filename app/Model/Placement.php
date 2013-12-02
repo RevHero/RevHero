@@ -237,8 +237,8 @@ class Placement extends AppModel {
 			$adclickarr['AdClick']['longitude'] = $latandlong[1];
 			$adclickarr['AdClick']['City'] = $latandlong[2];
 			$adclickarr['AdClick']['State'] = $latandlong[3];
-			$adclickarr['AdClick']['CountryName'] = $latandlong[4];
-			$adclickarr['AdClick']['Country'] = $latandlong[5];
+			$adclickarr['AdClick']['Country'] = $latandlong[4];
+			$adclickarr['AdClick']['CountryCode'] = $latandlong[5];
 		}	
 		
 		$saveAdclicks = $adclick->save($adclickarr);
