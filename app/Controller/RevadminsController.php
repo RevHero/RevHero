@@ -201,4 +201,22 @@ class RevadminsController extends AppController {
 			echo json_encode($json_arr);exit;
 		}	
 	}
+	
+	function click_activity()
+	{
+		$this->layout = 'default_admin';
+		$this->loadModel('AdClick');
+		
+		$distinctCountry = $this->AdClick->query("select Country, CountryCode, count(user_ip_address) as total_count from ad_clicks where is_duplicate=0 group by Country");
+		$this->set('distinctCountry', json_encode($distinctCountry));
+	}
+	
+	function getAllCities()
+	{
+		$this->layout = 'ajax';
+		$this->loadModel('AdClick');
+		$this->AdClick->recursive = -1;
+		$distinctCities = $this->AdClick->query("select City, count(user_ip_address) as total_count from ad_clicks where is_duplicate=0 and CountryCode='".$this->request->data['country_code']."' group by City");
+		echo json_encode($distinctCities);exit;
+	}
 }

@@ -19,6 +19,8 @@
 			<li class="divider-vertical"></li>
 			<li><a href="<?php echo HTTP_ROOT; ?>revadmins/allusers">Users</a></li>
 			<li class="divider-vertical"></li>
+			<li><a href="<?php echo HTTP_ROOT; ?>revadmins/click_activity">Click Activity</a></li>
+			<li class="divider-vertical"></li>
 		</ul>
 		<div class="nav-collapse">
 		  <ul class="nav pull-right">
