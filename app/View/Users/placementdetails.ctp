@@ -89,7 +89,8 @@ function drawRegionsMap() {
 function getCities(requireRegion)
 {
 	var strURL = $('#pageurl').val();
-	$.post(strURL+"users/getAllCities",{country_code:requireRegion},function(cityData){
+	var placementID = $("#hid_place_id").val();
+	$.post(strURL+"users/getAllCities",{country_code:requireRegion, placementID:placementID},function(cityData){
 		//alert(JSON.stringify(cityData, null, 4));
 		
 		var data = new google.visualization.DataTable(); 
