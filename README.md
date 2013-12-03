@@ -6,7 +6,7 @@ RevHero is a free and open source ad network system based on CakePHP and MySQL, 
 Application Setup
 -----------------
 
-Clone the project RevHero git@github.com:RevHero/RevHero.git
+Clone the project RevHero *git clone git@github.com:RevHero/RevHero.git*
 
 ### Database configuration ###
  - Edit the database settings on "app/Config/database.php" for the "$default" variable under the "DATABASE_CONFIG" class
