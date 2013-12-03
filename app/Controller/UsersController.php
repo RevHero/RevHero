@@ -245,20 +245,19 @@ class UsersController extends AppController {
 				$this->set('getDetails',$getplacementdetails[0]);
 				
 				$getclickdetails = $this->AdClick->getChartResult($placementId,'0'); //0 is used to get the click count for only unique clicks
-				
 				$getTotalClickIncludesDuplicateClick = $this->AdClick->getChartResult($placementId, '1'); //1 is used to get all click count including duplicate click
 				
 				$dt_arr=array();
 				$unique_clicks=array();
 				$all_duplicate_clicks=array();
-				foreach($getclickdetails as $eachclick) //Building array to hold the count for unique clicks
+				foreach(array_reverse($getclickdetails) as $eachclick) //Building array to hold the count for unique clicks
 				{
 					$dt=date('M j, Y',strtotime(date("Y-m-d", strtotime($eachclick['AdClick']['created']))));
 					array_push($dt_arr,$dt);
 					array_push($unique_clicks,(int)$eachclick[0]['clickCount']);
 				}
 				
-				foreach($getTotalClickIncludesDuplicateClick as $eachduplicateclick) //Building the array to hold the count for all clicks including duplicate clicks
+				foreach(array_reverse($getTotalClickIncludesDuplicateClick) as $eachduplicateclick) //Building the array to hold the count for all clicks including duplicate clicks
 				{
 					array_push($all_duplicate_clicks, (int)$eachduplicateclick[0]['clickCount']);
 				}
