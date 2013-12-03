@@ -10,37 +10,61 @@ $(document).ready(function()
 	$("#customKeyword").change(function()
 	{
 		var strURL = $('#pageurl').val();
-		var rexp = /^[0-9a-zA-Z]+$/;
+		var rexp = /^[0-9a-zA-Z-]+$/;
 		var customKeyword = $("#customKeyword").val().trim();
+		var arrReserveKeywords = ["javascript","javascripts","image","images","img","imgs","css","style","styles","icon","icons","static","server","admin","user","administrator","login","password"];
 		if(customKeyword && customKeyword != '')
 		{
-			if(!rexp.test(customKeyword)){
+			if(!rexp.test(customKeyword)){ //Keyword should not contain special characters.
 				$("#notavail").show();
 				$("#avail").hide();
-				$("#notavail").html('Please remove special characters from keyword..');
+				$("#notavail").html('Keyword should not contain any special character.');
+				$("#hid_is_keyword_exist").val(1);
+			}else if(arrReserveKeywords.indexOf(customKeyword.toLowerCase()) > -1){ //not be a reserved word according to the specified array
+				$("#notavail").show();
+				$("#avail").hide();
+				$("#notavail").html('This is a reserved keyword.');
+				$("#hid_is_keyword_exist").val(1);
+			}else if(customKeyword.length < 3 || customKeyword.length > 128){ // Keyword have a minimum length of 3 and have a maximum length of 128.
+				$("#notavail").show();
+				$("#avail").hide();
+				$("#notavail").html('Keyword length should be between 3 to 128 characters.');
 				$("#hid_is_keyword_exist").val(1);
 			}else{
-				$("#loader").show();
-				$("#publishBtn").hide();
-				$.post(strURL+"ads/getUniqueKeyword",{customKeyword:customKeyword},function(data){
-					//alert(JSON.stringify(data, null, 4));
-					$("#loader").hide();
-					$("#publishBtn").show();
-					if(data.status == 1){
-						$("#notavail").show();
-						$("#avail").hide();
-						$("#notavail").html('Keyword does not exist. Please write another.');
-						$("#hid_is_keyword_exist").val(1);
-					}else{
-						$("#notavail").hide();
-						$("#avail").show();
-						$("#avail").html('Keyword Available.');
-						$("#hid_is_keyword_exist").val(0);
-					}
-					
-				},'json');
+				if(customKeyword.charAt(0) == '-'){ // Keyword not start with a hyphen.
+					$("#notavail").show();
+					$("#avail").hide();
+					$("#notavail").html('Keyword must not start with any special character.');
+					$("#hid_is_keyword_exist").val(1);
+				}else if(customKeyword.charAt(customKeyword.length - 1) == '-'){ // Keyword not end with a hyphen.
+					$("#notavail").show();
+					$("#avail").hide();
+					$("#notavail").html('Keyword must not end with any special character.');
+					$("#hid_is_keyword_exist").val(1);
+				}else{
+					$("#loader").show();
+					$("#publishBtn").hide();
+					$("#notavail").hide();
+					$("#avail").hide();
+					$.post(strURL+"ads/getUniqueKeyword",{customKeyword:customKeyword},function(data){
+						//alert(JSON.stringify(data, null, 4));
+						$("#loader").hide();
+						$("#publishBtn").show();
+						if(data.status == 1){
+							$("#notavail").show();
+							$("#avail").hide();
+							$("#notavail").html('Keyword already exists.');
+							$("#hid_is_keyword_exist").val(1);
+						}else{
+							$("#notavail").hide();
+							$("#avail").show();
+							$("#avail").html('Keyword Available.');
+							$("#hid_is_keyword_exist").val(0);
+						}
+						
+					},'json');
+				}	
 			}
-			
 		}	
 	});
 	
@@ -72,25 +96,25 @@ $(document).ready(function()
 				if(data.status == 1){
 					if(adType == 'text' && adFormat == '1'){
 						//DisplayContent = hid_headline+' - '+hid_body+' - '+hid_destination_url;
-						DisplayContent = hid_headline+' - '+hid_body+' - '+strURL+'s/'+data.customKeyword;
+						DisplayContent = hid_headline+' - '+hid_body+' - '+strURL+data.customKeyword;
 						$("#placementcontainer").show();
 						$("#placementShow").html(DisplayContent);
 						$('html, body').animate({scrollTop: $(window).scrollTop() + $(window).height()}, 1000);
 					}else if(adType == 'html' && adFormat == '1'){
 						//DisplayContent = '&lt;a href="'+hid_destination_url+'" target="_blank">'+hid_headline+'&lt;/a&gt; - '+hid_body;
-						DisplayContent = '&lt;a href="'+strURL+'s/'+data.customKeyword+'" target="_blank">'+hid_headline+'&lt;/a&gt; - '+hid_body;
+						DisplayContent = '&lt;a href="'+strURL+data.customKeyword+'" target="_blank">'+hid_headline+'&lt;/a&gt; - '+hid_body;
 						$("#placementcontainer").show();
 						$("#placementShow").html(DisplayContent);
 						$('html, body').animate({scrollTop: $(window).scrollTop() + $(window).height()}, 1000);
 					}else if(adType == 'text' && adFormat == '3'){
 						//DisplayContent = hid_headline+'<br>'+hid_destination_url+'<br>'+hid_body;
-						DisplayContent = hid_headline+'<br>'+strURL+'s/'+data.customKeyword+'<br>'+hid_body;
+						DisplayContent = hid_headline+'<br>'+strURL+data.customKeyword+'<br>'+hid_body;
 						$("#placementcontainer").show();
 						$("#placementShow").html(DisplayContent);
 						$('html, body').animate({scrollTop: $(window).scrollTop() + $(window).height()}, 1000);
 					}else if(adType == 'html' && adFormat == '3'){
 						//DisplayContent = '&lt;a href="'+hid_destination_url+'" target="_blank"&gt;'+hid_headline+'&lt;/a&gt;&lt;br&gt;&lt;a href="'+hid_destination_url+'" target="_blank"&gt;'+hid_destination_url+'&lt;/a&gt;&lt;br&gt;'+hid_body;
-						DisplayContent = '&lt;a href="'+strURL+'s/'+data.customKeyword+'" target="_blank"&gt;'+hid_headline+'&lt;/a&gt;&lt;br&gt;&lt;a href="'+strURL+'s/'+data.customKeyword+'" target="_blank"&gt;'+strURL+'s/'+data.customKeyword+'&lt;/a&gt;&lt;br&gt;'+hid_body;
+						DisplayContent = '&lt;a href="'+strURL+data.customKeyword+'" target="_blank"&gt;'+hid_headline+'&lt;/a&gt;&lt;br&gt;&lt;a href="'+strURL+data.customKeyword+'" target="_blank"&gt;'+strURL+data.customKeyword+'&lt;/a&gt;&lt;br&gt;'+hid_body;
 						$("#placementcontainer").show();
 						$("#placementShow").html(DisplayContent);
 						$('html, body').animate({scrollTop: $(window).scrollTop() + $(window).height()}, 1000);

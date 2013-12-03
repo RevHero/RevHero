@@ -9,8 +9,13 @@
 	  <span class="icon-bar"></span>
 	  <span class="icon-bar"></span>
 	</a>
-	<a class="brand" href="<?php echo HTTP_ROOT."revadmins"; ?>">RevHero</a>
+	<a class="brand" href="<?php echo HTTP_ROOT."revadmins/index"; ?>">RevHero</a>
 	<?php if($this->Session->read('Auth.User.id')){ ?>
+		<ul class="nav pull-left">
+			<li class="divider-vertical"></li>
+			<li><a href="<?php echo HTTP_ROOT; ?>revadmins/promo_code">Promo Codes</a></li>
+			<li class="divider-vertical"></li>
+		</ul>
 		<div class="nav-collapse">
 		  <ul class="nav pull-right">
 			<li>

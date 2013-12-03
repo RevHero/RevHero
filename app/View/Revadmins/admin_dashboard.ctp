@@ -95,8 +95,8 @@ function rejectbtn(adId)
 					if($ad['AdDetail']['status'] == '' || $ad['AdDetail']['status'] == 0){
 						$status = 'Pending';
 						$showapr = 'style="display:;"';
-						$showrejdis = 'style="display:none;"';
-						$showrej = 'style="display:;"';
+						$showrejdis = 'style="display:;"';
+						$showrej = 'style="display:none;"';
 						$showaprdis = 'style="display:none;"';
 					}else if($ad['AdDetail']['status'] == 1){
 						$status = 'Approved';

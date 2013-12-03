@@ -38,11 +38,17 @@ if(count($getallplacements) == 0)
 <div class="row-fluid">
 	<div class="span16" style="text-align:center;color:#FF0000;border:1px solid #999999;padding-top:10px;">
 	  <p>You don't have any placements.</p>
-	  <p style="margin-top:20px;">
-		  <a href="<?php echo HTTP_ROOT; ?>ads/store">
-			  <button class="btn btn-primary" type="button">Create a New Placement</button>
-		  </a>	
-	  </p>
+	  <?php if($countgetallApprovedAds > 0){ ?>
+		  <p style="margin-top:20px;">
+			  <a href="<?php echo HTTP_ROOT; ?>ads/store">
+				  <button class="btn btn-primary" type="button">Create a New Placement</button>
+			  </a>	
+		  </p>
+	  <?php } if($countgetallActivedAds > 0 && $countgetallApprovedAds == 0){ ?>
+		  <p style="color:#333333;">
+			  Publish your created <a href="<?php echo HTTP_ROOT; ?>ads/lists">Ads yet to be approved</a> by the Admin
+		  </p>
+	  <?php } ?>	  
 	</div>
 </div>
 </div>  
@@ -72,12 +78,12 @@ if(count($getallplacements) == 0)
 		?>
 		        <img src="<?php echo HTTP_FILES; ?>ad_photos/<?php echo $placement['AdDetail']['ad_image']; ?>" alt="" class="thumbnail">
 		<?php }else{ ?>
-				<img src="<?php echo HTTP_IMAGES; ?>img/no_image.gif" alt="" class="thumbnail">
+				<img src="<?php echo HTTP_IMAGES; ?>no_image.gif" alt="" class="thumbnail">
 		<?php } ?>
       </div>
       <div class="span6">      
         <p><h4><?php echo substr($placement['AdDetail']['headline'],0,35); ?></h4></p>
-		<p style="color:#232323;font-size:12px;"><?php echo date("M j, Y", strtotime($placement['AdDetail']['created'])); ?> | <a href="<?php echo $placement['AdDetail']['dest_url']; ?>" target="_blank"><?php echo $placement['AdDetail']['dest_url']; ?></a></p>
+		<p style="color:#232323;font-size:12px;"><?php echo date("M j, Y", strtotime($placement['Placement']['created'])); ?> | <a href="<?php echo $placement['AdDetail']['dest_url']; ?>" target="_blank"><?php echo $placement['AdDetail']['dest_url']; ?></a></p>
 		<div class="pull-left" style="color:#232323;font-size:11px;font-weight:bold;">
 			<?php
 				if(count($placement['AdClick']) > 0){
@@ -87,11 +93,11 @@ if(count($getallplacements) == 0)
 						echo count($placement['AdClick'])." Clicks";
 					}	
 				}else{
-					echo "&nbsp;";
+					echo "0 Click";
 				}
 			?> 
 			|
-			<a href="#">View stats</a>
+			<a href="<?php echo HTTP_ROOT; ?>users/placementdetails/<?php echo $placement['Placement']['id']; ?>">View stats</a>
 		</div>
 		<div class="input-append pull-right">
 			<input class="span4 shorturl" id="box-content" type="text" readonly="readonly" value="<?php echo $placement['Placement']['short_url']; ?>" style="height:16px;">

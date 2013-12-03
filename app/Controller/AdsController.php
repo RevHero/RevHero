@@ -21,11 +21,6 @@ class AdsController extends AppController {
 			$this->loadModel('AdDetail');
 			$this->loadModel('Tag');
 			
-			$headline    = $this->request['data']['Ad']['headline'];
-			$destination = $this->request['data']['Ad']['dest_url'];
-			$bodytext    = $this->request['data']['Ad']['bodytext'];
-			$alltags     = $this->request['data']['Ad']['alltags'];
-			
 			$saveAdDetails = $this->AdDetail->saveDetails($this->Auth->user('id'), $this->request['data']['Ad']);
 			
 			if($saveAdDetails && $saveAdDetails > 0)
@@ -72,11 +67,11 @@ class AdsController extends AppController {
 				preg_match("/\<title\>(.*)\<\/title\>/",$str,$title);
 				if(strlen($title[1]) > 35){
 					$json_arr['status'] = 1;
-					$json_arr['fulltitle'] = $title[1];
+					//$json_arr['fulltitle'] = $title[1];
 					$json_arr['title'] = substr($title[1],0,35);
 				}else{
 					$json_arr['status'] = 1;
-					$json_arr['fulltitle'] = $title[1];
+					//$json_arr['fulltitle'] = $title[1];
 					$json_arr['title'] = $title[1];
 				}
 			}
@@ -90,6 +85,14 @@ class AdsController extends AppController {
 	{
 		$this->layout = 'default';
 		$this->loadModel('AdDetail');
+		$this->loadModel('Tag');
+		
+		$alltags = $this->Tag->find('all', array('conditions'=>array('Tag.tag_name !=' => ''), 'limit' => 10));
+		
+		//echo "<pre>";print_r($alltags);exit;
+		
+		$this->Session->write('alltags', $alltags); //This is require to show the tags in the tagdetails page.
+		$this->set('alltags', $alltags);
 		
 		$conditions = array('AdDetail.is_active'=>1, 'AdDetail.status'=>1);
 		$this->paginate = array(
@@ -99,6 +102,10 @@ class AdsController extends AppController {
 		);
 		$allAdStore = $this->paginate('AdDetail');
 		$this->set('allAdStore', $allAdStore);
+		
+		$getallActiveAdsforUser = $this->AdDetail->getAllAds($this->Auth->user('id'));
+		$this->set('countgetallActivedAds', count($getallActiveAdsforUser));
+		
 	}
 	
 	function details($adid=NULL,$sessionId=NULL)
@@ -139,5 +146,30 @@ class AdsController extends AppController {
 			$json_arr['status'] = 0;
 		}
 		echo json_encode($json_arr);exit;
+	}
+	
+	function tagdetails($tagname)
+	{
+		$this->layout = 'default';
+		$this->loadModel('AdTag');
+		$this->loadModel('Tag');
+		$this->loadModel('AdDetail');
+		
+		$conditions = array('Tag.is_active'=>1, 'Tag.tag_name'=>$tagname, 'AdDetail.status'=>1);
+		$this->paginate = array(
+			'conditions' => $conditions,
+			'limit' => 2
+		);
+		$allrequiretagdetails = $this->paginate('AdTag');
+		
+		$alltags = $this->Session->read('alltags');
+		
+		//echo "<pre>";print_r($allrequiretagdetails);exit;
+		
+		$this->set('alltags', $alltags);
+		$this->set('allrequiretagdetails', $allrequiretagdetails);
+		$this->set('tagname', $tagname);
+		
+		//echo $tagname;exit;
 	}
 }

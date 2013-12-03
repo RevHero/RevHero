@@ -66,10 +66,12 @@ class Placement extends AppModel {
 		}	
 		$adp['Placement']['type'] = $details['adType'];
 		$adp['Placement']['format'] = $details['adFormat'];
-		$adp['Placement']['short_url'] = $details['strURL']."s/".$adp['Placement']['keyword'];
+		$adp['Placement']['short_url'] = $details['strURL'].$adp['Placement']['keyword'];
 		$adp['Placement']['creator_ip_address'] = $this->getRealIpAddr();
 		$adp['Placement']['is_active'] = 1;
 		
+		//echo "<pre>";print_r($adp);exit;
+				
 		$saveAdplacements = $placement->save($adp);
 		$placementDetailID = $placement->getLastInsertID();
 		return $adp['Placement']['keyword'];
@@ -80,13 +82,40 @@ class Placement extends AppModel {
 		App::import('Model','Placement');
 		$placement = new Placement();
 		
-		$tempRandomKeyword = substr(md5(uniqid(rand())),0,6);
-		$findRandomKey = $placement->find('first',array('conditions'=>array('Placement.keyword'=>$tempRandomKeyword)));
-		if($findRandomKey){
+		$arrReserveKeywords = array("javascript","javascripts","image","images","img","imgs","css","style","styles","icon","icons","static","server","admin","user","administrator","login","password");
+		
+		//$tempRandomKeyword = substr(md5(uniqid(rand())),0,6);
+		$tempRandomKeyword = $this->buildShortUrlKeyword(); //Generate the keyword as per the specified format
+		
+		if(in_array(strtolower($tempRandomKeyword),$arrReserveKeywords)){//not be a reserved word according to the specified array
+			$this->getRandomNum();
+		}else if((substr($tempRandomKeyword,0,1) == "-") || (substr($tempRandomKeyword, (strlen($tempRandomKeyword)-1)) == "-")){ // Keyword not start or end with a hyphen.
+			$this->getRandomNum();
+		}else if((strlen($tempRandomKeyword) <3) || (strlen($tempRandomKeyword) > 128)){ // Keyword have a minimum length of 3 and have a maximum length of 128.
 			$this->getRandomNum();
 		}else{
-			return $tempRandomKeyword;
+			$findRandomKey = $placement->find('first',array('conditions'=>array('Placement.keyword'=>$tempRandomKeyword)));
+			if($findRandomKey){
+				$this->getRandomNum();
+			}else{
+				return $tempRandomKeyword;
+			}
+		}	
+	}
+	
+	private function buildShortUrlKeyword() //contain [a-z][A-Z][0-9] and hyphens (-); all other characters are not allowed.
+	{
+		$codeset = "-0123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ"; // note:this is not a complete alphabet. characters l, I, and O were removed because they look too similar to other characters
+		$base = strlen($codeset);
+		$n = mt_rand(299, 9999999999); // range from 54 to dZfsHp
+		
+		$converted = NULL;
+		while ($n > 0)
+		{
+			$converted = substr($codeset, ($n % $base), 1) . $converted;
+			$n = floor($n / $base);
 		}
+		return $converted;
 	}
 	
 	function getRealIpAddr()
@@ -107,6 +136,15 @@ class Placement extends AppModel {
 		return $ip;
 	}
 	
+	function isKeywordExists($slugValue)
+	{
+		$getDetail = $this->find('all',array('conditions'=>array('keyword'=>$slugValue)));
+		if(count($getDetail) > 0){
+			return 1;
+		}else{
+			return 0;
+		}
+	}
 	function getDestURL($slugparam)
 	{
 		App::import('Model','Placement');

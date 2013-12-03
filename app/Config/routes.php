@@ -33,8 +33,7 @@
  */
 	Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
 	
-	Router::connect('/s/:slug', array('controller' => 'shorturls', 'action' => 'route_url'), array('pass' => array('slug')));
-
+	Router::connect('/:slug', array('controller' => 'shorturls', 'action' => 'route_url'), array('pass' => array('slug')));
 /**
  * Load all plugin routes. See the CakePlugin documentation on
  * how to customize the loading of plugin routes.

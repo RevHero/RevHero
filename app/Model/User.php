@@ -47,7 +47,10 @@ class User extends AppModel{
 	function saveUserDetails($userDetails) // This is require to save the user details in the users table in database
 	{
 		App::import('Model','User');
-		$userall = new User(); 
+		$userall = new User();
+		
+		App::import('Model','PromoUser');
+		$promouser = new PromoUser();
 		
 		$user['User']['first_name'] = '';
 		$user['User']['last_name'] = '';
@@ -59,6 +62,7 @@ class User extends AppModel{
 		$user['User']['is_active'] = 1;
 		
 		$saveUser = $userall->save($user);
-		return $saveUser;
+		$userLastID = $userall->getLastInsertID();
+		return $userLastID;
 	}
 }
