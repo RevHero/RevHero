@@ -44,12 +44,14 @@ $(document).ready(function()
 				}else{
 					$("#loader").show();
 					$("#publishBtn").hide();
+					$(".publishBtn").hide();
 					$("#notavail").hide();
 					$("#avail").hide();
 					$.post(strURL+"ads/getUniqueKeyword",{customKeyword:customKeyword},function(data){
 						//alert(JSON.stringify(data, null, 4));
 						$("#loader").hide();
 						$("#publishBtn").show();
+						$(".publishBtn").show();
 						if(data.status == 1){
 							$("#notavail").show();
 							$("#avail").hide();
@@ -131,42 +133,19 @@ $(document).ready(function()
 		}	
 	});
 });
+
+function validate()
+{
+	var iskeyword = $("#hid_is_keyword_exist").val().trim();
+	if(iskeyword == '0' || iskeyword == ''){
+		return true
+	}else{
+		return false;
+	}
+}
+
 </script>
-<div class="container well">
-  <div>
-  	<h3><?php echo substr($getDetails['AdDetail']['headline'],0,35); ?></h3>
-  </div>
-  <div class="row">
-    <div class="span1.5">
-	  <?php if($getDetails['AdDetail']['ad_image'] && file_exists(DIR_AD_PHOTOS.$getDetails['AdDetail']['ad_image'])){ ?>
-	      <img src="<?php echo HTTP_FILES."ad_photos/".$getDetails['AdDetail']['ad_image']; ?>"  alt="<?php echo substr($getDetails['AdDetail']['headline'],0,35); ?>" class="img-rounded" style="max-width:100px;max-height:110px;">
-	  <?php }else{ ?>
-    	  <img src="<?php echo HTTP_IMAGES."no_image.gif"; ?>"  alt="<?php echo substr($getDetails['AdDetail']['headline'],0,35); ?>" class="img-rounded" style="max-width:100px;max-height:110px;">
-	  <?php } ?>
-    </div>
-    <div class="span4.5">
-      <p class="displayDetails">
-        <i class="icon-globe"></i> <a href="<?php echo $getDetails['AdDetail']['dest_url']; ?>" style="outline:none;" target="_blank"><?php echo $getDetails['AdDetail']['dest_url']; ?></a><br />
-		<p class="displayDetails"><b>Tags:</b>
-			<?php
-				$allTags = '';
-				foreach($getDetails['Tag'] as $tag)
-				{
-					$allTags .= '<span class="tag label label-info">'.$tag['tag_name']."</span> ";
-				}
-				echo $allTags;
-			?>
-		</p>
-		<p class="displayDetails"><b>CPA:</b> $<?php echo number_format($getDetails['AdDetail']['CPA'],2); ?></p>
-		<p class="displayDetails"><i class="icon-envelope"></i> <?php echo $getDetails['User']['email']; ?></p>
-        <p class="displayDetails"><b>Created:</b> <?php echo date("F j, Y", strtotime($getDetails['AdDetail']['created'])); ?></p>
-      </p>
-    </div>
-  </div>
-  <div style="margin-top:10px;">
-	 <?php echo $getDetails['AdDetail']['body']; ?>
-  </div>
-</div>
+<?php echo $this->element('ads'); ?>
 
 <div class="container well">
 	<div class="row">
@@ -175,17 +154,21 @@ $(document).ready(function()
 		</div>
 	</div>
 	<div class="row">
-		<form class="form-horizontal" method="post" onsubmit="return false;">
-			<input type="hidden" name="hid_ad_id" id="hid_ad_id" value="<?php echo $getDetails['AdDetail']['id']; ?>" />
-			<input type="hidden" name="hid_publisher_id" id="hid_publisher_id" value="<?php echo $this->Session->read('Auth.User.id'); ?>" />
+		<?php if($this->Session->read('Auth.User.id')) { ?>
+			<form class="form-horizontal" method="post" onsubmit="return false">
+		<?php }else{ ?>	
+			<form class="form-horizontal" method="post" action="<?php echo HTTP_ROOT."ads/savePlacements" ?>">
+		<?php } ?>
+			<input type="hidden" name="adversiteId" id="hid_ad_id" value="<?php echo $anonymousads[0]['AdDetail']['id']; ?>" />
+			<input type="hidden" name="publisherId" id="hid_publisher_id" value="<?php if($this->Session->read('Auth.User.id')) { echo $this->Session->read('Auth.User.id'); }else{ echo 0; }?>" />
 			<input type="hidden" name="hid_is_keyword_exist" id="hid_is_keyword_exist" value="" />
-			<input type="hidden" name="hid_headline" id="hid_headline" value="<?php echo substr($getDetails['AdDetail']['headline'],0,35); ?>" />
-			<input type="hidden" name="hid_body" id="hid_body" value="<?php echo substr($getDetails['AdDetail']['body'],0,104); ?>" />
-			<input type="hidden" name="hid_destination_url" id="hid_destination_url" value="<?php echo $getDetails['AdDetail']['dest_url']; ?>" />
+			<input type="hidden" name="hid_headline" id="hid_headline" value="<?php echo substr($anonymousads[0]['AdDetail']['headline'],0,35); ?>" />
+			<input type="hidden" name="hid_body" id="hid_body" value="<?php echo substr($anonymousads[0]['AdDetail']['body'],0,104); ?>" />
+			<input type="hidden" name="hid_destination_url" id="hid_destination_url" value="<?php echo $anonymousads[0]['AdDetail']['dest_url']; ?>" />
 			<div class="control-group">
 				<label class="control-label" for="inputKeyword">Custom Keyword</label>
 				<div class="controls">
-					<input type="text" id="customKeyword" placeholder="Custom Keyword">
+					<input type="text" name="customKeyword" id="customKeyword" placeholder="Custom Keyword">
 					<span id="loader" style="margin-left:5px;display:none;"><img src="<?php echo HTTP_ROOT; ?>img/ajax-loader.gif" /> Getting Availability</span>
 					<span style="color:#006600;margin-left:10px;" id="avail"></span>
 					<span style="color:#FF0000;margin-left:10px;" id="notavail"></span>
@@ -205,12 +188,17 @@ $(document).ready(function()
 					<input type="radio" name="adFormat" id="adType2" value="3"> <span style="vertical-align:text-top">Three Line</span>
 				</div>
 			</div>
-		</form>
 	</div>
+
 	<div>
-	   <button class="btn btn-primary" id="publishBtn">Publish</button>
+  	   <?php if($this->Session->read('Auth.User.id')) { ?>
+	   		<button class="btn btn-primary" id="publishBtn">Publish</button>
+	   <?php }else{ ?>
+	   		<button class="btn btn-primary publishBtn" type="submit" name="pub_submit" onclick="return validate();">Publish</button>
+	   <?php } ?>
 	   <span id="mainloader" style="margin-left:5px;display:none;"><img src="<?php echo HTTP_ROOT; ?>img/ajax-loader.gif" /> Creating Ad Placement</span>
     </div>
+	    </form>
 </div>
 
 <div class="container well" id="placementcontainer" style="display:none;">

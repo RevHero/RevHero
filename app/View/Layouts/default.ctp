@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>RevHero: Home</title>
+	<title>
+		RevHero: <?php echo $title_for_layout; ?>
+	</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 	<link rel="shortcut icon" href="favicon.ico"/>
 	<?php
@@ -25,8 +27,10 @@
 
 			<?php echo $this->Session->flash(); ?>
 			<?php echo $this->element('header'); ?>
-			<?php echo $this->fetch('content'); ?>
-			<?php //echo $this->element('footer'); ?>
+			<div style="min-height:400px;">
+				<?php echo $this->fetch('content'); ?>
+			</div>
+			<?php echo $this->element('footer'); ?>
 		</div>
 		<div id="footer">
 			<?php /*echo $this->Html->link(

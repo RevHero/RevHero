@@ -7,6 +7,7 @@ class UsersController extends AppController {
 		$this->layout = 'default';
 		$this->loadModel('PromoCode');
 		$this->loadModel('PromoUser');
+		$this->set('title_for_layout', 'Home');
 		
 		if($this->Session->read('Auth.User.id')){
 			$this->redirect(HTTP_ROOT."users/dashboard");
@@ -35,9 +36,20 @@ class UsersController extends AppController {
 			$getDetails = $this->AdDetail->getAdDetails($this->Session->read("VISITORAD"));
 			//pr($getDetails);exit;
 			if($getDetails && count($getDetails) >0){
-				$this->set('getDetails', $getDetails);
+				$this->set('anonymousads', array($getDetails));
+				$this->set('home', 1);
 			}
 			$this->Session->write("VISITORAD","");
+		}
+		if($this->Session->read("VISITORPLACEMENT")){
+			$this->loadModel('Placement');
+			$getDetails = $this->Placement->find('all', array('conditions'=>array('Placement.id'=>$this->Session->read("VISITORPLACEMENT"))));
+			//pr($getDetails);exit;
+			if($getDetails && count($getDetails) >0){
+				$this->set('anonymousplacements', array($getDetails));
+				$this->set('home', 1);
+			}
+			$this->Session->write("VISITORPLACEMENT","");
 		}
 	}
 	
@@ -104,9 +116,15 @@ class UsersController extends AppController {
 	
 	function dashboard()
 	{
+		$this->set('title_for_layout', 'Dashboard');
 		$advcookie = $this->Cookie->read('advertised');
 		if(!empty($advcookie)){
 			$this->redirect(HTTP_ROOT."ads/anonymousads");
+		}
+		
+		$placementcookie = isset($_COOKIE['publish_placement'])?$_COOKIE['publish_placement']:'';
+		if(!empty($placementcookie)){
+			$this->redirect(HTTP_ROOT."ads/anonymousplacements");
 		}
 		$this->layout = 'default';
 		$this->loadModel('Placement');
@@ -116,19 +134,13 @@ class UsersController extends AppController {
 		$conditions = array('Placement.is_active'=>1, 'Placement.publisher_id'=>$userId);
 		$this->paginate = array(
 			'conditions' => $conditions,
-			'limit' => 2,
+			'limit' => 5,
 			'order' => array('Placement.created'=>'DESC'),
 		);
 		
 		$getallplacements = $this->paginate('Placement');
-		
-		//echo "<pre>";print_r($getallplacements);exit;
-
 		$getallActiveAdsforUser = $this->AdDetail->getAllAds($this->Auth->user('id'));
-		
 		$getallApprovedAds = $this->AdDetail->find('count', array('conditions'=>array('AdDetail.is_active'=>1, 'AdDetail.status'=>1)));
-		
-		//echo "<pre>";print_r($getallApprovedAds);exit;
 		
 		$this->set('getallplacements', $getallplacements);
 		$this->set('totalplacementcounts', $gettotalplacementcounts);
@@ -148,6 +160,7 @@ class UsersController extends AppController {
 	
 	function forgotpassword() 
 	{
+		$this->set('title_for_layout', 'Forgot Password');
 		$this->set('passemail','10');
 		if(!empty($this->request->data) && empty($this->request->data['User']['repass']) && empty($this->request->data['User']['newpass'])){
 			$from = 'test@andolasoft.com';
@@ -204,8 +217,6 @@ class UsersController extends AppController {
 			}
 		}
 		
-		//echo "<pre>";print_r($this->request->data);exit;
-		
 		if(!empty($this->request->data) && !empty($this->request->data['User']['repass']) && !empty($this->request->data['User']['newpass']))
 		{
 			if($this->request->data['User']['repass']==$this->request->data['User']['newpass'])
@@ -221,6 +232,7 @@ class UsersController extends AppController {
 	function placementdetails($placementId = NULL)
 	{
 		$this->layout = 'default';
+		$this->set('title_for_layout', 'Placement Details');
 		$this->loadModel('Placement');
 		$this->loadModel('AdClick');
 		$this->AdClick->recursive = -1;
@@ -232,20 +244,34 @@ class UsersController extends AppController {
 			{
 				$this->set('getDetails',$getplacementdetails[0]);
 				
-				$getclickdetails = $this->AdClick->getChartResult($placementId);
+				$getclickdetails = $this->AdClick->getChartResult($placementId,'0'); //0 is used to get the click count for only unique clicks
+				
+				$getTotalClickIncludesDuplicateClick = $this->AdClick->getChartResult($placementId, '1'); //1 is used to get all click count including duplicate click
 				
 				$dt_arr=array();
-				$all_clicks=array();
-				foreach($getclickdetails as $eachclick)
+				$unique_clicks=array();
+				$all_duplicate_clicks=array();
+				foreach($getclickdetails as $eachclick) //Building array to hold the count for unique clicks
 				{
 					$dt=date('M j, Y',strtotime(date("Y-m-d", strtotime($eachclick['AdClick']['created']))));
 					array_push($dt_arr,$dt);
-					array_push($all_clicks,(int)$eachclick[0]['clickCount']);
+					array_push($unique_clicks,(int)$eachclick[0]['clickCount']);
 				}
-				$carr = array(array('name'=>'Clicks','color'=>'#36A7E7','connectNulls'=> 'true','data'=>$all_clicks));
-				//echo "<pre>";print_r($dt_arr);print_r($carr);exit;
+				
+				foreach($getTotalClickIncludesDuplicateClick as $eachduplicateclick) //Building the array to hold the count for all clicks including duplicate clicks
+				{
+					array_push($all_duplicate_clicks, (int)$eachduplicateclick[0]['clickCount']);
+				}
+				
+				$carr = array(array('name'=>'Unique Clicks','color'=>'#36A7E7','connectNulls'=> 'true','data'=>$unique_clicks), array('name'=>'Total(including duplicate) Clicks','color'=>'#910000','connectNulls'=> 'true','data'=>$all_duplicate_clicks));
 				$this->set('dt_arr',json_encode($dt_arr));
 				$this->set('all_clicks',json_encode($carr));
+				
+				
+				$distinctCountry = $this->AdClick->query("select Country, CountryCode, count(user_ip_address) as total_count from ad_clicks where is_duplicate=0 and placement_id='".$placementId."' group by Country");
+				$this->set('distinctCountry', json_encode($distinctCountry));
+				
+				$this->set('placementId', $placementId);
 			}
 			else
 			{
@@ -258,9 +284,18 @@ class UsersController extends AppController {
 		}	
 	}
 	
+	function getAllCities()
+	{
+		$this->layout = 'ajax';
+		$this->loadModel('AdClick');
+		$this->AdClick->recursive = -1;
+		$distinctCities = $this->AdClick->query("select City, count(user_ip_address) as total_count from ad_clicks where is_duplicate=0 and CountryCode='".$this->request->data['country_code']."' and placement_id='".$this->request->data['placementID']."' group by City");
+		echo json_encode($distinctCities);exit;
+	}
 	function profile()
 	{
 		$this->layout = 'default';
+		$this->set('title_for_layout', 'Profile');
 		if($this->request['data'] && $this->request['data']['profile']['uploadimage']['tmp_name'] != '' && $this->request['data']['profile']['uploadimage']['name'] != '')
 		{
 			$photo_name = $this->Format->uploadPhoto($this->request['data']['profile']['uploadimage']['tmp_name'],$this->request['data']['profile']['uploadimage']['name'],$this->request['data']['profile']['uploadimage']['size'],DIR_PROFILE_IMAGES,SES_ID,"profile_img");

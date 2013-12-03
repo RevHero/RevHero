@@ -59,6 +59,7 @@ class User extends AppModel{
 		$user['User']['admin'] = 0;
 		$user['User']['reset_token'] = '';
 		$user['User']['confirmation_token'] = '';
+		$user['User']['revenue_percentage'] = 68;
 		$user['User']['is_active'] = 1;
 		
 		$saveUser = $userall->save($user);
@@ -73,9 +74,25 @@ class User extends AppModel{
 		
 		App::import('Model','Placement');
 		$publishcnt = new Placement();
-		$getUser = $this->find('all', array('conditions'=>array('User.admin'=>0)), array('order'=>'User.created DESC'));
+		$getUser = $this->find('all', array('conditions'=>array('User.admin'=>0), 'order'=>array('User.created desc')));
 		
-		$arrCount = 0;
+		/* Query for getting the details for ANONYMOUS user STARTS here */
+		
+		$createdAdCount = $adcount->find('count', array('conditions'=>array('AdDetail.advertiser_id'=>0)));
+		$publishedAdCount = $publishcnt->find('count', array('conditions'=>array('Placement.publisher_id'=>0)));
+		$mainArr[0]['user_id'] = 0;
+		$mainArr[0]['email'] = 'Anonymous User';
+		$mainArr[0]['profile_image'] = '';
+		$mainArr[0]['createdAdCount'] = $createdAdCount;
+		$mainArr[0]['publishedAdCount'] = $publishedAdCount;
+		$mainArr[0]['signedUp'] = '';
+		$mainArr[0]['revenue'] = '';
+		$mainArr[0]['is_active'] = '';
+		$mainArr[0]['promocode'] = '';
+		
+		/* Query for getting the details for ANONYMOUS user ENDS here */
+		
+		$arrCount = 1; //Tha array starts at counter number 1. The 0 element goes to the ANONYMOUS user
 		foreach($getUser as $user)
 		{
 			//This is required to get the promocode details for that particular user
@@ -83,19 +100,22 @@ class User extends AppModel{
 			
 			$createdAdCount = $adcount->find('count', array('conditions'=>array('AdDetail.advertiser_id'=>$user['User']['id'])));
 			$publishedAdCount = $publishcnt->find('count', array('conditions'=>array('Placement.publisher_id'=>$user['User']['id'])));
-			
 			$mainArr[$arrCount]['user_id'] = $user['User']['id'];
 			$mainArr[$arrCount]['email'] = $user['User']['email'];
 			$mainArr[$arrCount]['profile_image'] = $user['User']['prof_image'];
 			$mainArr[$arrCount]['createdAdCount'] = $createdAdCount;
 			$mainArr[$arrCount]['publishedAdCount'] = $publishedAdCount;
 			$mainArr[$arrCount]['signedUp'] = $user['User']['created'];
+			$mainArr[$arrCount]['revenue'] = $user['User']['revenue_percentage'];
 			$mainArr[$arrCount]['is_active'] = $user['User']['is_active'];
 			$mainArr[$arrCount]['promocode'] = @$getPromoCodeForUser[0]['promo_codes']['promocode'];
-			
 			$arrCount++;
 		}
 		return $mainArr;
 	}
-	
+	function savePercentage($data)
+	{
+		$this->query("update `users` set `revenue_percentage`='".$data['share']."' where `id`=".$data['userId']);
+		return 1;
+	}
 }

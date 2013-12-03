@@ -13,9 +13,13 @@
 	<?php if($this->Session->read('Auth.User.id')){ ?>
 		<ul class="nav pull-left">
 			<li class="divider-vertical"></li>
+			<li><a href="<?php echo HTTP_ROOT; ?>revadmins/admin_config">Configurations</a></li>
+			<li class="divider-vertical"></li>
 			<li><a href="<?php echo HTTP_ROOT; ?>revadmins/promo_code">Promo Codes</a></li>
 			<li class="divider-vertical"></li>
 			<li><a href="<?php echo HTTP_ROOT; ?>revadmins/allusers">Users</a></li>
+			<li class="divider-vertical"></li>
+			<li><a href="<?php echo HTTP_ROOT; ?>revadmins/click_activity">Click Activity</a></li>
 			<li class="divider-vertical"></li>
 		</ul>
 		<div class="nav-collapse">
