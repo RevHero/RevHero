@@ -11,6 +11,14 @@ $num = mysql_num_rows($selectData);
 if($num == 0)
 {
 	$insertDefaultAdmin = mysql_query("INSERT INTO `users` SET `email`='".$admin_email."', `encrypted_password`='".md5($admin_pass)."', `admin`=1");
-}	
+}
 
+if($insertDefaultAdmin && $insertDefaultAdmin != '')
+{
+	echo "Successfully added a Admin Record.";
+}
+else
+{
+	echo "Admin Record already exist!";
+}
 ?>
