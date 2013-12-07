@@ -12,7 +12,7 @@ App::uses('Controller', 'Controller');
  */
 class AppController extends Controller {
 	public $helpers = array('Html', 'Form');
-	public $components = array('Auth','Session','Format'); //Including the required components
+	public $components = array('Auth','Session','Format','Cookie'); //Including the required components
 	
 	public function beforeFilter() {
 		parent::beforeFilter();
@@ -41,6 +41,10 @@ class AppController extends Controller {
 				}
 			}
 			
+			if(CONTROLLER == 'deploy'){
+				$this->redirect(HTTP_ROOT."deploy/index");
+			}
+			
 			if (!defined('WWW_ROOT')) {
 				define('WWW_ROOT', dirname(__FILE__) . DS);
 			}
@@ -55,7 +59,15 @@ class AppController extends Controller {
 			
 			$this->set('successaddsave',$this->Session->read("SAVEADDSUCCESS"));
 			$this->Session->write("SAVEADDSUCCESS","");
-
+			
+			/* Code retriving for PROFILE IMAGE in the header part for both USER and ADMIN starts here */
+			
+			$User = ClassRegistry::init('User');
+			$get_profile_image = $User->query("SELECT `prof_image` from `users` where `id`='".$this->Auth->User("id")."'");
+			$this->Session->write("profile_image", $get_profile_image[0]['users']['prof_image']);
+			
+			/* Code retriving for PROFILE IMAGE in the header part for both USER and ADMIN starts here */
+			
 			//$this->set('loginstatus',$this->Session->read("LOGINSTATUS")); //Requires to hold the session for the loggedin users.
 		}else{ //if the user is coming to the site without login
 			$this->set('success',$this->Session->read("SUCCESS"));
@@ -70,7 +82,7 @@ class AppController extends Controller {
 			
 			$this->Auth->autoRedirect = false;
 			Security::setHash('md5'); //Setting for conveting the password to hash format
-			$this->Auth->allow('home','confirmation','logincheck','forgotpassword','admin_login','route_url'); //here we have to specify the actions which we want to load without the user authentication.
+			$this->Auth->allow('home','confirmation','logincheck','forgotpassword','admin_login','route_url','index','registration','getTitleFromUrl','getTag','add','savePlacements','store','tagdetails','details','savePlacements','getUniqueKeyword'); //here we have to specify the actions which we want to load without the user authentication.
 			
 			$this->Session->write("SUCCESS","");
 			$this->Session->write("CONFIRMREG","");

@@ -54,7 +54,6 @@ class Placement extends AppModel {
 	{
 		App::import('Model','Placement');
 		$placement = new Placement(); 
-	
 		$adp['Placement']['publisher_id'] = $details['publisherId'];
 		$adp['Placement']['ad_detail_id'] = $details['adversiteId'];
 		if(isset($details['customKeyword']) && $details['customKeyword'] != ''){
@@ -66,15 +65,13 @@ class Placement extends AppModel {
 		}	
 		$adp['Placement']['type'] = $details['adType'];
 		$adp['Placement']['format'] = $details['adFormat'];
-		$adp['Placement']['short_url'] = $details['strURL'].$adp['Placement']['keyword'];
+		$adp['Placement']['short_url'] = HTTP_ROOT.$adp['Placement']['keyword'];
 		$adp['Placement']['creator_ip_address'] = $this->getRealIpAddr();
 		$adp['Placement']['is_active'] = 1;
 		
-		//echo "<pre>";print_r($adp);exit;
-				
 		$saveAdplacements = $placement->save($adp);
 		$placementDetailID = $placement->getLastInsertID();
-		return $adp['Placement']['keyword'];
+		return array($placementDetailID, $adp['Placement']['keyword']);
 	}
 	
 	function getRandomNum()
@@ -82,7 +79,7 @@ class Placement extends AppModel {
 		App::import('Model','Placement');
 		$placement = new Placement();
 		
-		$arrReserveKeywords = array("javascript","javascripts","image","images","img","imgs","css","style","styles","icon","icons","static","server","admin","user","administrator","login","password");
+		$arrReserveKeywords = array("javascript","javascripts","image","images","img","imgs","css","style","styles","icon","icons","static","server","admin","user","administrator","login","password","deploy");
 		
 		//$tempRandomKeyword = substr(md5(uniqid(rand())),0,6);
 		$tempRandomKeyword = $this->buildShortUrlKeyword(); //Generate the keyword as per the specified format
