@@ -41,7 +41,6 @@
 				  <a data-toggle="dropdown" class="dropdown-toggle" href="#"><b class="caret"></b></a>
 				  <ul class="dropdown-menu">
 					<li><a href="<?php echo HTTP_ROOT; ?>users/profile">Profile</a></li>
-					<li><a href="#">Settings</a></li>
 					<li class="divider"></li>
 					<li><a href="<?php echo HTTP_ROOT ?>users/logout">Logout</a></li>
 				  </ul>
