@@ -23,10 +23,6 @@ Clone the project RevHero *git clone git@github.com:RevHero/RevHero.git*
  - Navigate to the folder "app/Config/seed_admin.php"
  - Edit the default Admin credentials and database credentials
  - Run the PHP file in the terminal **php seed_admin.php**
-
-### Bootstrap Configuration ###
- - Edit the bootstrap settings on "app/Config/bootstrap.php" for the "define('SUB_FOLDER', '');"
- - Add the project folder name followed by "/" for the "SUB_FOLDER" 
  
 ### Setting up the Mandril & IPInfoDB credentials ###
  - Navigate to the "app/Config/core.php" 
