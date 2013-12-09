@@ -12,7 +12,7 @@ $(document).ready(function()
 		var strURL = $('#pageurl').val();
 		var rexp = /^[0-9a-zA-Z-]+$/;
 		var customKeyword = $("#customKeyword").val().trim();
-		var arrReserveKeywords = ["javascript","javascripts","image","images","img","imgs","css","style","styles","icon","icons","static","server","admin","user","administrator","login","password","deploy"];
+		var arrReserveKeywords = ["javascript","javascripts","image","images","img","imgs","css","style","styles","icon","icons","static","server","admin","user","administrator","login","password","deploy","install"];
 		if(customKeyword && customKeyword != '')
 		{
 			if(!rexp.test(customKeyword)){ //Keyword should not contain special characters.

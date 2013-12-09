@@ -35,6 +35,8 @@
 	
 	Router::connect('/deploy', array('controller' => 'deploy', 'action' => 'index'));
 	
+	Router::connect('/install', array('controller' => 'admininstall', 'action' => 'index'));
+	
 	Router::connect('/:slug', array('controller' => 'shorturls', 'action' => 'route_url'), array('pass' => array('slug')));
 /**
  * Load all plugin routes. See the CakePlugin documentation on

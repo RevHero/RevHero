@@ -26,7 +26,7 @@ Clone the project RevHero *git clone git@github.com:RevHero/RevHero.git*
  
 ### Setting up the Mandril & IPInfoDB credentials ###
  - Navigate to the "app/Config/core.php" 
- - Add the Mandril credentials to setup the email notification
+ - Add the Mandrill credentials to setup the email notification
  - Register in the "http://ipinfodb.com/" to get the API key
  - Add your API key under "IP_TRACK_INFO"
  
