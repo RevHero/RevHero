@@ -2,11 +2,11 @@
 $admin_email = 'test@admin.com';
 $admin_pass  = 'test123';
 $host_name = "localhost";
-$user_name = "root";
-$user_password = "";
-$db_name = "rev_sand";
+$DB_user_name = "root";
+$DB_user_password = "";
+$db_name = "rev_final";
 
-$conn = mysqli_connect($host_name, $user_name, $user_password, $db_name);
+$conn = mysqli_connect($host_name, $DB_user_name, $DB_user_password, $db_name);
 
 $selectData = mysqli_query($conn, "select * from `users` where `admin`=1");
 $num = mysqli_num_rows($selectData);
