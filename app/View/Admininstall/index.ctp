@@ -34,7 +34,7 @@ else
             <fieldset>
                 <!-- Address form -->
          
-                <h2>Admin and Database Credentials</h2><br/>
+               <h2>Admin Setup Credentials</h2><br/>
          
                 <!-- email input-->
                 <div class="control-group">
