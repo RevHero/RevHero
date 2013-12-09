@@ -5,6 +5,7 @@ class AdsController extends AppController {
 	function lists()
 	{
 		$this->layout = 'default';
+		$this->set('title_for_layout', 'Lists');
 		if(!$this->Session->read('Auth.User.id')){
 			$this->redirect(HTTP_ROOT);
 		}
@@ -140,7 +141,7 @@ class AdsController extends AppController {
 		}
 		else
 		{
-			$getEditDetails = $this->AdDetail->getAdDetails($editId);
+			$getEditDetails = $this->AdDetail->getAdDetails($editId, $this->Auth->user('id'));
 			if($getEditDetails && count($getEditDetails) >0)
 			{
 				$this->set('getEditDetails', $getEditDetails);
@@ -220,7 +221,7 @@ class AdsController extends AppController {
 			$this->layout = 'default';
 			$this->loadModel('AdDetail');
 			$this->loadModel('User');
-			$getDetails = $this->AdDetail->getAdDetails($adid);
+			$getDetails = $this->AdDetail->getAdDetails($adid, $this->Auth->user('id'));
 			if($getDetails && count($getDetails) >0){
 				$this->set('anonymousads', array($getDetails));
 				$this->set('detailpg', 1);

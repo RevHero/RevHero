@@ -78,12 +78,11 @@ class AdDetail extends AppModel {
 		return $allAds;
 	}
 	
-	function getAdDetails($adid=NULL)
+	function getAdDetails($adid=NULL, $loggedUserId=NULL)
 	{
 		App::import('Model','AdDetail');
 		$getAdDetails = new AdDetail();
-		
-		$AdDetails = $getAdDetails->find('first',array('conditions'=>array('AdDetail.id'=>$adid, 'AdDetail.is_active'=>1)));
+		$AdDetails = $getAdDetails->find('first',array('conditions'=>array('AdDetail.id'=>$adid, 'AdDetail.is_active'=>1, 'AdDetail.advertiser_id'=>$loggedUserId)));
 		return $AdDetails;
 	}
 	
