@@ -9,6 +9,7 @@ Application Setup
 Clone the project RevHero *git clone git@github.com:RevHero/RevHero.git*
 
 ### Database configuration ###
+ - Rename the database setting file from "app/Config/database.php.default" to "app/Config/database.php"
  - Edit the database settings on "app/Config/database.php" for the "$default" variable under the "DATABASE_CONFIG" class
  - Open the terminal and connect to the database. For MySQl database use the command **mysql -u myusername -p**
  - Create a new database in the same name given on the database.php
@@ -20,9 +21,13 @@ Clone the project RevHero *git clone git@github.com:RevHero/RevHero.git*
  
 ### Creating the Admin User ###
  - Navigate to the folder "app/Config/seed_admin.php"
- - Edit the default Admin credentials
+ - Edit the default Admin credentials and databse credentials
  - Run the PHP file in the terminal **php seed_admin.php**
 
+### Bootstrap Configuration ###
+ - Edit the bootstrap settings on "app/Config/bootstrap.php" for the "define('SUB_FOLDER', '');"
+ - Add the project folder name followed by "/" for the "SUB_FOLDER" 
+ 
 ### Setting up the Mandril & IPInfoDB credentials ###
  - Navigate to the "app/Config/core.php" 
  - Add the Mandril credentials to setup the email notification
