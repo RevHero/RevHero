@@ -24,8 +24,10 @@ $(document).ready(function(){
 							<input type="file" name="data[profile][uploadimage]" id="profImage" class="input-xlarge"/>
 						</div><br />
 						<div class="controls">
+						<?php if($this->Session->read('profile_image')){ ?>
 							<img src="<?php echo HTTP_FILES."profile_images/".$this->Session->read('profile_image'); ?>" border="0" style="max-height:100px;max-width:100px;" />
 						</div>
+						<?php } ?>
 					</div>
 					<div class="control-group">
 						<div class="controls">
