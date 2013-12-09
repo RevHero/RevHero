@@ -172,7 +172,9 @@ $tagNames = substr($tagNames,0,-1);
 							<input type="hidden" name="hid_image" id="hid_image" value="<?php echo $getEditDetails['AdDetail']['ad_image']; ?>" />
 						</div><br />
 						<div class="controls">
+						<?php if(isset($getEditDetails['AdDetail']['ad_image']) && $getEditDetails['AdDetail']['ad_image'] != ''){ ?>
 							<img src="<?php echo HTTP_FILES."ad_photos/".$getEditDetails['AdDetail']['ad_image']; ?>" border="0" style="max-height:100px;max-width:100px;" />
+						<?php } ?>	
 						</div>
 					</div>
 					<div class="form-actions">

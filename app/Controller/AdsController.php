@@ -5,6 +5,7 @@ class AdsController extends AppController {
 	function lists()
 	{
 		$this->layout = 'default';
+		$this->set('title_for_layout', 'Lists');
 		if(!$this->Session->read('Auth.User.id')){
 			$this->redirect(HTTP_ROOT);
 		}
@@ -140,7 +141,7 @@ class AdsController extends AppController {
 		}
 		else
 		{
-			$getEditDetails = $this->AdDetail->getAdDetails($editId);
+			$getEditDetails = $this->AdDetail->getAdDetails($editId, $this->Auth->user('id'));
 			if($getEditDetails && count($getEditDetails) >0)
 			{
 				$this->set('getEditDetails', $getEditDetails);
@@ -194,9 +195,7 @@ class AdsController extends AppController {
 		$this->loadModel('AdDetail');
 		$this->loadModel('Tag');
 		
-		$alltags = $this->Tag->find('all', array('conditions'=>array('Tag.tag_name !=' => ''), 'limit' => 10));
-		
-		//echo "<pre>";print_r($alltags);exit;
+		$alltags = $this->Tag->find('all', array('conditions'=>array('Tag.tag_name !=' => ''), 'order'=>'Tag.tag_name ASC', 'limit' => 10));
 		
 		$this->Session->write('alltags', $alltags); //This is require to show the tags in the tagdetails page.
 		$this->set('alltags', $alltags);
@@ -222,7 +221,7 @@ class AdsController extends AppController {
 			$this->layout = 'default';
 			$this->loadModel('AdDetail');
 			$this->loadModel('User');
-			$getDetails = $this->AdDetail->getAdDetails($adid);
+			$getDetails = $this->AdDetail->getAdDetails($adid, $this->Auth->user('id'));
 			if($getDetails && count($getDetails) >0){
 				$this->set('anonymousads', array($getDetails));
 				$this->set('detailpg', 1);
@@ -335,7 +334,7 @@ class AdsController extends AppController {
 	
 	function anonymousplacements()
 	{
-		if($_COOKIE['publish_placement']){
+		if(isset($_COOKIE['publish_placement']) && $_COOKIE['publish_placement'] != ''){
 			$this->loadModel('Placement');
 			$arrPlacements = explode(",",$_COOKIE['publish_placement']);
 			$getDetails = $this->Placement->find('all',array('conditions'=>array('Placement.id'=>($arrPlacements))));
@@ -348,7 +347,8 @@ class AdsController extends AppController {
 		if(isset($this->data['linked'])){
 			$this->loadModel('AdDetail');
 			foreach($this->data['cpc'] as $k => $v){
-				$this->AdDetail->query("UPDATE ad_details set cpc = ".$v.",cpa= ".$this->data['cpa'][$k].",advertiser_id=".SES_ID." WHERE id = ".$k);
+				$adFormatId = "A".str_pad(SES_ID,5,"0",STR_PAD_LEFT)."-".str_pad($k,5,"0",STR_PAD_LEFT); //This is the specified format for Advertise ID
+				$this->AdDetail->query("UPDATE ad_details set cpc = ".$v.",cpa= ".$this->data['cpa'][$k].",advertiser_id=".SES_ID.",ad_id='".$adFormatId."' WHERE id = ".$k);
 			}
 		}
 		unset($_COOKIE['advertised']);
@@ -359,8 +359,16 @@ class AdsController extends AppController {
 	function linkplacement(){
 		if(isset($this->data['linked'])){
 			$this->loadModel('Placement');
-			$placementids = implode(',',$this->data['hid_placement_id']);
-			$this->Placement->query("UPDATE placements set publisher_id=".SES_ID." WHERE id IN (".$placementids.")");
+			//$placementids = implode(',',$this->data['hid_placement_id']);
+			//$this->Placement->query("UPDATE placements set publisher_id=".SES_ID." WHERE id IN (".$placementids.")");
+			
+			/* Added the functionality to update the "Publisher ID" and "Placememnt Format ID" in the placements table STARTS here */
+				foreach($this->data['hid_placement_id'] as $val)
+				{
+					$placementFormatId = "P".str_pad(SES_ID,5,"0",STR_PAD_LEFT)."-".str_pad($val,5,"0",STR_PAD_LEFT);
+					$this->Placement->query("update `placements` set publisher_id=".SES_ID.", `placementId`='".$placementFormatId."' where `id`='".$val."'");
+				}	
+			/* Added the functionality to update the Placememnt Format ID in the placements table ENDS here */
 		}
 		unset($_COOKIE['publish_placement']);
 		setcookie('publish_placement','',time()-10000,'/');

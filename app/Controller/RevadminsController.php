@@ -37,8 +37,17 @@ class RevadminsController extends AppController {
 	function admin_config()
 	{
 		$this->layout = 'default_admin';
+		$this->loadModel('Config');
 		if($this->request->data){
-			$this->request->data['duplicateDays'];
+			$saveDuplicate = $this->Config->saveCofigData($this->request->data);
+
+			if($saveDuplicate)
+			{
+				$this->redirect(HTTP_ROOT."revadmins/admin_config");
+			}
+		}else{
+			$getAllValues = $this->Config->retrieveAllData();
+			$this->set('getAllValues', $getAllValues);
 		}
 	}
 	
@@ -179,5 +188,35 @@ class RevadminsController extends AppController {
 		}else{
 			$this->redirect(HTTP_ROOT."revadmins/promo_code");
 		}	
+	}
+	
+	function saveRevenuePercentage()
+	{
+		$this->layout = 'ajax';
+		$this->loadModel('User');
+		
+		$saverevenue = $this->User->savePercentage($this->request->data);
+		if($saverevenue){
+			$json_arr['status'] = 1;
+			echo json_encode($json_arr);exit;
+		}	
+	}
+	
+	function click_activity()
+	{
+		$this->layout = 'default_admin';
+		$this->loadModel('AdClick');
+		
+		$distinctCountry = $this->AdClick->query("select Country, CountryCode, count(user_ip_address) as total_count from ad_clicks where is_duplicate=0 group by Country");
+		$this->set('distinctCountry', json_encode($distinctCountry));
+	}
+	
+	function getAllCities()
+	{
+		$this->layout = 'ajax';
+		$this->loadModel('AdClick');
+		$this->AdClick->recursive = -1;
+		$distinctCities = $this->AdClick->query("select City, count(user_ip_address) as total_count from ad_clicks where is_duplicate=0 and CountryCode='".$this->request->data['country_code']."' group by City");
+		echo json_encode($distinctCities);exit;
 	}
 }

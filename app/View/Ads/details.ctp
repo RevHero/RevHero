@@ -12,7 +12,7 @@ $(document).ready(function()
 		var strURL = $('#pageurl').val();
 		var rexp = /^[0-9a-zA-Z-]+$/;
 		var customKeyword = $("#customKeyword").val().trim();
-		var arrReserveKeywords = ["javascript","javascripts","image","images","img","imgs","css","style","styles","icon","icons","static","server","admin","user","administrator","login","password","deploy"];
+		var arrReserveKeywords = ["javascript","javascripts","image","images","img","imgs","css","style","styles","icon","icons","static","server","admin","user","administrator","login","password","deploy","install"];
 		if(customKeyword && customKeyword != '')
 		{
 			if(!rexp.test(customKeyword)){ //Keyword should not contain special characters.
@@ -133,6 +133,17 @@ $(document).ready(function()
 		}	
 	});
 });
+
+function validate()
+{
+	var iskeyword = $("#hid_is_keyword_exist").val().trim();
+	if(iskeyword == '0' || iskeyword == ''){
+		return true
+	}else{
+		return false;
+	}
+}
+
 </script>
 <?php echo $this->element('ads'); ?>
 
@@ -143,7 +154,11 @@ $(document).ready(function()
 		</div>
 	</div>
 	<div class="row">
-		<form class="form-horizontal" method="post" action="<?php echo HTTP_ROOT."ads/savePlacements" ?>">
+		<?php if($this->Session->read('Auth.User.id')) { ?>
+			<form class="form-horizontal" method="post" onsubmit="return false">
+		<?php }else{ ?>	
+			<form class="form-horizontal" method="post" action="<?php echo HTTP_ROOT."ads/savePlacements" ?>">
+		<?php } ?>
 			<input type="hidden" name="adversiteId" id="hid_ad_id" value="<?php echo $anonymousads[0]['AdDetail']['id']; ?>" />
 			<input type="hidden" name="publisherId" id="hid_publisher_id" value="<?php if($this->Session->read('Auth.User.id')) { echo $this->Session->read('Auth.User.id'); }else{ echo 0; }?>" />
 			<input type="hidden" name="hid_is_keyword_exist" id="hid_is_keyword_exist" value="" />
@@ -174,12 +189,12 @@ $(document).ready(function()
 				</div>
 			</div>
 	</div>
-	<div>
+
 	<div>
   	   <?php if($this->Session->read('Auth.User.id')) { ?>
 	   		<button class="btn btn-primary" id="publishBtn">Publish</button>
 	   <?php }else{ ?>
-	   		<button class="btn btn-primary publishBtn" type="submit" name="pub_submit">Publish</button>
+	   		<button class="btn btn-primary publishBtn" type="submit" name="pub_submit" onclick="return validate();">Publish</button>
 	   <?php } ?>
 	   <span id="mainloader" style="margin-left:5px;display:none;"><img src="<?php echo HTTP_ROOT; ?>img/ajax-loader.gif" /> Creating Ad Placement</span>
     </div>

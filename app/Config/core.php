@@ -395,3 +395,10 @@ Configure::write(
         'server_path' => 'MY SERVER PATH'
     ) 
 );
+
+Configure::write(
+    'IP_TRACK_INFO',
+    array( 
+        'ip_info_track_key' => 'MY IP INFO TRACK KEY'
+    ) 
+);
