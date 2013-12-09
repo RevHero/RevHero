@@ -13,15 +13,15 @@ Clone the project RevHero *git clone git@github.com:RevHero/RevHero.git*
  - Edit the database settings on "app/Config/database.php" for the "$default" variable under the "DATABASE_CONFIG" class
  - Open the terminal and connect to the database. For MySQl database use the command **mysql -u myusername -p**
  - Create a new database in the same name given on the database.php
- - Make sure the user given on the database.php exist and has sufficient priviledge
+ - Make sure the user given on the database.php exist and has sufficient privilege
  
 ### Setting up database ###
- - Import the database sturecture found on "app/SQL/" folder
+ - Import the database structure found on "app/SQL/" folder
  - MySQl command to import the database **mysql -u myuser -p mydbname < absolute_path_to_the_sql_file**
  
 ### Creating the Admin User ###
  - Navigate to the folder "app/Config/seed_admin.php"
- - Edit the default Admin credentials and databse credentials
+ - Edit the default Admin credentials and database credentials
  - Run the PHP file in the terminal **php seed_admin.php**
 
 ### Bootstrap Configuration ###
@@ -34,4 +34,4 @@ Clone the project RevHero *git clone git@github.com:RevHero/RevHero.git*
  - Register in the "http://ipinfodb.com/" to get the API key
  - Add your API key under "IP_TRACK_INFO"
  
-Configure Apache server to run the app by editing the virtual host or point apache to run the app on 80 port
+Configure Apache server to run the app by editing the virtual host or point Apache to run the app on 80 port
