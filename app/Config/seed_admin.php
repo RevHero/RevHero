@@ -1,16 +1,16 @@
 <?php
-$conn = mysql_connect("localhost","root","");
-mysql_select_db("revhero", $conn);
-
 $admin_email = 'test@admin.com';
 $admin_pass  = 'test123';
+$db_name = "revhero";
 
-$selectData = mysql_query("select * from `users` where `admin`=1");
-$num = mysql_num_rows($selectData);
+$conn = mysqli_connect("localhost","root","",$db_name);
+
+$selectData = mysqli_query($conn, "select * from `users` where `admin`=1");
+$num = mysqli_num_rows($selectData);
 
 if($num == 0)
 {
-	$insertDefaultAdmin = mysql_query("INSERT INTO `users` SET `email`='".$admin_email."', `encrypted_password`='".md5($admin_pass)."', `admin`=1");
+	$insertDefaultAdmin = mysqli_query($conn, "INSERT INTO `users` SET `email`='".$admin_email."', `encrypted_password`='".md5($admin_pass)."', `admin`=1, `is_active`=1" );
 }
 
 if($insertDefaultAdmin && $insertDefaultAdmin != '')
