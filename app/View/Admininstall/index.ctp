@@ -30,11 +30,22 @@ else
 ?>
 	<div class="container">
 	<div class="row">
+		<div class="span4"></div>
+		<div class="span4" id="displayMsg">
+		  <?php if(@$success == 0 && @$success != ''){ ?>
+			  <div class="alert alert-error">
+				<a class="close" onclick="closeBox();">x</a>
+				<strong>Sorry!!</strong> This email id is already registered.
+			  </div>
+		  <?php } ?>
+		</div>
+	</div>
+	<div class="row">
 		 <form class="form-horizontal" method="post" action="">
             <fieldset>
                 <!-- Address form -->
          
-               <h2>Admin Setup Credentials</h2><br/>
+				<h2>Admin Setup Credentials</h2><br/>
          
                 <!-- email input-->
                 <div class="control-group">

@@ -19,16 +19,23 @@ class AdmininstallController extends AppController {
 		//pr($this->data);exit;
 		if(isset($this->data) && $this->data)
 		{
-			$configAdminUser['email'] = $this->data['email'];
-			$configAdminUser['encrypted_password'] = md5($this->data['pass']);
-			$configAdminUser['admin'] = 1;
-			$configAdminUser['is_active'] = 1;
+			$getDuplicate = $this->User->CheckDuplicate($this->data['email']); //This is require to check the DUPLICATE registration with the same Email.
 			
-			$successSave = $this->User->save($configAdminUser);
-			if($successSave)
-			{
-				$this->redirect(HTTP_ROOT."users/logincheck/".$this->data['email']."/".$this->data['pass']);
-			}
+			if(!$getDuplicate){ //If the Email id is not present in the database
+				$configAdminUser['email'] = $this->data['email'];
+				$configAdminUser['encrypted_password'] = md5($this->data['pass']);
+				$configAdminUser['admin'] = 1;
+				$configAdminUser['is_active'] = 1;
+				
+				$successSave = $this->User->save($configAdminUser);
+				if($successSave)
+				{
+					$this->redirect(HTTP_ROOT."users/logincheck/".$this->data['email']."/".$this->data['pass']);
+				}
+			}else{ //If the USER email is already present in the database
+				$this->Session->write("SUCCESS","0");
+				$this->redirect(HTTP_ROOT."install");
+			}	
 		}
 		else
 		{
