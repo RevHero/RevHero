@@ -22,7 +22,7 @@ Clone the project RevHero *git clone git@github.com:RevHero/RevHero.git*
 ### Creating the Admin User ###
  - Run the URL **YOUR_SITE_URL/install** in browser for Admin setup
  - Provide the email and password for Admin credentials
- - This will setup the Admin user for first time setup
+ - This will setup the Admin user for first time
  
 ### Setting up the Mandril & IPInfoDB credentials ###
  - Navigate to the "app/Config/core.php" 
