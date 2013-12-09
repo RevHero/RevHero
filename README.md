@@ -20,9 +20,9 @@ Clone the project RevHero *git clone git@github.com:RevHero/RevHero.git*
  - MySQl command to import the database **mysql -u myuser -p mydbname < absolute_path_to_the_sql_file**
  
 ### Creating the Admin User ###
- - Navigate to the folder "app/Config/seed_admin.php"
- - Edit the default Admin credentials and database credentials
- - Run the PHP file in the terminal **php seed_admin.php**
+ - Run the URL **YOUR_SITE_URL/install** in browser for Admin setup
+ - Provide the email and password for Admin credentials
+ - This will setup the Admin user for first time setup
  
 ### Setting up the Mandril & IPInfoDB credentials ###
  - Navigate to the "app/Config/core.php" 
